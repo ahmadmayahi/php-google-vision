@@ -38,7 +38,7 @@ class Face extends AbstractExtractor
     /**
      * @return FaceData[]
      */
-    public function analyze(): array
+    public function detect(): array
     {
         $faces = $this->getOriginalResponse();
 
