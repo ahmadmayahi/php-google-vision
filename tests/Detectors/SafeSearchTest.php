@@ -12,16 +12,16 @@ use Google\Cloud\Vision\V1\SafeSearchAnnotation;
 class SafeSearchTest extends TestCase
 {
     /** @test */
-    public function it_should_get_safe_search_original_response(): void
+    public function it_should_get_safe_search_original_google_vision_response(): void
     {
         $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
         $annotatorImageResponse = $this->createMock(AnnotateImageResponse::class);
-        $safeSearchAnootation = $this->createMock(SafeSearchAnnotation::class);
+        $safeSearchAnnotation = $this->createMock(SafeSearchAnnotation::class);
 
         $annotatorImageResponse
             ->expects($this->once())
             ->method('getSafeSearchAnnotation')
-            ->willReturn($safeSearchAnootation);
+            ->willReturn($safeSearchAnnotation);
 
         $imageAnnotatorClient
             ->expects($this->once())
@@ -33,7 +33,7 @@ class SafeSearchTest extends TestCase
 
         $response = $this
             ->getVision()
-            ->detectSafeSearch()
+            ->safeSearchDetection()
             ->getOriginalResponse();
 
         $this->assertInstanceOf(SafeSearchAnnotation::class, $response);
@@ -86,8 +86,8 @@ class SafeSearchTest extends TestCase
 
         $response = $this
             ->getVision()
-            ->detectSafeSearch()
-            ->analyze();
+            ->safeSearchDetection()
+            ->detect();
 
         $this->assertInstanceOf(SafeSearchData::class, $response);
     }
