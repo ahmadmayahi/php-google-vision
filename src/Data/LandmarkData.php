@@ -7,8 +7,7 @@ class LandmarkData
     public function __construct(
         private string $name,
         private array $locations
-    )
-    {
+    ) {
     }
 
     /**

@@ -40,6 +40,7 @@ class Landmark extends AbstractExtractor
                 name: $entity->getDescription(),
                 locations: array_map(function (LocationInfo $location) {
                     $info = $location->getLatLng();
+
                     return [
                         'latitude' => $info->getLatitude(),
                         'longitude' => $info->getLongitude(),
