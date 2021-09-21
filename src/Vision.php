@@ -6,6 +6,7 @@ use AhmadMayahi\GoogleVision\Contracts\File;
 use AhmadMayahi\GoogleVision\Detectors\Face;
 use AhmadMayahi\GoogleVision\Detectors\Image;
 use AhmadMayahi\GoogleVision\Detectors\ImageProperties;
+use AhmadMayahi\GoogleVision\Detectors\Landmark;
 use AhmadMayahi\GoogleVision\Detectors\SafeSearch;
 
 class Vision
@@ -15,27 +16,37 @@ class Vision
         State::$config = $config;
     }
 
-    public function detectImageText(): Image
+    public static function new(Config $config): static
     {
-        return new Image($this->getFile());
+        return new self($config);
     }
 
-    public function detectFaces(): Face
+    public function faceDetection(): Face
     {
         return new Face($this->getFile());
     }
 
-    public function detectSafeSearch(): SafeSearch
+    public function imageTextDetection(): Image
     {
-        return new SafeSearch($this->getFile());
+        return new Image($this->getFile());
     }
 
-    public function detectImageProperties(): ImageProperties
+    public function imagePropertiesDetection(): ImageProperties
     {
         return new ImageProperties($this->getFile());
     }
 
-    private function getFile(): File
+    public function landmarkDetection(): Landmark
+    {
+        return new Landmark($this->getFile());
+    }
+
+    public function safeSearchDetection(): SafeSearch
+    {
+        return new SafeSearch($this->getFile());
+    }
+
+    protected function getFile(): File
     {
         return $this->config->getFile();
     }
