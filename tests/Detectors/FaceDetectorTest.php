@@ -39,7 +39,7 @@ class FaceDetectorTest extends TestCase
 
         $vision = $this
             ->getVision()
-            ->detectFaces()
+            ->faceDetection()
             ->getOriginalResponse();
 
         $this->assertInstanceOf(RepeatedField::class, $vision);
@@ -108,8 +108,8 @@ class FaceDetectorTest extends TestCase
 
         $stats = $this
             ->getVision($this->getFilePathname())
-            ->detectFaces()
-            ->analyze();
+            ->faceDetection()
+            ->detect();
 
         $this->assertCount(1, $stats);
         $this->assertInstanceOf(FaceData::class, $stats[0]);
@@ -211,7 +211,7 @@ class FaceDetectorTest extends TestCase
 
         $this
             ->getVision()
-            ->detectFaces()
+            ->faceDetection()
             ->drawBoxAroundFaces($outFilename);
     }
 }

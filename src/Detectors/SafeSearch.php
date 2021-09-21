@@ -14,13 +14,14 @@ class SafeSearch extends AbstractExtractor
 
     public function getOriginalResponse(): ?SafeSearchAnnotation
     {
-        $response = $this->getImageAnnotaorClient()
+        $response = $this
+            ->getImageAnnotaorClient()
             ->safeSearchDetection($this->file->getFileContents());
 
         return $response->getSafeSearchAnnotation();
     }
 
-    public function analyze(): SafeSearchData
+    public function detect(): SafeSearchData
     {
         $response = $this->getOriginalResponse();
 

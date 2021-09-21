@@ -25,7 +25,7 @@ class ImageProperties extends AbstractExtractor
     /**
      * @return ImagePropertiesData[]
      */
-    public function analyze(): array
+    public function detect(): array
     {
         $response = $this->getOriginalResponse();
 

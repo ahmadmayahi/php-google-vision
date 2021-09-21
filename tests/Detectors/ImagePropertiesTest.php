@@ -16,7 +16,7 @@ use Google\Type\Color;
 class ImagePropertiesTest extends TestCase
 {
     /** @test */
-    public function it_should_get_the_image_properties_response()
+    public function it_should_get_image_properties_original_google_vision_response()
     {
         $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
         $imageProperties = $this->createMock(GoogleVisionImageProperties::class);
@@ -36,14 +36,14 @@ class ImagePropertiesTest extends TestCase
 
         $response = $this
             ->getVision()
-            ->detectImageProperties()
+            ->imagePropertiesDetection()
             ->getOriginalResponse();
 
         $this->assertInstanceOf(GoogleVisionImageProperties::class, $response);
     }
 
     /** @test */
-    public function it_should_get_image_properties_analzyer()
+    public function it_should_get_image_properties_analyzer()
     {
         $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
         $imageProperties = $this->createMock(GoogleVisionImageProperties::class);
@@ -96,8 +96,8 @@ class ImagePropertiesTest extends TestCase
 
         $response = $this
             ->getVision()
-            ->detectImageProperties()
-            ->analyze();
+            ->imagePropertiesDetection()
+            ->detect();
 
         $this->assertCount(1, $response);
         $this->assertIsArray($response);

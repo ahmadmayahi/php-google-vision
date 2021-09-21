@@ -10,7 +10,7 @@ use Google\Protobuf\Internal\RepeatedField;
 class ImageDetectorTest extends TestCase
 {
     /** @test */
-    public function it_should_get_original_response(): void
+    public function it_should_get_image_original_google_vision_response(): void
     {
         $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
         $annotatorImageResponse = $this->createMock(AnnotateImageResponse::class);
@@ -30,7 +30,7 @@ class ImageDetectorTest extends TestCase
 
         $vision = $this
             ->getVision()
-            ->detectImageText()
+            ->imageTextDetection()
             ->getOriginalResponse();
 
         $this->assertInstanceOf(RepeatedField::class, $vision);
