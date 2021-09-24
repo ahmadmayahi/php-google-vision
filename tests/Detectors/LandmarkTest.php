@@ -68,7 +68,7 @@ class LandmarkTest extends TestCase
         $locationsRepeatedField
             ->method('getIterator')
             ->willReturn($this->mockIterator($repeatedFieldIter, [$locationInfo]));
-        ;
+
         $entityAnnotation
             ->expects($this->once())
             ->method('getLocations')
