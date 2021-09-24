@@ -5,6 +5,7 @@ namespace AhmadMayahi\GoogleVision;
 use AhmadMayahi\GoogleVision\Detectors\Face;
 use AhmadMayahi\GoogleVision\Detectors\Image;
 use AhmadMayahi\GoogleVision\Detectors\ImageProperties;
+use AhmadMayahi\GoogleVision\Detectors\Label;
 use AhmadMayahi\GoogleVision\Detectors\Landmark;
 use AhmadMayahi\GoogleVision\Detectors\SafeSearch;
 use AhmadMayahi\GoogleVision\Utils\File;
@@ -54,6 +55,11 @@ class Vision
     public function landmarkDetection(): Landmark
     {
         return new Landmark($this->getFile());
+    }
+
+    public function labelDetection(): Label
+    {
+        return new Label($this->getFile());
     }
 
     public function safeSearchDetection(): SafeSearch

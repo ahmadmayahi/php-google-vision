@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.4 - 24/09/2021
+- Support Label Detection
+
 ## 0.3.1 - 24/09/2021
 - Add `file` method in the `Vision` class.
 - Update documentation.
