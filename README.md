@@ -21,7 +21,7 @@ This package provides an elegant wrapper around [Google Vision API](https://gith
 - [Creating Google Service Account](#creating-google-service-account)
 - [Configuration](#configuration)
 - [Original Responses](#original-responses)
-- [Integration with Laravel][#integration-with-laravel]
+- [Integration with Laravel](#integration-with-laravel)
 - [Face Detection](#face-detection)
   - [Draw box around faces](#draw-box-around-faces)
 - [Image Text Detection](#image-text-detection)
