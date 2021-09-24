@@ -7,6 +7,7 @@ use AhmadMayahi\GoogleVision\Detectors\Image;
 use AhmadMayahi\GoogleVision\Detectors\ImageProperties;
 use AhmadMayahi\GoogleVision\Detectors\Label;
 use AhmadMayahi\GoogleVision\Detectors\Landmark;
+use AhmadMayahi\GoogleVision\Detectors\Logo;
 use AhmadMayahi\GoogleVision\Detectors\SafeSearch;
 use AhmadMayahi\GoogleVision\Utils\File;
 use SplFileObject;
@@ -60,6 +61,11 @@ class Vision
     public function labelDetection(): Label
     {
         return new Label($this->getFile());
+    }
+
+    public function logoDetection(): Logo
+    {
+        return new Logo($this->getFile());
     }
 
     public function safeSearchDetection(): SafeSearch
