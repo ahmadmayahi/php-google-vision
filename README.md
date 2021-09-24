@@ -30,6 +30,7 @@ This package provides an elegant wrapper around [Google Vision API](https://gith
 - [Detect Image Properties](#detect-image-properties)
 - [Landmark Detection](#landmark-detection)
 - [Label Detection](#label-detection)
+- [Logo Detection](#logo-detection)
 
 ## Installation
 
@@ -331,12 +332,25 @@ $labels = (new Vision($config))
     ->file(__DIR__ . '/files/my-image.jpg')
     ->labelDetection()
     ->detect();
+```
 
+## Logo Detection
+
+[Detect](https://cloud.google.com/vision/docs/detecting-logos) and extract information about entities in an image, across a broad group of categories.
+
+The `detect` method returns an array of logos:
+
+```php
+use AhmadMayahi\GoogleVision\Vision;
+
+$labels = (new Vision($config))
+    ->file(__DIR__ . '/files/my-image.jpg')
+    ->logoDetection()
+    ->detect();
 ```
 
 ## Todo List
 - [ ] Localized Object
-- [ ] Logo detection
 - [ ] Pdf Scanning
 - [ ] Tiff Scanning
 - [ ] Web

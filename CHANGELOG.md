@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.5 - 24/09/2021
+- Support Logo Detection
+
 ## 0.4 - 24/09/2021
 - Support Label Detection
 
