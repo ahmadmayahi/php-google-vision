@@ -19,8 +19,7 @@ final class ContainerTest extends TestCase
     /** @test */
     public function it_should_bind_a_class_by_name(): void
     {
-        $class = new Class {
-
+        $class = new class() {
         };
 
         Container::getInstance()->bind($class);
@@ -31,7 +30,7 @@ final class ContainerTest extends TestCase
     /** @test */
     public function it_should_bind_an_object()
     {
-        $class = new class {
+        $class = new class() {
             public function say(): string
             {
                 return 'Hello World';
@@ -66,7 +65,6 @@ class WelcomeClass
 {
     public function __construct(private string $name)
     {
-
     }
 
     public function say(): string
