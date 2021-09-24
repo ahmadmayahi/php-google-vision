@@ -43,18 +43,6 @@ final class Config
         return $this;
     }
 
-    public function setBucket(string $bucket): static
-    {
-        $this->config['bucket'] = $bucket;
-
-        return $this;
-    }
-
-    public function getBucket(): ?string
-    {
-        return $this->config['bucket'] ?? null;
-    }
-
     public function setTempDirPath(string $path)
     {
         $this->config['tempDirPath'] = $path;

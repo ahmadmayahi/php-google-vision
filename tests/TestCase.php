@@ -26,13 +26,15 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     protected function getConfig(): Config
     {
         return (new Config())
-            ->setInputFile($this->getFilePathname())
             ->setCredentialsPathname(__DIR__ . DIRECTORY_SEPARATOR . 'files/service-account.json');
     }
 
+    /**
+     * @throws \Exception
+     */
     protected function getVision(): Vision
     {
-        return new Vision($this->getConfig());
+        return (new Vision($this->getConfig()))->file($this->getFilePathname());
     }
 
     protected function bind($object, $name): void

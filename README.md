@@ -15,14 +15,13 @@ For feedback, please [contact me](https://form.jotform.com/201892949858375).
 
 This package provides an elegant wrapper around [Google Vision API](https://github.com/googleapis/google-cloud-php-vision)
 
----
-
-# Content
+# Contents
 
 - [Installation](#installation)
 - [Creating Google Service Account](#creating-google-service-account)
 - [Configuration](#configuration)
 - [Original Responses](#original-responses)
+- [Integration with Laravel][#integration-with-laravel]
 - [Face Detection](#face-detection)
   - [Draw box around faces](#draw-box-around-faces)
 - [Image Text Detection](#image-text-detection)
@@ -30,8 +29,6 @@ This package provides an elegant wrapper around [Google Vision API](https://gith
   - [Get Document](#get-document)
 - [Detect Image Properties](#detect-image-properties)
 - [Landmark Detection](#landmark-detection)
-
----
 
 ## Installation
 
@@ -51,25 +48,13 @@ First, you must [create a Google service account](https://cloud.google.com/iam/d
 use AhmadMayahi\GoogleVision\Config;
 
 $config = (new Config())
-    ->setInputFile(__DIR__ . '/files/google-guys.jpg')
-    ->setCredentialsPathname('path/to/google-service-account.json');
-```
+    // optional
+    ->setRequestTimeout(50)
 
-The `setInputFile()` method accept all the following types:
-
-- Local file path.
-- Google Storage path `gs://path/to/file`.
-- File resource, such as `fopen()`.
-- `SplFileInfo`.
-- `SplFileObject`.
-
-Google Storage:
-
-```php
-use AhmadMayahi\GoogleVision\Config;
-
-$config = (new Config())
-    ->setInputFile('gs://my-bucket/my-file.png')
+    // optional: by default it uses the sys_get_temp_dir() function
+    ->setTempDirPath('/path/to/temp')
+    
+    // Required: path to your google service account;
     ->setCredentialsPathname('path/to/google-service-account.json');
 ```
 
@@ -83,6 +68,7 @@ You may get the original response for any feature as follows:
 use AhmadMayahi\GoogleVision\Vision;
 
 $response = (new Vision($config))
+    ->file(__DIR__ . '/files/google-guys.jpg')
     ->faceDetection()
     ->getOriginalResponse();
 ```
@@ -97,6 +83,77 @@ Depending on the feature, the response type might vary, here is a list of all th
 |`detectLandmarks`|`Google\Protobuf\Internal\RepeatedField`|
 |`detectSafeSearch`|`Google\Cloud\Vision\V1\SafeSearchAnnotation`|
 
+The `file()` method accept the following type:
+
+- Local file path: `path/to/your/file`.
+- Google Storage path: `gs://path/to/file`.
+- File resource, such as `fopen()`.
+- `SplFileInfo`.
+- `SplFileObject`.
+
+You may also use the static `new` method to access the `Vision` class:
+
+```php
+use AhmadMayahi\GoogleVision\Vision;
+
+$vision = Vision::new($config)
+    ->file(__DIR__ . '/files/google-guys.jpg')
+    ->faceDetection()
+    ->getOriginalResponse();
+```
+
+## Integration with Laravel
+
+Open up the `AppServiceProvider` and add the following lines:
+
+```php
+use AhmadMayahi\GoogleVision\Vision;
+use AhmadMayahi\GoogleVision\Config;
+
+public function register()
+{
+    $this->app->singleton(Vision::class, function ($app) {
+        $config = (new Config())
+            ->setCredentialsPathname(config('vision.service_account_path'));
+    
+        return new Vision($config);
+    });
+}
+```
+
+Using Dependency Injection:
+
+```php
+use AhmadMayahi\GoogleVision\Vision;
+use Illuminate\Http\Request;
+
+class FaceDetectionController
+{
+    public function detect(Request $request, Vision $vision)
+    {
+        $vision = $vision
+            ->file($request->face_file->path())
+            ->faceDetection()
+            ->detect();
+            
+        // ...  
+    }
+}
+```
+
+You may also resolve the object using the `app` helper as follows:
+
+```php
+use AhmadMayahi\GoogleVision\Vision;
+
+/** @var Vision $vision */
+$vision = app(Vision::class);
+
+$result = $vision->file('path/to/file')->faceDetection()->detect();
+
+// ...
+```
+
 ## Face Detection
 
 The `detect` method returns a collection (`array`) of `AhmadMayahi\GoogleVision\Data\FaceData`:
@@ -105,6 +162,7 @@ The `detect` method returns a collection (`array`) of `AhmadMayahi\GoogleVision\
 use AhmadMayahi\GoogleVision\Vision;
 
 $faces = (new Vision($config))
+    ->file(__DIR__ . '/files/google-guys.jpg')
     ->faceDetection()
     ->detect();
 
@@ -138,6 +196,7 @@ $outputFile = 'path/to/output/file.jpeg';
 $color = ColorEnum::MAGENTA;
 
 $analyzer = (new Vision($config))
+    ->file(__DIR__ . '/files/google-guys.jpg')
     ->faceDetection()
     ->drawBoxAroundFaces($outputFile, $color);
 ```
@@ -156,6 +215,7 @@ The `getPlainText` returns an object of type `AhmadMayahi\GoogleVision\Data\Imag
 use AhmadMayahi\GoogleVision\Vision;
 
 $response = (new Vision($config))
+    ->file(__DIR__ . '/files/my-image.jpg')
     ->imageTextDetection()
     ->getPlainText();
 
@@ -177,6 +237,7 @@ The `getDocument` returns an object of type `AhmadMayahi\GoogleVision\Data\Image
 use AhmadMayahi\GoogleVision\Vision;
 
 $response = (new Vision($config))
+    ->file(__DIR__ . '/files/my-image.jpg')
     ->imageTextDetection()
     ->getDocument();
  
@@ -196,6 +257,7 @@ The `detect` method returns a collection (`array`) of `AhmadMayahi\GoogleVision\
 use AhmadMayahi\GoogleVision\Vision;
 
 $properties = (new Vision($config))
+    ->file(__DIR__ . '/files/my-image.jpg')
     ->imagePropertiesDetection()
     ->detect();
 
@@ -218,6 +280,7 @@ foreach ($properties as $item) {
 use AhmadMayahi\GoogleVision\Vision;
 
 $landmarks = (new Vision($config))
+    ->file(__DIR__ . '/files/baghdad.jpg')
     ->landmarkDetection()
     ->detect();
 
@@ -239,6 +302,7 @@ The `detect` method returns a collection (`array`) of `AhmadMayahi\GoogleVision\
 use AhmadMayahi\GoogleVision\Vision;
 
 $result = (new Vision($config))
+    ->file(__DIR__ . '/files/my-image.jpg')
     ->safeSearchDetection()
     ->detect();
 
@@ -257,7 +321,6 @@ $result->getSpoof();
 - [ ] Label detection
 - [ ] Localized Object
 - [ ] Logo detection
-- [ ] Support Google Cloud
 - [ ] Pdf Scanning
 - [ ] Tiff Scanning
 - [ ] Web

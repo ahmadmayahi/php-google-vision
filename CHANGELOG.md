@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1 - 24/09/2021
+- Add `file` method in the `Vision` class.
+- Update documentation.
+
 ## 0.3 - 24/09/2021
 - Support different file types in `setInputFile`:
   - Google Storage.

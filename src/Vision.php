@@ -2,12 +2,14 @@
 
 namespace AhmadMayahi\GoogleVision;
 
-use AhmadMayahi\GoogleVision\Contracts\File;
 use AhmadMayahi\GoogleVision\Detectors\Face;
 use AhmadMayahi\GoogleVision\Detectors\Image;
 use AhmadMayahi\GoogleVision\Detectors\ImageProperties;
 use AhmadMayahi\GoogleVision\Detectors\Landmark;
 use AhmadMayahi\GoogleVision\Detectors\SafeSearch;
+use AhmadMayahi\GoogleVision\Utils\File;
+use SplFileObject;
+use Symfony\Component\Finder\SplFileInfo;
 
 class Vision
 {
@@ -19,6 +21,19 @@ class Vision
     public static function new(Config $config): static
     {
         return new self($config);
+    }
+
+    /**
+     * @param string|resource|SplFileInfo|SplFileObject $file
+     *
+     * @return Vision|static
+     * @throws \Exception
+     */
+    public function file($file): static
+    {
+        $this->config->setInputFile($file);
+
+        return $this;
     }
 
     public function faceDetection(): Face
