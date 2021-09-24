@@ -4,12 +4,12 @@ namespace AhmadMayahi\GoogleVision\Detectors;
 
 use AhmadMayahi\GoogleVision\Data\ImagePropertiesData;
 use AhmadMayahi\GoogleVision\Traits\HasImageAnnotator;
-use AhmadMayahi\GoogleVision\Utils\AbstractExtractor;
+use AhmadMayahi\GoogleVision\Utils\AbstractDetector;
 use Google\Cloud\Vision\V1\ColorInfo;
 use Google\Cloud\Vision\V1\ImageProperties as GoogleVisionImageProperties;
 use Google\Type\Color;
 
-class ImageProperties extends AbstractExtractor
+class ImageProperties extends AbstractDetector
 {
     use HasImageAnnotator;
 
@@ -17,7 +17,7 @@ class ImageProperties extends AbstractExtractor
     {
         $response = $this
             ->getImageAnnotaorClient()
-            ->imagePropertiesDetection($this->file->getFileContents());
+            ->imagePropertiesDetection($this->file->toGoogleVisionFile());
 
         return $response->getImagePropertiesAnnotation();
     }

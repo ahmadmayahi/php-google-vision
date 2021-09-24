@@ -5,10 +5,10 @@ namespace AhmadMayahi\GoogleVision\Detectors;
 use AhmadMayahi\GoogleVision\Data\SafeSearchData;
 use AhmadMayahi\GoogleVision\Enums\LikelihoodEnum;
 use AhmadMayahi\GoogleVision\Traits\HasImageAnnotator;
-use AhmadMayahi\GoogleVision\Utils\AbstractExtractor;
+use AhmadMayahi\GoogleVision\Utils\AbstractDetector;
 use Google\Cloud\Vision\V1\SafeSearchAnnotation;
 
-class SafeSearch extends AbstractExtractor
+class SafeSearch extends AbstractDetector
 {
     use HasImageAnnotator;
 
@@ -16,7 +16,7 @@ class SafeSearch extends AbstractExtractor
     {
         $response = $this
             ->getImageAnnotaorClient()
-            ->safeSearchDetection($this->file->getFileContents());
+            ->safeSearchDetection($this->file->toGoogleVisionFile());
 
         return $response->getSafeSearchAnnotation();
     }

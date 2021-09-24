@@ -4,7 +4,7 @@ namespace AhmadMayahi\GoogleVision\Detectors;
 
 use AhmadMayahi\GoogleVision\Data\LandmarkData;
 use AhmadMayahi\GoogleVision\Traits\HasImageAnnotator;
-use AhmadMayahi\GoogleVision\Utils\AbstractExtractor;
+use AhmadMayahi\GoogleVision\Utils\AbstractDetector;
 use Google\Cloud\Vision\V1\EntityAnnotation;
 use Google\Cloud\Vision\V1\LocationInfo;
 use Google\Protobuf\Internal\RepeatedField;
@@ -12,7 +12,7 @@ use Google\Protobuf\Internal\RepeatedField;
 /**
  * @see https://cloud.google.com/vision/docs/detecting-landmarks
  */
-class Landmark extends AbstractExtractor
+class Landmark extends AbstractDetector
 {
     use HasImageAnnotator;
 
@@ -20,7 +20,7 @@ class Landmark extends AbstractExtractor
     {
         $response = $this
             ->getImageAnnotaorClient()
-            ->landmarkDetection($this->file->getFileContents());
+            ->landmarkDetection($this->file->toGoogleVisionFile());
 
         return $response->getLandmarkAnnotations();
     }
