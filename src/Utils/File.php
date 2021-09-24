@@ -23,6 +23,11 @@ class LocalFile extends SplFileInfo implements File
         return $fileObj->fread($this->getSize());
     }
 
+    public function __toString()
+    {
+        
+    }
+
     public function readFileUsingGenerator(): Generator
     {
         $handle = $this->openFile();
