@@ -51,7 +51,25 @@ First, you must [create a Google service account](https://cloud.google.com/iam/d
 use AhmadMayahi\GoogleVision\Config;
 
 $config = (new Config())
-    ->setFile(__DIR__ . '/files/google-guys.jpg') // Path to your image file
+    ->setInputFile(__DIR__ . '/files/google-guys.jpg')
+    ->setCredentialsPathname('path/to/google-service-account.json');
+```
+
+The `setInputFile()` method accept all the following types:
+
+- Local file path.
+- Google Storage path `gs://path/to/file`.
+- File resource, such as `fopen()`.
+- `SplFileInfo`.
+- `SplFileObject`.
+
+Google Storage:
+
+```php
+use AhmadMayahi\GoogleVision\Config;
+
+$config = (new Config())
+    ->setInputFile('gs://my-bucket/my-file.png')
     ->setCredentialsPathname('path/to/google-service-account.json');
 ```
 
@@ -125,6 +143,8 @@ $analyzer = (new Vision($config))
 ```
 
 ![Larry Page and Sergey Brin faces](tests/files/output/larry-sergey.jpg)
+
+> This feature doesn't support Google Storage yet.
 
 ## Image Text Detection
 
