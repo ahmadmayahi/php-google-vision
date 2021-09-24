@@ -14,7 +14,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     {
         parent::tearDown();
 
-        $tempPath = __DIR__ . DIRECTORY_SEPARATOR.'files/temp' . DIRECTORY_SEPARATOR;
+        $tempPath = __DIR__ . DIRECTORY_SEPARATOR . 'files/temp' . DIRECTORY_SEPARATOR;
 
         $files = array_diff(scandir($tempPath), ['.', '..', '.gitignore']);
 
@@ -26,7 +26,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     protected function getConfig(): Config
     {
         return (new Config())
-            ->setFile($this->getFilePathname())
+            ->setInputFile($this->getFilePathname())
             ->setCredentialsPathname(__DIR__ . DIRECTORY_SEPARATOR . 'files/service-account.json');
     }
 
@@ -107,5 +107,10 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     protected function getFilePathname(string $file = null): string
     {
         return __DIR__ . DIRECTORY_SEPARATOR . 'files/input/' . ($file ?? 'google-guys.jpg');
+    }
+
+    protected function getTempDir(string $file = null): string
+    {
+        return __DIR__ . DIRECTORY_SEPARATOR . 'files/temp/' . $file;
     }
 }
