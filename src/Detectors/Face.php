@@ -7,7 +7,7 @@ use AhmadMayahi\GoogleVision\Data\FaceData;
 use AhmadMayahi\GoogleVision\Enums\ColorEnum;
 use AhmadMayahi\GoogleVision\Enums\LikelihoodEnum;
 use AhmadMayahi\GoogleVision\Traits\HasImageAnnotator;
-use AhmadMayahi\GoogleVision\Utils\AbstractExtractor;
+use AhmadMayahi\GoogleVision\Utils\AbstractDetector;
 use AhmadMayahi\GoogleVision\Utils\Container;
 use AhmadMayahi\GoogleVision\Utils\DrawBoxImage;
 use Exception;
@@ -15,7 +15,7 @@ use Google\Cloud\Vision\V1\FaceAnnotation;
 use Google\Cloud\Vision\V1\Vertex;
 use Google\Protobuf\Internal\RepeatedField;
 
-class Face extends AbstractExtractor
+class Face extends AbstractDetector
 {
     use HasImageAnnotator;
 
@@ -30,7 +30,7 @@ class Face extends AbstractExtractor
     {
         $response = $this
             ->getImageAnnotaorClient()
-            ->faceDetection($this->file->getFileContents());
+            ->faceDetection($this->file->toGoogleVisionFile());
 
         return $response->getFaceAnnotations();
     }
@@ -77,7 +77,7 @@ class Face extends AbstractExtractor
     {
         $faces = $this->getOriginalResponse();
 
-        $path = $this->file->getPathname();
+        $path = $this->file->getLocalPathname();
 
         if (false === copy($path, $outFile)) {
             throw new Exception('Could not copy the file');

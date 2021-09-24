@@ -2,24 +2,24 @@
 
 namespace AhmadMayahi\GoogleVision;
 
-use AhmadMayahi\GoogleVision\Contracts\File;
-use AhmadMayahi\GoogleVision\Utils\LocalFile;
+use AhmadMayahi\GoogleVision\Utils\File;
 use Exception;
+use SplFileInfo;
+use SplFileObject;
 
 final class Config
 {
     protected array $config = [];
 
     /**
+     * @param string|resource|SplFileInfo|SplFileObject|File $file
+     *
+     * @return Config|static
      * @throws Exception
      */
-    public function setFile(string $pathname): static
+    public function setInputFile($file): static
     {
-        if (false === file_exists($pathname)) {
-            throw new Exception('File '.$pathname.' does not exist!');
-        }
-
-        $this->config['file'] = new LocalFile($pathname);
+        $this->config['file'] = new File($file, $this);
 
         return $this;
     }
@@ -53,6 +53,18 @@ final class Config
     public function getBucket(): ?string
     {
         return $this->config['bucket'] ?? null;
+    }
+
+    public function setTempDirPath(string $path)
+    {
+        $this->config['tempDirPath'] = $path;
+
+        return $this;
+    }
+
+    public function getTempDirPath()
+    {
+        return $this->config['tempDirPath'] ?? sys_get_temp_dir();
     }
 
     public function connectConfig(): array

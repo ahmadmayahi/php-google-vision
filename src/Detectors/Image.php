@@ -4,11 +4,11 @@ namespace AhmadMayahi\GoogleVision\Detectors;
 
 use AhmadMayahi\GoogleVision\Data\ImageTextData;
 use AhmadMayahi\GoogleVision\Traits\HasImageAnnotator;
-use AhmadMayahi\GoogleVision\Utils\AbstractExtractor;
+use AhmadMayahi\GoogleVision\Utils\AbstractDetector;
 use Google\Cloud\Vision\V1\EntityAnnotation;
 use Google\Protobuf\Internal\RepeatedField;
 
-class Image extends AbstractExtractor
+class Image extends AbstractDetector
 {
     use HasImageAnnotator;
 
@@ -16,7 +16,7 @@ class Image extends AbstractExtractor
     {
         $annotations = $this
             ->getImageAnnotaorClient()
-            ->textDetection($this->file->getFileContents())
+            ->textDetection($this->file->toGoogleVisionFile())
             ->getTextAnnotations();
 
         if (0 === $annotations->count()) {
@@ -44,7 +44,7 @@ class Image extends AbstractExtractor
     {
         return $this
             ->getImageAnnotaorClient()
-            ->documentTextDetection($this->file->getFileContents())
+            ->documentTextDetection($this->file->toGoogleVisionFile())
             ->getTextAnnotations();
     }
 

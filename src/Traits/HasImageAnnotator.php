@@ -21,15 +21,6 @@ trait HasImageAnnotator
         return Container::getInstance()->get(ImageAnnotatorClient::class);
     }
 
-    public static function supportedExtensions(): array
-    {
-        return [
-            'jpg',
-            'jpeg',
-            'png',
-        ];
-    }
-
     public function __destruct()
     {
         $this->getImageAnnotaorClient()->close();

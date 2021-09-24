@@ -4,9 +4,10 @@ namespace AhmadMayahi\GoogleVision\Contracts;
 
 interface File
 {
-    public function getExtension();
+    public function getLocalPathname();
 
-    public function getPathname();
-
-    public function getFileContents();
+    /**
+     * @return resource|string
+     */
+    public function toGoogleVisionFile();
 }

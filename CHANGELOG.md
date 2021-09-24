@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3 - 24/09/2021
+- Support different file types in `setInputFile`:
+  - Google Storage.
+  - `SplFileInfo`
+  - `SplFileObject`
+  - `resource` such as `fopen`.
+
 ## 0.2 - 21/09/2021
 - Add landmark detection.
 - Modify `README` file to have a comprehensive documentation.
@@ -9,5 +16,5 @@
 - Rename `detectImageProperties` to `imagePropertiesDetection`.
 - Rename `detectSafeSearch` to `safeSearchDetection`.
 
-## 0.1 - - 20/09/2021
+## 0.1 -20/09/2021
 - Initial release.
