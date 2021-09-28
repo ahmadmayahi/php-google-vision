@@ -1,10 +1,10 @@
 <?php
 
-namespace AhmadMayahi\GoogleVision\Detectors;
+namespace AhmadMayahi\Vision\Detectors;
 
-use AhmadMayahi\GoogleVision\Data\ImagePropertiesData;
-use AhmadMayahi\GoogleVision\Traits\HasImageAnnotator;
-use AhmadMayahi\GoogleVision\Utils\AbstractDetector;
+use AhmadMayahi\Vision\Data\ImagePropertiesData;
+use AhmadMayahi\Vision\Traits\HasImageAnnotator;
+use AhmadMayahi\Vision\Utils\AbstractDetector;
 use Google\Cloud\Vision\V1\ColorInfo;
 use Google\Cloud\Vision\V1\ImageProperties as GoogleVisionImageProperties;
 use Google\Type\Color;

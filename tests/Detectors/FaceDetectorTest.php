@@ -1,11 +1,11 @@
 <?php
 
-namespace AhmadMayahi\GoogleVision\Tests\Detectors;
+namespace AhmadMayahi\Vision\Tests\Detectors;
 
-use AhmadMayahi\GoogleVision\Data\FaceData;
-use AhmadMayahi\GoogleVision\Tests\TestCase;
-use AhmadMayahi\GoogleVision\Utils\Container;
-use AhmadMayahi\GoogleVision\Utils\DrawBoxImage;
+use AhmadMayahi\Vision\Data\FaceData;
+use AhmadMayahi\Vision\Tests\TestCase;
+use AhmadMayahi\Vision\Utils\Container;
+use AhmadMayahi\Vision\Utils\Image;
 use Google\Cloud\Vision\V1\AnnotateImageResponse;
 use Google\Cloud\Vision\V1\BoundingPoly;
 use Google\Cloud\Vision\V1\FaceAnnotation;
@@ -111,6 +111,10 @@ class FaceDetectorTest extends TestCase
             ->faceDetection()
             ->detect();
 
+        $this->assertInstanceOf(\Generator::class, $stats);
+
+        $stats = iterator_to_array($stats);
+
         $this->assertCount(1, $stats);
         $this->assertInstanceOf(FaceData::class, $stats[0]);
         $this->assertEquals('VERY_UNLIKELY', $stats[0]->getAnger());
@@ -194,7 +198,7 @@ class FaceDetectorTest extends TestCase
 
         $outFilename = dirname(__DIR__).DIRECTORY_SEPARATOR . 'files/temp/detect-faces.jpg';
 
-        $drawBoxImage = $this->createMock(DrawBoxImage::class);
+        $drawBoxImage = $this->createMock(Image::class);
 
         $drawBoxImage
             ->expects($this->exactly(2))
@@ -207,11 +211,12 @@ class FaceDetectorTest extends TestCase
             ->with($outFilename);
 
         Container::getInstance()->bind($imageAnnotatorClient, ImageAnnotatorClient::class);
-        Container::getInstance()->bind($drawBoxImage, DrawBoxImage::class);
+        Container::getInstance()->bind($drawBoxImage, Image::class);
 
         $this
             ->getVision()
+            ->outputFile($this->getTempDir('detect-faces.jpg'))
             ->faceDetection()
-            ->drawBoxAroundFaces($outFilename);
+            ->drawBoxAroundFaces();
     }
 }

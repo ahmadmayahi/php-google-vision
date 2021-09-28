@@ -1,10 +1,10 @@
 <?php
 
-namespace AhmadMayahi\GoogleVision\Tests;
+namespace AhmadMayahi\Vision\Tests;
 
-use AhmadMayahi\GoogleVision\Config;
-use AhmadMayahi\GoogleVision\Utils\Container;
-use AhmadMayahi\GoogleVision\Vision;
+use AhmadMayahi\Vision\Config;
+use AhmadMayahi\Vision\Utils\Container;
+use AhmadMayahi\Vision\Vision;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 
@@ -34,7 +34,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      */
     protected function getVision(): Vision
     {
-        return (new Vision($this->getConfig()))->file($this->getFilePathname());
+        return (new Vision($this->getConfig()))->inputFile($this->getFilePathname());
     }
 
     protected function bind($object, $name): void

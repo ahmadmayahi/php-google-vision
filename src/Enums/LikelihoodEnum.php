@@ -1,6 +1,6 @@
 <?php
 
-namespace AhmadMayahi\GoogleVision\Enums;
+namespace AhmadMayahi\Vision\Enums;
 
 use Google\Cloud\Vision\V1\Likelihood;
 

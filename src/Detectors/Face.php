@@ -1,16 +1,17 @@
 <?php
 
-namespace AhmadMayahi\GoogleVision\Detectors;
+namespace AhmadMayahi\Vision\Detectors;
 
-use AhmadMayahi\GoogleVision\Contracts\File;
-use AhmadMayahi\GoogleVision\Data\FaceData;
-use AhmadMayahi\GoogleVision\Enums\ColorEnum;
-use AhmadMayahi\GoogleVision\Enums\LikelihoodEnum;
-use AhmadMayahi\GoogleVision\Traits\HasImageAnnotator;
-use AhmadMayahi\GoogleVision\Utils\AbstractDetector;
-use AhmadMayahi\GoogleVision\Utils\Container;
-use AhmadMayahi\GoogleVision\Utils\DrawBoxImage;
+use AhmadMayahi\Vision\Contracts\File;
+use AhmadMayahi\Vision\Data\FaceData;
+use AhmadMayahi\Vision\Enums\ColorEnum;
+use AhmadMayahi\Vision\Enums\LikelihoodEnum;
+use AhmadMayahi\Vision\Traits\HasImageAnnotator;
+use AhmadMayahi\Vision\Utils\AbstractDetector;
+use AhmadMayahi\Vision\Utils\Container;
+use AhmadMayahi\Vision\Utils\Image;
 use Exception;
+use Generator;
 use Google\Cloud\Vision\V1\FaceAnnotation;
 use Google\Cloud\Vision\V1\Vertex;
 use Google\Protobuf\Internal\RepeatedField;
@@ -19,11 +20,11 @@ class Face extends AbstractDetector
 {
     use HasImageAnnotator;
 
-    public function __construct(protected File $file)
+    public function __construct(protected File $file, private ?string $outputFile = null)
     {
         parent::__construct($this->file);
 
-        Container::getInstance()->bindOnce(DrawBoxImage::class);
+        Container::getInstance()->bindOnce(Image::class);
     }
 
     public function getOriginalResponse(): RepeatedField
@@ -35,14 +36,9 @@ class Face extends AbstractDetector
         return $response->getFaceAnnotations();
     }
 
-    /**
-     * @return FaceData[]
-     */
-    public function detect(): array
+    public function detect(): Generator
     {
         $faces = $this->getOriginalResponse();
-
-        $results = [];
 
         /** @var FaceAnnotation $face */
         foreach ($faces as $face) {
@@ -62,29 +58,27 @@ class Face extends AbstractDetector
                 ];
             }
 
-            $results[] = new FaceData(
+            yield new FaceData(
                 anger: LikelihoodEnum::fromKey($anger),
                 joy: LikelihoodEnum::fromKey($joy),
                 surprise: LikelihoodEnum::fromKey($surprise),
                 bounds: $bounds,
             );
         }
-
-        return $results;
     }
 
-    public function drawBoxAroundFaces(string $outFile, int $color = ColorEnum::GREEN)
+    public function drawBoxAroundFaces(int $color = ColorEnum::GREEN)
     {
         $faces = $this->getOriginalResponse();
 
         $path = $this->file->getLocalPathname();
 
-        if (false === copy($path, $outFile)) {
+        if (false === copy($path, $this->outputFile)) {
             throw new Exception('Could not copy the file');
         }
 
-        /** @var DrawBoxImage $outputImage */
-        $outputImage = Container::getInstance()->get(DrawBoxImage::class, $outFile);
+        /** @var Image $outputImage */
+        $outputImage = Container::getInstance()->get(Image::class, $this->outputFile);
 
         /** @var FaceAnnotation $face */
         foreach ($faces as $face) {
@@ -101,6 +95,6 @@ class Face extends AbstractDetector
             }
         }
 
-        $outputImage->saveImage($outFile);
+        $outputImage->saveImage($this->outputFile);
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace AhmadMayahi\GoogleVision\Tests\Detectors;
+namespace AhmadMayahi\Vision\Tests\Detectors;
 
-use AhmadMayahi\GoogleVision\Tests\TestCase;
+use AhmadMayahi\Vision\Tests\TestCase;
 use Google\Cloud\Vision\V1\AnnotateImageResponse;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 use Google\Protobuf\Internal\RepeatedField;

@@ -1,6 +1,6 @@
 <?php
 
-namespace AhmadMayahi\GoogleVision\Contracts;
+namespace AhmadMayahi\Vision\Contracts;
 
 interface File
 {

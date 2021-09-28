@@ -1,9 +1,9 @@
 <?php
 
-namespace AhmadMayahi\GoogleVision\Tests\Utils;
+namespace AhmadMayahi\Vision\Tests\Utils;
 
-use AhmadMayahi\GoogleVision\Tests\TestCase;
-use AhmadMayahi\GoogleVision\Utils\File;
+use AhmadMayahi\Vision\Tests\TestCase;
+use AhmadMayahi\Vision\Utils\File;
 use SplFileInfo;
 use SplFileObject;
 

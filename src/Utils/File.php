@@ -1,10 +1,10 @@
 <?php
 
-namespace AhmadMayahi\GoogleVision\Utils;
+namespace AhmadMayahi\Vision\Utils;
 
-use AhmadMayahi\GoogleVision\Config;
-use AhmadMayahi\GoogleVision\Contracts\File as FileContract;
-use AhmadMayahi\GoogleVision\Exceptions\FileNotFoundException;
+use AhmadMayahi\Vision\Config;
+use AhmadMayahi\Vision\Contracts\File as FileContract;
+use AhmadMayahi\Vision\Exceptions\FileNotFoundException;
 use Exception;
 use SplFileInfo;
 use SplFileObject;

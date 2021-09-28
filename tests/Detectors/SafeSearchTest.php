@@ -1,9 +1,9 @@
 <?php
 
-namespace AhmadMayahi\GoogleVision\Tests\Detectors;
+namespace AhmadMayahi\Vision\Tests\Detectors;
 
-use AhmadMayahi\GoogleVision\Data\SafeSearchData;
-use AhmadMayahi\GoogleVision\Tests\TestCase;
+use AhmadMayahi\Vision\Data\SafeSearchData;
+use AhmadMayahi\Vision\Tests\TestCase;
 use Google\Cloud\Vision\V1\AnnotateImageResponse;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 use Google\Cloud\Vision\V1\Likelihood;

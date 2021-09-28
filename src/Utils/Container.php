@@ -1,6 +1,6 @@
 <?php
 
-namespace AhmadMayahi\GoogleVision\Utils;
+namespace AhmadMayahi\Vision\Utils;
 
 use InvalidArgumentException;
 use ReflectionClass;

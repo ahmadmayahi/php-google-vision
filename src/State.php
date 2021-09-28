@@ -1,8 +1,8 @@
 <?php
 
-namespace AhmadMayahi\GoogleVision;
+namespace AhmadMayahi\Vision;
 
-use AhmadMayahi\GoogleVision\Utils\Container;
+use AhmadMayahi\Vision\Utils\Container;
 
 final class State
 {

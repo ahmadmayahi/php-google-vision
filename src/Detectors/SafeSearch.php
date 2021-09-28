@@ -1,11 +1,11 @@
 <?php
 
-namespace AhmadMayahi\GoogleVision\Detectors;
+namespace AhmadMayahi\Vision\Detectors;
 
-use AhmadMayahi\GoogleVision\Data\SafeSearchData;
-use AhmadMayahi\GoogleVision\Enums\LikelihoodEnum;
-use AhmadMayahi\GoogleVision\Traits\HasImageAnnotator;
-use AhmadMayahi\GoogleVision\Utils\AbstractDetector;
+use AhmadMayahi\Vision\Data\SafeSearchData;
+use AhmadMayahi\Vision\Enums\LikelihoodEnum;
+use AhmadMayahi\Vision\Traits\HasImageAnnotator;
+use AhmadMayahi\Vision\Utils\AbstractDetector;
 use Google\Cloud\Vision\V1\SafeSearchAnnotation;
 
 class SafeSearch extends AbstractDetector

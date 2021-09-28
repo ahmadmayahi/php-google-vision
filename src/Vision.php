@@ -1,20 +1,28 @@
 <?php
 
-namespace AhmadMayahi\GoogleVision;
+namespace AhmadMayahi\Vision;
 
-use AhmadMayahi\GoogleVision\Detectors\Face;
-use AhmadMayahi\GoogleVision\Detectors\Image;
-use AhmadMayahi\GoogleVision\Detectors\ImageProperties;
-use AhmadMayahi\GoogleVision\Detectors\Label;
-use AhmadMayahi\GoogleVision\Detectors\Landmark;
-use AhmadMayahi\GoogleVision\Detectors\Logo;
-use AhmadMayahi\GoogleVision\Detectors\SafeSearch;
-use AhmadMayahi\GoogleVision\Utils\File;
+use AhmadMayahi\Vision\Detectors\Face;
+use AhmadMayahi\Vision\Detectors\Image;
+use AhmadMayahi\Vision\Detectors\ImageProperties;
+use AhmadMayahi\Vision\Detectors\Label;
+use AhmadMayahi\Vision\Detectors\Landmark;
+use AhmadMayahi\Vision\Detectors\Logo;
+use AhmadMayahi\Vision\Detectors\ObjectLocalizer;
+use AhmadMayahi\Vision\Detectors\SafeSearch;
+use AhmadMayahi\Vision\Utils\File;
 use SplFileObject;
 use Symfony\Component\Finder\SplFileInfo;
 
 class Vision
 {
+    /**
+     * @var string|resource|SplFileInfo|SplFileObject $inputFile
+     */
+    protected $inputFile;
+
+    protected ?string $outputFile = null;
+
     public function __construct(private Config $config)
     {
         State::$config = $config;
@@ -31,16 +39,23 @@ class Vision
      * @return Vision|static
      * @throws \Exception
      */
-    public function file($file): static
+    public function inputFile($file): static
     {
-        $this->config->setInputFile($file);
+        $this->inputFile = $file;
+
+        return $this;
+    }
+
+    public function outputFile(string $file)
+    {
+        $this->outputFile = $file;
 
         return $this;
     }
 
     public function faceDetection(): Face
     {
-        return new Face($this->getFile());
+        return new Face($this->getFile(), $this->outputFile);
     }
 
     public function imageTextDetection(): Image
@@ -68,13 +83,18 @@ class Vision
         return new Logo($this->getFile());
     }
 
+    public function objectLocalizer(): ObjectLocalizer
+    {
+        return new ObjectLocalizer($this->getFile(), $this->outputFile);
+    }
+
     public function safeSearchDetection(): SafeSearch
     {
         return new SafeSearch($this->getFile());
     }
 
-    protected function getFile(): File
+    private function getFile()
     {
-        return $this->config->getFile();
+        return new File($this->inputFile, $this->config);
     }
 }

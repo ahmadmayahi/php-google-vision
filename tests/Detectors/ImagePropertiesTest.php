@@ -1,9 +1,9 @@
 <?php
 
-namespace AhmadMayahi\GoogleVision\Tests\Detectors;
+namespace AhmadMayahi\Vision\Tests\Detectors;
 
-use AhmadMayahi\GoogleVision\Data\ImagePropertiesData;
-use AhmadMayahi\GoogleVision\Tests\TestCase;
+use AhmadMayahi\Vision\Data\ImagePropertiesData;
+use AhmadMayahi\Vision\Tests\TestCase;
 use Google\Cloud\Vision\V1\AnnotateImageResponse;
 use Google\Cloud\Vision\V1\ColorInfo;
 use Google\Cloud\Vision\V1\DominantColorsAnnotation;
@@ -53,12 +53,13 @@ class ImagePropertiesTest extends TestCase
         $dominantColors = $this->createMock(DominantColorsAnnotation::class);
 
         $color = $this->createMock(Color::class);
-        $color->method('getRed')->willReturn(243.0);
-        $color->method('getGreen')->willReturn(241.0);
-        $color->method('getBlue')->willReturn(240.0);
+        $color->expects($this->once())->method('getRed')->willReturn(243.0);
+        $color->expects($this->once())->method('getGreen')->willReturn(241.0);
+        $color->expects($this->once())->method('getBlue')->willReturn(240.0);
 
         $colorInfo = $this->createMock(ColorInfo::class);
         $colorInfo
+            ->expects($this->once())
             ->method('getPixelFraction')
             ->willReturn(0.11830238997936);
 

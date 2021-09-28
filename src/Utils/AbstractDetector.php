@@ -1,8 +1,8 @@
 <?php
 
-namespace AhmadMayahi\GoogleVision\Utils;
+namespace AhmadMayahi\Vision\Utils;
 
-use AhmadMayahi\GoogleVision\Contracts\File;
+use AhmadMayahi\Vision\Contracts\File;
 use Exception;
 
 abstract class AbstractDetector

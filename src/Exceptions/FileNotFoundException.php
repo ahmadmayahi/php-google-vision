@@ -1,6 +1,6 @@
 <?php
 
-namespace AhmadMayahi\GoogleVision\Exceptions;
+namespace AhmadMayahi\Vision\Exceptions;
 
 use Exception;
 

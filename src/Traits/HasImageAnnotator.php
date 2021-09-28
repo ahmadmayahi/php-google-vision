@@ -1,9 +1,9 @@
 <?php
 
-namespace AhmadMayahi\GoogleVision\Traits;
+namespace AhmadMayahi\Vision\Traits;
 
-use AhmadMayahi\GoogleVision\State;
-use AhmadMayahi\GoogleVision\Utils\Container;
+use AhmadMayahi\Vision\State;
+use AhmadMayahi\Vision\Utils\Container;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 
 trait HasImageAnnotator

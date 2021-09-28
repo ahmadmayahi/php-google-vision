@@ -1,8 +1,8 @@
 <?php
 
-namespace AhmadMayahi\GoogleVision;
+namespace AhmadMayahi\Vision;
 
-use AhmadMayahi\GoogleVision\Utils\File;
+use AhmadMayahi\Vision\Utils\File;
 use Exception;
 use SplFileInfo;
 use SplFileObject;

@@ -1,6 +1,6 @@
 <?php
 
-namespace AhmadMayahi\GoogleVision\Data;
+namespace AhmadMayahi\Vision\Data;
 
 class FaceData
 {

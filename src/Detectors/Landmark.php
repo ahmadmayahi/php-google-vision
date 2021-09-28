@@ -1,10 +1,10 @@
 <?php
 
-namespace AhmadMayahi\GoogleVision\Detectors;
+namespace AhmadMayahi\Vision\Detectors;
 
-use AhmadMayahi\GoogleVision\Data\LandmarkData;
-use AhmadMayahi\GoogleVision\Traits\HasImageAnnotator;
-use AhmadMayahi\GoogleVision\Utils\AbstractDetector;
+use AhmadMayahi\Vision\Data\LandmarkData;
+use AhmadMayahi\Vision\Traits\HasImageAnnotator;
+use AhmadMayahi\Vision\Utils\AbstractDetector;
 use Google\Cloud\Vision\V1\EntityAnnotation;
 use Google\Cloud\Vision\V1\LocationInfo;
 use Google\Protobuf\Internal\RepeatedField;
