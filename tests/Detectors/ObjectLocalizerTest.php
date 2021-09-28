@@ -2,9 +2,9 @@
 
 namespace AhmadMayahi\Vision\Tests\Detectors;
 
-use AhmadMayahi\Vision\Data\LocalizedObjectData;
+use AhmadMayahi\Vision\Detectors\ObjectLocalizer;
 use AhmadMayahi\Vision\Tests\TestCase;
-use AhmadMayahi\Vision\Utils\Container;
+use AhmadMayahi\Vision\Utils\Image;
 use Google\Cloud\Vision\V1\AnnotateImageResponse;
 use Google\Cloud\Vision\V1\BoundingPoly;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
@@ -30,15 +30,9 @@ class ObjectLocalizerTest extends TestCase
         $imageAnnotatorClient
             ->expects($this->once())
             ->method('objectLocalization')
-            ->with($this->getFileContents())
             ->willReturn($annotateImageResponse);
 
-        Container::getInstance()->bind($imageAnnotatorClient, ImageAnnotatorClient::class);
-
-        $response = $this
-            ->getVision()
-            ->objectLocalizer()
-            ->getOriginalResponse();
+        $response = (new ObjectLocalizer($imageAnnotatorClient, $this->getFile()))->getOriginalResponse();
 
         $this->assertInstanceOf(RepeatedField::class, $response);
     }
@@ -51,12 +45,12 @@ class ObjectLocalizerTest extends TestCase
 
         $normalizedVertex = $this->createMock(NormalizedVertex::class);
         $normalizedVertex
-            ->expects($this->once())
+            ->expects($this->exactly(3))
             ->method('getX')
             ->willReturn('10');
 
         $normalizedVertex
-            ->expects($this->once())
+            ->expects($this->exactly(3))
             ->method('getY')
             ->willReturn('10');
 
@@ -65,7 +59,11 @@ class ObjectLocalizerTest extends TestCase
         $repeatedFieldPoly
             ->expects($this->once())
             ->method('getIterator')
-            ->willReturn($this->mockIterator($repeatedFieldIterPoly, [$normalizedVertex]));
+            ->willReturn($this->mockIterator($repeatedFieldIterPoly, [
+                $normalizedVertex,
+                $normalizedVertex,
+                $normalizedVertex,
+            ]));
 
         $boundingPoly = $this->createMock(BoundingPoly::class);
         $boundingPoly
@@ -114,21 +112,11 @@ class ObjectLocalizerTest extends TestCase
         $imageAnnotatorClient
             ->expects($this->once())
             ->method('objectLocalization')
-            ->with($this->getFileContents())
             ->willReturn($annotateImageResponse);
 
-        $this->bind($imageAnnotatorClient, ImageAnnotatorClient::class);
+        $image = new Image($this->getFilePathname(), $this->getTempDir('out.jpg'));
 
-        $response = $this
-            ->getVision()
-            ->objectLocalizer()
-            ->detect();
-
-        /** @var LocalizedObjectData $item */
-        foreach ($response as $item) {
-            $this->assertInstanceOf(LocalizedObjectData::class, $item);
-            $this->assertEquals('Bicycle wheel', $item->getName());
-            $this->assertEquals('/m/01bqk0', $item->getMid());
-        }
+        $objectLocalizer = new ObjectLocalizer($imageAnnotatorClient, $this->getFile(), $image);
+        $objectLocalizer->drawBoxAroundObjects();
     }
 }

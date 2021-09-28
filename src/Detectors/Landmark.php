@@ -3,8 +3,8 @@
 namespace AhmadMayahi\Vision\Detectors;
 
 use AhmadMayahi\Vision\Data\LandmarkData;
-use AhmadMayahi\Vision\Traits\HasImageAnnotator;
 use AhmadMayahi\Vision\Utils\AbstractDetector;
+use Generator;
 use Google\Cloud\Vision\V1\EntityAnnotation;
 use Google\Cloud\Vision\V1\LocationInfo;
 use Google\Protobuf\Internal\RepeatedField;
@@ -14,29 +14,22 @@ use Google\Protobuf\Internal\RepeatedField;
  */
 class Landmark extends AbstractDetector
 {
-    use HasImageAnnotator;
-
     public function getOriginalResponse(): RepeatedField
     {
         $response = $this
-            ->getImageAnnotaorClient()
+            ->imageAnnotatorClient
             ->landmarkDetection($this->file->toGoogleVisionFile());
 
         return $response->getLandmarkAnnotations();
     }
 
-    /**
-     * @return LandmarkData[]
-     */
-    public function detect(): array
+    public function detect(): Generator
     {
         $response = $this->getOriginalResponse();
 
-        $results = [];
-
         /** @var EntityAnnotation $entity */
         foreach ($response as $entity) {
-            $results[] = new LandmarkData(
+            yield new LandmarkData(
                 name: $entity->getDescription(),
                 locations: array_map(function (LocationInfo $location) {
                     $info = $location->getLatLng();
@@ -48,7 +41,5 @@ class Landmark extends AbstractDetector
                 }, iterator_to_array($entity->getLocations()->getIterator()))
             );
         }
-
-        return $results;
     }
 }

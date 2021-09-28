@@ -2,6 +2,7 @@
 
 namespace AhmadMayahi\Vision\Tests\Detectors;
 
+use AhmadMayahi\Vision\Detectors\Logo;
 use AhmadMayahi\Vision\Tests\TestCase;
 use Google\Cloud\Vision\V1\AnnotateImageResponse;
 use Google\Cloud\Vision\V1\EntityAnnotation;
@@ -28,12 +29,7 @@ class LogoTest extends TestCase
             ->method('logoDetection')
             ->willReturn($annotateImageResponse);
 
-        $this->bind($imageAnnotatorClient, ImageAnnotatorClient::class);
-
-        $response = $this
-            ->getVision()
-            ->logoDetection()
-            ->getOriginalResponse();
+        $response = (new Logo($imageAnnotatorClient, $this->getFile()))->getOriginalResponse();
 
         $this->assertInstanceOf(RepeatedField::class, $response);
     }
@@ -68,15 +64,11 @@ class LogoTest extends TestCase
             ->method('logoDetection')
             ->willReturn($annotateImageResponse);
 
-        $this->bind($imageAnnotatorClient, ImageAnnotatorClient::class);
-
-        $response = $this
-            ->getVision()
-            ->logoDetection()
-            ->detect();
+        $response = (new Logo($imageAnnotatorClient, $this->getFile()))->detect();
+        $response = iterator_to_array($response);
 
         $this->assertIsArray($response);
         $this->assertCount(1, $response);
-        $this->assertEquals('Google', $response[0]);
+        $this->assertEquals('Google', $response[0]->getDescription());
     }
 }

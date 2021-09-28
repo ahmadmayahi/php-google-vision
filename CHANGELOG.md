@@ -1,6 +1,9 @@
 # Changelog
 
-## 0.5 - 24/09/2021
+## 0.7 - 28/09/2021
+- Major fixes.
+
+## 0.6 - 28/09/2021
 - Support Object Localizer
 - Rename namespace to `AhmadMayahi\Vision`.
 

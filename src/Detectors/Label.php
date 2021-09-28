@@ -2,8 +2,9 @@
 
 namespace AhmadMayahi\Vision\Detectors;
 
-use AhmadMayahi\Vision\Traits\HasImageAnnotator;
+use AhmadMayahi\Vision\Data\LabelData;
 use AhmadMayahi\Vision\Utils\AbstractDetector;
+use Generator;
 use Google\Cloud\Vision\V1\EntityAnnotation;
 use Google\Protobuf\Internal\RepeatedField;
 
@@ -12,28 +13,24 @@ use Google\Protobuf\Internal\RepeatedField;
  */
 class Label extends AbstractDetector
 {
-    use HasImageAnnotator;
-
     public function getOriginalResponse(): RepeatedField
     {
         $response = $this
-            ->getImageAnnotaorClient()
+            ->imageAnnotatorClient
             ->labelDetection($this->file->toGoogleVisionFile());
 
         return $response->getLabelAnnotations();
     }
 
-    public function detect(): array
+    public function detect(): Generator
     {
         $response = $this->getOriginalResponse();
 
-        $results = [];
-
         /** @var EntityAnnotation $item */
         foreach ($response as $item) {
-            $results[] = $item->getDescription();
+            yield new LabelData(
+                description: $item->getDescription(),
+            );
         }
-
-        return $results;
     }
 }

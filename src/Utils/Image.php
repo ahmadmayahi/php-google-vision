@@ -8,9 +8,9 @@ class Image
 {
     protected GdImage $gdImage;
 
-    public function __construct(string $outputFilePathname)
+    public function __construct(string $inputFilePathname, private string $outputFilePathName)
     {
-        $this->gdImage = imagecreatefromstring(file_get_contents($outputFilePathname));
+        $this->gdImage = imagecreatefromstring(file_get_contents($inputFilePathname));
 
         return $this;
     }
@@ -51,8 +51,8 @@ class Image
         );
     }
 
-    public function saveImage(string $outputFile): bool
+    public function save(): bool
     {
-        return imagejpeg($this->gdImage, $outputFile);
+        return imagejpeg($this->gdImage, $this->outputFilePathName);
     }
 }

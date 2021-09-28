@@ -2,6 +2,7 @@
 
 namespace AhmadMayahi\Vision\Tests\Detectors;
 
+use AhmadMayahi\Vision\Detectors\Landmark;
 use AhmadMayahi\Vision\Tests\TestCase;
 use Google\Cloud\Vision\V1\AnnotateImageResponse;
 use Google\Cloud\Vision\V1\EntityAnnotation;
@@ -30,15 +31,13 @@ class LandmarkTest extends TestCase
             ->method('landmarkDetection')
             ->willReturn($annotateImageResponse);
 
-        $this->bind($imageAnnotatorClient, ImageAnnotatorClient::class);
-
-        $response = $this->getVision()->landmarkDetection()->getOriginalResponse();
+        $response = (new Landmark($imageAnnotatorClient, $this->getFile()))->getOriginalResponse();
 
         $this->assertInstanceOf(RepeatedField::class, $response);
     }
 
     /** @test */
-    public function it_should_get_landmark_analyzer(): void
+    public function it_should_get_landmark_data(): void
     {
         $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
         $annotateImageResponse = $this->createMock(AnnotateImageResponse::class);
@@ -91,12 +90,8 @@ class LandmarkTest extends TestCase
             ->method('landmarkDetection')
             ->willReturn($annotateImageResponse);
 
-        $this->bind($imageAnnotatorClient, ImageAnnotatorClient::class);
-
-        $response = $this
-            ->getVision()
-            ->landmarkDetection()
-            ->detect();
+        $response = (new Landmark($imageAnnotatorClient, $this->getFile()))->detect();
+        $response = iterator_to_array($response);
 
         $this->assertIsArray($response);
         $this->assertCount(1, $response);

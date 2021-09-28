@@ -2,6 +2,7 @@
 
 namespace AhmadMayahi\Vision\Tests\Detectors;
 
+use AhmadMayahi\Vision\Detectors\Label;
 use AhmadMayahi\Vision\Tests\TestCase;
 use Google\Cloud\Vision\V1\AnnotateImageResponse;
 use Google\Cloud\Vision\V1\EntityAnnotation;
@@ -28,18 +29,13 @@ class LabelTest extends TestCase
             ->method('labelDetection')
             ->willReturn($annotateImageResponse);
 
-        $this->bind($imageAnnotatorClient, ImageAnnotatorClient::class);
-
-        $response = $this
-            ->getVision()
-            ->labelDetection()
-            ->getOriginalResponse();
+        $response = (new Label($imageAnnotatorClient, $this->getFile()))->getOriginalResponse();
 
         $this->assertInstanceOf(RepeatedField::class, $response);
     }
 
     /** @test */
-    public function it_should_get_label_detection(): void
+    public function it_should_get_label_data(): void
     {
         $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
         $repeatedField = $this->createMock(RepeatedField::class);
@@ -68,15 +64,11 @@ class LabelTest extends TestCase
             ->method('labelDetection')
             ->willReturn($annotateImageResponse);
 
-        $this->bind($imageAnnotatorClient, ImageAnnotatorClient::class);
-
-        $response = $this
-            ->getVision()
-            ->labelDetection()
-            ->detect();
+        $response = (new Label($imageAnnotatorClient, $this->getFile()))->detect();
+        $response = iterator_to_array($response);
 
         $this->assertIsArray($response);
         $this->assertCount(1, $response);
-        $this->assertEquals('Wall', $response[0]);
+        $this->assertEquals('Wall', $response[0]->getDescription());
     }
 }

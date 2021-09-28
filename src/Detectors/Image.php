@@ -3,19 +3,16 @@
 namespace AhmadMayahi\Vision\Detectors;
 
 use AhmadMayahi\Vision\Data\ImageTextData;
-use AhmadMayahi\Vision\Traits\HasImageAnnotator;
 use AhmadMayahi\Vision\Utils\AbstractDetector;
 use Google\Cloud\Vision\V1\EntityAnnotation;
 use Google\Protobuf\Internal\RepeatedField;
 
 class Image extends AbstractDetector
 {
-    use HasImageAnnotator;
-
     public function getPlainText(): ?ImageTextData
     {
         $annotations = $this
-            ->getImageAnnotaorClient()
+            ->imageAnnotatorClient
             ->textDetection($this->file->toGoogleVisionFile())
             ->getTextAnnotations();
 
@@ -43,7 +40,7 @@ class Image extends AbstractDetector
     private function getTextAnnotations(): RepeatedField
     {
         return $this
-            ->getImageAnnotaorClient()
+            ->imageAnnotatorClient
             ->documentTextDetection($this->file->toGoogleVisionFile())
             ->getTextAnnotations();
     }

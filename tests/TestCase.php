@@ -3,23 +3,21 @@
 namespace AhmadMayahi\Vision\Tests;
 
 use AhmadMayahi\Vision\Config;
-use AhmadMayahi\Vision\Utils\Container;
-use AhmadMayahi\Vision\Vision;
+use AhmadMayahi\Vision\Utils\File;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
-    protected function tearDown(): void
+    /** @after */
+    public function tempCleanUp()
     {
-        parent::tearDown();
-
         $tempPath = __DIR__ . DIRECTORY_SEPARATOR . 'files/temp' . DIRECTORY_SEPARATOR;
 
         $files = array_diff(scandir($tempPath), ['.', '..', '.gitignore']);
 
         foreach ($files as $file) {
-            unlink($tempPath . $file);
+            @unlink($tempPath . $file);
         }
     }
 
@@ -27,19 +25,6 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     {
         return (new Config())
             ->setCredentialsPathname(__DIR__ . DIRECTORY_SEPARATOR . 'files/service-account.json');
-    }
-
-    /**
-     * @throws \Exception
-     */
-    protected function getVision(): Vision
-    {
-        return (new Vision($this->getConfig()))->inputFile($this->getFilePathname());
-    }
-
-    protected function bind($object, $name): void
-    {
-        Container::getInstance()->bind($object, $name);
     }
 
     public function mockIterator(MockObject $iteratorMock, array $items): MockObject
@@ -101,11 +86,6 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         return $iteratorMock;
     }
 
-    protected function getFileContents(): bool|string
-    {
-        return file_get_contents($this->getFilePathname());
-    }
-
     protected function getFilePathname(string $file = null): string
     {
         return __DIR__ . DIRECTORY_SEPARATOR . 'files/input/' . ($file ?? 'google-guys.jpg');
@@ -114,5 +94,10 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     protected function getTempDir(string $file = null): string
     {
         return __DIR__ . DIRECTORY_SEPARATOR . 'files/temp/' . $file;
+    }
+
+    protected function getFile(): File
+    {
+        return new File($this->getFilePathname(), $this->getConfig());
     }
 }

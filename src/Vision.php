@@ -11,6 +11,7 @@ use AhmadMayahi\Vision\Detectors\Logo;
 use AhmadMayahi\Vision\Detectors\ObjectLocalizer;
 use AhmadMayahi\Vision\Detectors\SafeSearch;
 use AhmadMayahi\Vision\Utils\File;
+use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 use SplFileObject;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -25,7 +26,7 @@ class Vision
 
     public function __construct(private Config $config)
     {
-        State::$config = $config;
+
     }
 
     public static function new(Config $config): static
@@ -55,45 +56,58 @@ class Vision
 
     public function faceDetection(): Face
     {
-        return new Face($this->getFile(), $this->outputFile);
+        return new Face(
+            imageAnnotatorClient:  $this->imageAnnotator(),
+            file: $this->getFile(),
+            image: $this->outputFile ? new Utils\Image($this->getFile()->getLocalPathname(), $this->outputFile) : null,
+        );
     }
 
     public function imageTextDetection(): Image
     {
-        return new Image($this->getFile());
+        return new Image($this->imageAnnotator(), $this->getFile());
     }
 
     public function imagePropertiesDetection(): ImageProperties
     {
-        return new ImageProperties($this->getFile());
-    }
-
-    public function landmarkDetection(): Landmark
-    {
-        return new Landmark($this->getFile());
+        return new ImageProperties($this->imageAnnotator(), $this->getFile());
     }
 
     public function labelDetection(): Label
     {
-        return new Label($this->getFile());
+        return new Label($this->imageAnnotator(), $this->getFile());
+    }
+
+    public function landmarkDetection(): Landmark
+    {
+        return new Landmark($this->imageAnnotator(), $this->getFile());
     }
 
     public function logoDetection(): Logo
     {
-        return new Logo($this->getFile());
+        return new Logo($this->imageAnnotator(), $this->getFile());
     }
 
     public function objectLocalizer(): ObjectLocalizer
     {
-        return new ObjectLocalizer($this->getFile(), $this->outputFile);
+        return new ObjectLocalizer(
+            imageAnnotatorClient:  $this->imageAnnotator(),
+            file: $this->getFile(),
+            image: $this->outputFile ? new Utils\Image($this->getFile()->getLocalPathname(), $this->outputFile) : null,
+        );
     }
 
     public function safeSearchDetection(): SafeSearch
     {
-        return new SafeSearch($this->getFile());
+        return new SafeSearch($this->imageAnnotator(), $this->getFile());
     }
 
-    private function getFile()
+    private function imageAnnotator(): ImageAnnotatorClient
+    {
+        return new ImageAnnotatorClient($this->config->connectConfig());
+    }
+
+    private function getFile(): File
     {
         return new File($this->inputFile, $this->config);
     }

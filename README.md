@@ -172,7 +172,7 @@ $result = $vision
 
 ## Face Detection
 
-The `detect` method returns a collection (`array`) of `AhmadMayahi\Vision\Data\FaceData`:
+The `detect` method returns a `Generator` of `AhmadMayahi\Vision\Data\FaceData`:
 
 ```php
 use AhmadMayahi\Vision\Vision;
@@ -265,7 +265,7 @@ $response->getText();   // Image text
 
 The [Image Properties](https://cloud.google.com/vision/docs/detecting-properties) feature detects general attributes of the image, such as dominant color.
 
-The `detect` method returns a collection (`array`) of `AhmadMayahi\Vision\Data\ImagePropertiesData`:
+The `detect` method returns a `Generator` of `AhmadMayahi\Vision\Data\ImagePropertiesData`:
 
 ```php
 use AhmadMayahi\Vision\Vision;
@@ -310,7 +310,7 @@ foreach ($landmarks as $landmark) {
 
 [SafeSearch Detection](https://cloud.google.com/vision/docs/detecting-safe-search) detects explicit content such as adult content or violent content within an image.
 
-The `detect` method returns a collection (`array`) of `AhmadMayahi\Vision\Data\SafeSearchData`:
+The `detect` method returns an object of type `AhmadMayahi\Vision\Data\SafeSearchData`:
 
 ```php
 use AhmadMayahi\Vision\Vision;
@@ -335,7 +335,7 @@ $result->getSpoof();
 
 [Detect](https://cloud.google.com/vision/docs/labels) and extract information about entities in an image, across a broad group of categories.
 
-The `detect` method returns an array of labels:
+The `detect` method returns an a `Generator` of labels:
 
 ```php
 use AhmadMayahi\Vision\Vision;
@@ -350,7 +350,7 @@ $labels = (new Vision($config))
 
 [Detect](https://cloud.google.com/vision/docs/detecting-logos) and extract information about entities in an image, across a broad group of categories.
 
-The `detect` method returns an array of logos:
+The `detect` method returns an `Generator` of logos:
 
 ```php
 use AhmadMayahi\Vision\Vision;

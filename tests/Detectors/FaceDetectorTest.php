@@ -3,9 +3,12 @@
 namespace AhmadMayahi\Vision\Tests\Detectors;
 
 use AhmadMayahi\Vision\Data\FaceData;
+use AhmadMayahi\Vision\Detectors\Face;
 use AhmadMayahi\Vision\Tests\TestCase;
 use AhmadMayahi\Vision\Utils\Container;
+use AhmadMayahi\Vision\Utils\File;
 use AhmadMayahi\Vision\Utils\Image;
+use Generator;
 use Google\Cloud\Vision\V1\AnnotateImageResponse;
 use Google\Cloud\Vision\V1\BoundingPoly;
 use Google\Cloud\Vision\V1\FaceAnnotation;
@@ -18,7 +21,7 @@ use Google\Protobuf\Internal\RepeatedFieldIter;
 class FaceDetectorTest extends TestCase
 {
     /** @test */
-    public function it_should_get_original_google_vision_response(): void
+    public function it_should_get_face_original_google_vision_response(): void
     {
         $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
         $repeatedField = $this->createMock(RepeatedField::class);
@@ -32,21 +35,14 @@ class FaceDetectorTest extends TestCase
         $imageAnnotatorClient
             ->expects($this->once())
             ->method('faceDetection')
-            ->with(file_get_contents($this->getFilePathname()))
             ->willReturn($annotatorImageResponse);
 
-        Container::getInstance()->bind($imageAnnotatorClient, ImageAnnotatorClient::class);
-
-        $vision = $this
-            ->getVision()
-            ->faceDetection()
-            ->getOriginalResponse();
-
-        $this->assertInstanceOf(RepeatedField::class, $vision);
+        $face = new Face($imageAnnotatorClient, new File($this->getFilePathname(), $this->getConfig()));
+        $this->assertInstanceOf(RepeatedField::class, $face->getOriginalResponse());
     }
 
     /** @test */
-    public function it_should_get_face_analyzer(): void
+    public function it_should_get_face_data(): void
     {
         $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
         $repeatedField = $this->createMock(RepeatedField::class);
@@ -82,7 +78,6 @@ class FaceDetectorTest extends TestCase
             ->method('getBoundingPoly')
             ->willReturn($boundingPoly);
 
-
         $repeatedFieldIter = $this->createMock(RepeatedFieldIter::class);
 
         $repeatedField
@@ -99,28 +94,23 @@ class FaceDetectorTest extends TestCase
         $imageAnnotatorClient
             ->expects($this->once())
             ->method('faceDetection')
-            ->with(file_get_contents($this->getFilePathname()))
             ->willReturn($annotatorImageResponse);
 
         $imageAnnotatorClient->expects($this->once())->method('close');
 
-        Container::getInstance()->bind($imageAnnotatorClient, ImageAnnotatorClient::class);
+        $face = new Face($imageAnnotatorClient, $this->getFile());
+        $face = $face->detect();
 
-        $stats = $this
-            ->getVision($this->getFilePathname())
-            ->faceDetection()
-            ->detect();
+        $this->assertInstanceOf(Generator::class, $face);
 
-        $this->assertInstanceOf(\Generator::class, $stats);
+        $face = iterator_to_array($face);
 
-        $stats = iterator_to_array($stats);
-
-        $this->assertCount(1, $stats);
-        $this->assertInstanceOf(FaceData::class, $stats[0]);
-        $this->assertEquals('VERY_UNLIKELY', $stats[0]->getAnger());
-        $this->assertEquals('VERY_LIKELY', $stats[0]->getJoy());
-        $this->assertEquals('POSSIBLE', $stats[0]->getSurprise());
-        $this->assertSame([['x' => 100, 'y' => 100]], $stats[0]->getBounds());
+        $this->assertCount(1, $face);
+        $this->assertInstanceOf(FaceData::class, $face[0]);
+        $this->assertEquals('VERY_UNLIKELY', $face[0]->getAnger());
+        $this->assertEquals('VERY_LIKELY', $face[0]->getJoy());
+        $this->assertEquals('POSSIBLE', $face[0]->getSurprise());
+        $this->assertSame([['x' => 100, 'y' => 100]], $face[0]->getBounds());
     }
 
     /** @test */
@@ -191,7 +181,6 @@ class FaceDetectorTest extends TestCase
         $imageAnnotatorClient
             ->expects($this->once())
             ->method('faceDetection')
-            ->with(file_get_contents($this->getFilePathname()))
             ->willReturn($annotatorImageResponse);
 
         $imageAnnotatorClient->expects($this->once())->method('close');
@@ -207,16 +196,8 @@ class FaceDetectorTest extends TestCase
 
         $drawBoxImage
             ->expects($this->once())
-            ->method('saveImage')
-            ->with($outFilename);
+            ->method('save');
 
-        Container::getInstance()->bind($imageAnnotatorClient, ImageAnnotatorClient::class);
-        Container::getInstance()->bind($drawBoxImage, Image::class);
-
-        $this
-            ->getVision()
-            ->outputFile($this->getTempDir('detect-faces.jpg'))
-            ->faceDetection()
-            ->drawBoxAroundFaces();
+        (new Face($imageAnnotatorClient, $this->getFile(), $drawBoxImage))->drawBoxAroundFaces();
     }
 }

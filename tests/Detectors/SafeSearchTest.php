@@ -3,6 +3,7 @@
 namespace AhmadMayahi\Vision\Tests\Detectors;
 
 use AhmadMayahi\Vision\Data\SafeSearchData;
+use AhmadMayahi\Vision\Detectors\SafeSearch;
 use AhmadMayahi\Vision\Tests\TestCase;
 use Google\Cloud\Vision\V1\AnnotateImageResponse;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
@@ -26,47 +27,41 @@ class SafeSearchTest extends TestCase
         $imageAnnotatorClient
             ->expects($this->once())
             ->method('safeSearchDetection')
-            ->with($this->getFileContents())
             ->willReturn($annotatorImageResponse);
 
-        $this->bind($imageAnnotatorClient, ImageAnnotatorClient::class);
-
-        $response = $this
-            ->getVision()
-            ->safeSearchDetection()
-            ->getOriginalResponse();
+        $response = (new SafeSearch($imageAnnotatorClient, $this->getFile()))->getOriginalResponse();
 
         $this->assertInstanceOf(SafeSearchAnnotation::class, $response);
     }
 
     /** @test */
-    public function it_should_get_analyzer(): void
+    public function it_should_get_safe_search_data(): void
     {
         $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
         $annotatorImageResponse = $this->createMock(AnnotateImageResponse::class);
-        $safeSearchAnootation = $this->createMock(SafeSearchAnnotation::class);
+        $safeSearchAnnotation = $this->createMock(SafeSearchAnnotation::class);
 
-        $safeSearchAnootation
+        $safeSearchAnnotation
             ->expects($this->once())
             ->method('getAdult')
             ->willReturn(Likelihood::VERY_UNLIKELY);
 
-        $safeSearchAnootation
+        $safeSearchAnnotation
             ->expects($this->once())
             ->method('getMedical')
             ->willReturn(Likelihood::POSSIBLE);
 
-        $safeSearchAnootation
+        $safeSearchAnnotation
             ->expects($this->once())
             ->method('getViolence')
             ->willReturn(Likelihood::UNKNOWN);
 
-        $safeSearchAnootation
+        $safeSearchAnnotation
             ->expects($this->once())
             ->method('getRacy')
             ->willReturn(Likelihood::VERY_LIKELY);
 
-        $safeSearchAnootation
+        $safeSearchAnnotation
             ->expects($this->once())
             ->method('getSpoof')
             ->willReturn(Likelihood::UNLIKELY);
@@ -74,20 +69,14 @@ class SafeSearchTest extends TestCase
         $annotatorImageResponse
             ->expects($this->once())
             ->method('getSafeSearchAnnotation')
-            ->willReturn($safeSearchAnootation);
+            ->willReturn($safeSearchAnnotation);
 
         $imageAnnotatorClient
             ->expects($this->once())
             ->method('safeSearchDetection')
-            ->with($this->getFileContents())
             ->willReturn($annotatorImageResponse);
 
-        $this->bind($imageAnnotatorClient, ImageAnnotatorClient::class);
-
-        $response = $this
-            ->getVision()
-            ->safeSearchDetection()
-            ->detect();
+        $response = (new SafeSearch($imageAnnotatorClient, $this->getFile()))->detect();
 
         $this->assertInstanceOf(SafeSearchData::class, $response);
     }

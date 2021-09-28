@@ -3,6 +3,7 @@
 namespace AhmadMayahi\Vision\Tests\Detectors;
 
 use AhmadMayahi\Vision\Data\ImagePropertiesData;
+use AhmadMayahi\Vision\Detectors\ImageProperties;
 use AhmadMayahi\Vision\Tests\TestCase;
 use Google\Cloud\Vision\V1\AnnotateImageResponse;
 use Google\Cloud\Vision\V1\ColorInfo;
@@ -32,18 +33,18 @@ class ImagePropertiesTest extends TestCase
             ->method('imagePropertiesDetection')
             ->willReturn($annotateImageResponse);
 
-        $this->bind($imageAnnotatorClient, ImageAnnotatorClient::class);
+        $imageProperties = new ImageProperties(
+            $imageAnnotatorClient,
+            $this->getFile()
+        );
 
-        $response = $this
-            ->getVision()
-            ->imagePropertiesDetection()
-            ->getOriginalResponse();
+        $response = $imageProperties->getOriginalResponse();
 
         $this->assertInstanceOf(GoogleVisionImageProperties::class, $response);
     }
 
     /** @test */
-    public function it_should_get_image_properties_analyzer()
+    public function it_should_get_image_properties_data()
     {
         $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
         $imageProperties = $this->createMock(GoogleVisionImageProperties::class);
@@ -93,12 +94,12 @@ class ImagePropertiesTest extends TestCase
             ->method('imagePropertiesDetection')
             ->willReturn($annotateImageResponse);
 
-        $this->bind($imageAnnotatorClient, ImageAnnotatorClient::class);
+        $imageProperties = new ImageProperties(
+            $imageAnnotatorClient,
+            $this->getFile(),
+        );
 
-        $response = $this
-            ->getVision()
-            ->imagePropertiesDetection()
-            ->detect();
+        $response = iterator_to_array($imageProperties->detect());
 
         $this->assertCount(1, $response);
         $this->assertIsArray($response);

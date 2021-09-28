@@ -2,8 +2,9 @@
 
 namespace AhmadMayahi\Vision\Detectors;
 
-use AhmadMayahi\Vision\Traits\HasImageAnnotator;
+use AhmadMayahi\Vision\Data\LogoData;
 use AhmadMayahi\Vision\Utils\AbstractDetector;
+use Generator;
 use Google\Cloud\Vision\V1\EntityAnnotation;
 use Google\Protobuf\Internal\RepeatedField;
 
@@ -12,28 +13,22 @@ use Google\Protobuf\Internal\RepeatedField;
  */
 class Logo extends AbstractDetector
 {
-    use HasImageAnnotator;
-
     public function getOriginalResponse(): RepeatedField
     {
         $response = $this
-            ->getImageAnnotaorClient()
+            ->imageAnnotatorClient
             ->logoDetection($this->file->toGoogleVisionFile());
 
         return $response->getLogoAnnotations();
     }
 
-    public function detect(): array
+    public function detect(): Generator
     {
         $response = $this->getOriginalResponse();
 
-        $results = [];
-
         /** @var EntityAnnotation $item */
         foreach ($response as $item) {
-            $results[] = $item->getDescription();
+            yield new LogoData($item->getDescription());
         }
-
-        return $results;
     }
 }

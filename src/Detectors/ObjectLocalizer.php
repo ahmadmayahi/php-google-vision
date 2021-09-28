@@ -5,32 +5,30 @@ namespace AhmadMayahi\Vision\Detectors;
 use AhmadMayahi\Vision\Data\LocalizedObjectData;
 use AhmadMayahi\Vision\Enums\ColorEnum;
 use AhmadMayahi\Vision\Enums\FontEnum;
-use AhmadMayahi\Vision\Traits\HasImageAnnotator;
 use AhmadMayahi\Vision\Utils\AbstractDetector;
 use AhmadMayahi\Vision\Utils\Container;
 use AhmadMayahi\Vision\Utils\File;
 use AhmadMayahi\Vision\Utils\Image;
 use Exception;
 use Generator;
+use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 use Google\Cloud\Vision\V1\LocalizedObjectAnnotation;
 use Google\Cloud\Vision\V1\NormalizedVertex;
 use Google\Protobuf\Internal\RepeatedField;
 
 class ObjectLocalizer extends AbstractDetector
 {
-    use HasImageAnnotator;
-
-    public function __construct(File $file, private ?string $outputFile = null)
-    {
-        parent::__construct($file);
-
-        Container::getInstance()->bindOnce(Image::class);
+    public function __construct(
+        protected ImageAnnotatorClient $imageAnnotatorClient,
+        protected \AhmadMayahi\Vision\Contracts\File $file,
+        protected ?Image $image = null
+    ) {
     }
 
     public function getOriginalResponse(): RepeatedField
     {
         $response = $this
-            ->getImageAnnotaorClient()
+            ->imageAnnotatorClient
             ->objectLocalization($this->file->toGoogleVisionFile());
 
         return $response->getLocalizedObjectAnnotations();
@@ -59,17 +57,8 @@ class ObjectLocalizer extends AbstractDetector
 
     public function drawBoxAroundObjects($color = ColorEnum::GREEN, ?callable $callback = null)
     {
-        $path = $this->file->getLocalPathname();
-
-        if (false === copy($path, $this->outputFile)) {
-            throw new Exception('Could not copy the file');
-        }
-
-        /** @var Image $outputImage */
-        $outputImage = Container::getInstance()->get(Image::class, $this->outputFile);
-
-        $width = $outputImage->getWidth();
-        $height = $outputImage->getHeight();
+        $width = $this->image->getWidth();
+        $height = $this->image->getHeight();
 
         /** @var LocalizedObjectData $obj */
         foreach ($this->detect() as $obj) {
@@ -82,7 +71,7 @@ class ObjectLocalizer extends AbstractDetector
                 $x2 = $vertices[2]['x'];
                 $y2 = $vertices[2]['y'];
 
-                $outputImage->drawRectangle(
+                $this->image->drawRectangle(
                     x1: ($x1 * $width),
                     y1: ($y1 * $height),
                     x2: ($x2 * $width),
@@ -91,12 +80,12 @@ class ObjectLocalizer extends AbstractDetector
                 );
 
                 if ($callback) {
-                    $callback($outputImage, $obj);
+                    $callback($this->image, $obj);
                 }
             }
         }
 
-        $outputImage->saveImage($this->outputFile);
+        $this->image->save();
     }
 
     /**

@@ -6,31 +6,28 @@ use AhmadMayahi\Vision\Contracts\File;
 use AhmadMayahi\Vision\Data\FaceData;
 use AhmadMayahi\Vision\Enums\ColorEnum;
 use AhmadMayahi\Vision\Enums\LikelihoodEnum;
-use AhmadMayahi\Vision\Traits\HasImageAnnotator;
 use AhmadMayahi\Vision\Utils\AbstractDetector;
-use AhmadMayahi\Vision\Utils\Container;
 use AhmadMayahi\Vision\Utils\Image;
 use Exception;
 use Generator;
 use Google\Cloud\Vision\V1\FaceAnnotation;
+use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 use Google\Cloud\Vision\V1\Vertex;
 use Google\Protobuf\Internal\RepeatedField;
 
 class Face extends AbstractDetector
 {
-    use HasImageAnnotator;
-
-    public function __construct(protected File $file, private ?string $outputFile = null)
-    {
-        parent::__construct($this->file);
-
-        Container::getInstance()->bindOnce(Image::class);
+    public function __construct(
+        protected ImageAnnotatorClient $imageAnnotatorClient,
+        protected File $file,
+        protected ?Image $image = null
+    ) {
     }
 
     public function getOriginalResponse(): RepeatedField
     {
         $response = $this
-            ->getImageAnnotaorClient()
+            ->imageAnnotatorClient
             ->faceDetection($this->file->toGoogleVisionFile());
 
         return $response->getFaceAnnotations();
@@ -69,16 +66,11 @@ class Face extends AbstractDetector
 
     public function drawBoxAroundFaces(int $color = ColorEnum::GREEN)
     {
-        $faces = $this->getOriginalResponse();
-
-        $path = $this->file->getLocalPathname();
-
-        if (false === copy($path, $this->outputFile)) {
-            throw new Exception('Could not copy the file');
+        if (is_null($this->image)) {
+            throw new Exception('Could not instantiate the image!');
         }
 
-        /** @var Image $outputImage */
-        $outputImage = Container::getInstance()->get(Image::class, $this->outputFile);
+        $faces = $this->getOriginalResponse();
 
         /** @var FaceAnnotation $face */
         foreach ($faces as $face) {
@@ -91,10 +83,10 @@ class Face extends AbstractDetector
                 $x2 = $vertices[2]->getX();
                 $y2 = $vertices[2]->getY();
 
-                $outputImage->drawRectangle($x1, $y1, $x2, $y2, $color);
+                $this->image->drawRectangle($x1, $y1, $x2, $y2, $color);
             }
         }
 
-        $outputImage->saveImage($this->outputFile);
+        $this->image->save();
     }
 }
