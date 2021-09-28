@@ -17,7 +17,7 @@ use Symfony\Component\Finder\SplFileInfo;
 class Vision
 {
     /**
-     * @var string|resource|SplFileInfo|SplFileObject $inputFile
+     * @var string|resource|SplFileInfo|SplFileObject
      */
     protected $inputFile;
 
