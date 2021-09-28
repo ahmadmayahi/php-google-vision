@@ -26,7 +26,6 @@ class Vision
 
     public function __construct(private Config $config)
     {
-
     }
 
     public static function new(Config $config): static

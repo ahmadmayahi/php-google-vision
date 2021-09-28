@@ -5,7 +5,6 @@ namespace AhmadMayahi\Vision\Tests\Detectors;
 use AhmadMayahi\Vision\Data\FaceData;
 use AhmadMayahi\Vision\Detectors\Face;
 use AhmadMayahi\Vision\Tests\TestCase;
-use AhmadMayahi\Vision\Utils\Container;
 use AhmadMayahi\Vision\Utils\File;
 use AhmadMayahi\Vision\Utils\Image;
 use Generator;

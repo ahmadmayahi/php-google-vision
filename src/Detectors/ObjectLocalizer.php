@@ -6,8 +6,6 @@ use AhmadMayahi\Vision\Data\LocalizedObjectData;
 use AhmadMayahi\Vision\Enums\ColorEnum;
 use AhmadMayahi\Vision\Enums\FontEnum;
 use AhmadMayahi\Vision\Utils\AbstractDetector;
-use AhmadMayahi\Vision\Utils\Container;
-use AhmadMayahi\Vision\Utils\File;
 use AhmadMayahi\Vision\Utils\Image;
 use Exception;
 use Generator;
