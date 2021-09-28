@@ -1,6 +1,10 @@
 # Changelog
 
 ## 0.5 - 24/09/2021
+- Support Object Localizer
+- Rename namespace to `AhmadMayahi\Vision`.
+
+## 0.5 - 24/09/2021
 - Support Logo Detection
 
 ## 0.4 - 24/09/2021
