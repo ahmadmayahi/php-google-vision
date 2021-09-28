@@ -5,7 +5,7 @@
         "google vision",
         "ocr"
     ],
-    "homepage": "https://github.com/ahmadmayahi/google-vision-php",
+    "homepage": "https://github.com/ahmadmayahi/php-google-vision",
     "license": "MIT",
     "authors": [
         {
@@ -26,12 +26,12 @@
     },
     "autoload": {
         "psr-4": {
-            "AhmadMayahi\\GoogleVision\\": "src"
+            "AhmadMayahi\\Vision\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "AhmadMayahi\\GoogleVision\\Tests\\": "tests"
+            "AhmadMayahi\\Vision\\Tests\\": "tests"
         }
     },
     "scripts": {
