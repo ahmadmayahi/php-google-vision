@@ -13,7 +13,9 @@ For feedback, please [contact me](https://form.jotform.com/201892949858375).
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/ahmadmayahi/php-google-vision/Check%20&%20fix%20styling?label=code%20style)](https://github.com/ahmadmayahi/php-google-vision/actions?query=workflow%3A"Check+%26+fix+styling"+branch%main)
 [![Total Downloads](https://img.shields.io/packagist/dt/ahmadmayahi/php-google-vision.svg?style=flat-square)](https://packagist.org/packages/ahmadmayahi/php-google-vision)
 
-This package provides an elegant wrapper around [Google Vision API](https://github.com/googleapis/google-cloud-php-vision)
+This package provides an elegant wrapper around [Google Vision API](https://github.com/googleapis/google-cloud-php-vision) and more.
+
+It's an effort to make Google Vision API easy and fun to work with.
 
 # Contents
 
@@ -27,10 +29,19 @@ This package provides an elegant wrapper around [Google Vision API](https://gith
 - [Image Text Detection](#image-text-detection)
   - [Get Plain Text](#get-plain-text)
   - [Get Document](#get-document)
-- [Detect Image Properties](#detect-image-properties)
+- [Detect Image Properties](#image-properties-detection)
 - [Landmark Detection](#landmark-detection)
 - [Label Detection](#label-detection)
 - [Logo Detection](#logo-detection)
+- [Object Localizer](#object-localizer)
+  - [Detect Objects](#detect-objects)
+  - [Draw Box Around Objects](#draw-box-around-objects)
+  - [Draw Box Around Objects With Text](#draw-box-around-objects-with-text)
+- [Web Detection](#web-detection)
+- [Text To Speech](#text-to-speech)
+- [Speech To Text](#speech-to-text)
+- [Video To Text](#video-to-text)
+- [PDF To Text](#pdf-to-text)
 
 ## Installation
 
@@ -47,7 +58,7 @@ First, you must [create a Google service account](https://cloud.google.com/iam/d
 ## Configuration
 
 ```php
-use AhmadMayahi\GoogleVision\Config;
+use AhmadMayahi\Vision\Config;
 
 $config = (new Config())
     // optional
@@ -67,10 +78,10 @@ All the features come with `getOriginalResponse()` method which returns the orig
 You may get the original response for any feature as follows:
 
 ```php
-use AhmadMayahi\GoogleVision\Vision;
+use AhmadMayahi\Vision\Vision;
 
 $response = (new Vision($config))
-    ->file(__DIR__ . '/files/google-guys.jpg')
+    ->inputFile(__DIR__ . '/files/google-guys.jpg')
     ->faceDetection()
     ->getOriginalResponse();
 ```
@@ -85,7 +96,7 @@ Depending on the feature, the response type might vary, here is a list of all th
 |`detectLandmarks`|`Google\Protobuf\Internal\RepeatedField`|
 |`detectSafeSearch`|`Google\Cloud\Vision\V1\SafeSearchAnnotation`|
 
-The `file()` method accept the following type:
+The `file()` method accept the following types:
 
 - Local file path: `path/to/your/file`.
 - Google Storage path: `gs://path/to/file`.
@@ -96,10 +107,10 @@ The `file()` method accept the following type:
 You may also use the static `new` method to access the `Vision` class:
 
 ```php
-use AhmadMayahi\GoogleVision\Vision;
+use AhmadMayahi\Vision\Vision;
 
 $vision = Vision::new($config)
-    ->file(__DIR__ . '/files/google-guys.jpg')
+    ->inputFile('/path/to/image.jpg')
     ->faceDetection()
     ->getOriginalResponse();
 ```
@@ -109,8 +120,8 @@ $vision = Vision::new($config)
 Open up the `AppServiceProvider` and add the following lines:
 
 ```php
-use AhmadMayahi\GoogleVision\Vision;
-use AhmadMayahi\GoogleVision\Config;
+use AhmadMayahi\Vision\Vision;
+use AhmadMayahi\Vision\Config;
 
 public function register()
 {
@@ -126,7 +137,7 @@ public function register()
 Using Dependency Injection:
 
 ```php
-use AhmadMayahi\GoogleVision\Vision;
+use AhmadMayahi\Vision\Vision;
 use Illuminate\Http\Request;
 
 class FaceDetectionController
@@ -134,11 +145,11 @@ class FaceDetectionController
     public function detect(Request $request, Vision $vision)
     {
         $vision = $vision
-            ->file($request->face_file->path())
+            ->inputFile($request->face_file->path())
             ->faceDetection()
             ->detect();
             
-        // ...  
+        // ...
     }
 }
 ```
@@ -146,25 +157,28 @@ class FaceDetectionController
 You may also resolve the object using the `app` helper as follows:
 
 ```php
-use AhmadMayahi\GoogleVision\Vision;
+use AhmadMayahi\Vision\Vision;
 
 /** @var Vision $vision */
 $vision = app(Vision::class);
 
-$result = $vision->file('path/to/file')->faceDetection()->detect();
+$result = $vision
+    ->inputFile('path/to/file')
+    ->faceDetection()
+    ->detect();
 
 // ...
 ```
 
 ## Face Detection
 
-The `detect` method returns a collection (`array`) of `AhmadMayahi\GoogleVision\Data\FaceData`:
+The `detect` method returns a collection (`array`) of `AhmadMayahi\Vision\Data\FaceData`:
 
 ```php
-use AhmadMayahi\GoogleVision\Vision;
+use AhmadMayahi\Vision\Vision;
 
 $faces = (new Vision($config))
-    ->file(__DIR__ . '/files/google-guys.jpg')
+    ->inputFile('/path/to/image.jpg')
     ->faceDetection()
     ->detect();
 
@@ -191,19 +205,17 @@ foreach ($faces as $faceData) {
 ### Draw box around faces
 
 ```php
-use AhmadMayahi\GoogleVision\Vision;
-use AhmadMayahi\GoogleVision\Enums\ColorEnum;
-
-$outputFile = 'path/to/output/file.jpeg';
-$color = ColorEnum::MAGENTA;
+use AhmadMayahi\Vision\Vision;
+use AhmadMayahi\Vision\Enums\ColorEnum;
 
 $analyzer = (new Vision($config))
-    ->file(__DIR__ . '/files/google-guys.jpg')
+    ->inputFile('/path/to/input/image.jpg')
+    ->outputFile('/path/to/output/image.jpg')
     ->faceDetection()
-    ->drawBoxAroundFaces($outputFile, $color);
+    ->drawBoxAroundFaces(ColorEnum::MAGENTA);
 ```
 
-![Larry Page and Sergey Brin faces](tests/files/output/larry-sergey.jpg)
+![Larry Page and Sergey Brin Faces](tests/files/output/larry-sergey.jpg)
 
 > This feature doesn't support Google Storage yet.
 
@@ -211,13 +223,13 @@ $analyzer = (new Vision($config))
 
 ### Get plain text
 
-The `getPlainText` returns an object of type `AhmadMayahi\GoogleVision\Data\ImageTextData`.
+The `getPlainText` returns an object of type `AhmadMayahi\Vision\Data\ImageTextData`.
 
 ```php
-use AhmadMayahi\GoogleVision\Vision;
+use AhmadMayahi\Vision\Vision;
 
 $response = (new Vision($config))
-    ->file(__DIR__ . '/files/my-image.jpg')
+    ->inputFile(__DIR__ . '/files/my-image.jpg')
     ->imageTextDetection()
     ->getPlainText();
 
@@ -233,13 +245,13 @@ echo $response;
 
 ### Get Document
 
-The `getDocument` returns an object of type `AhmadMayahi\GoogleVision\Data\ImageTextData`.
+The `getDocument` returns an object of type `AhmadMayahi\Vision\Data\ImageTextData`.
 
 ```php
-use AhmadMayahi\GoogleVision\Vision;
+use AhmadMayahi\Vision\Vision;
 
 $response = (new Vision($config))
-    ->file(__DIR__ . '/files/my-image.jpg')
+    ->inputFile(__DIR__ . '/files/my-image.jpg')
     ->imageTextDetection()
     ->getDocument();
  
@@ -253,13 +265,13 @@ $response->getText();   // Image text
 
 The [Image Properties](https://cloud.google.com/vision/docs/detecting-properties) feature detects general attributes of the image, such as dominant color.
 
-The `detect` method returns a collection (`array`) of `AhmadMayahi\GoogleVision\Data\ImagePropertiesData`:
+The `detect` method returns a collection (`array`) of `AhmadMayahi\Vision\Data\ImagePropertiesData`:
 
 ```php
-use AhmadMayahi\GoogleVision\Vision;
+use AhmadMayahi\Vision\Vision;
 
 $properties = (new Vision($config))
-    ->file(__DIR__ . '/files/my-image.jpg')
+    ->inputFile(__DIR__ . '/files/my-image.jpg')
     ->imagePropertiesDetection()
     ->detect();
 
@@ -279,10 +291,10 @@ foreach ($properties as $item) {
 [Landmark Detection](https://cloud.google.com/vision/docs/detecting-landmarks) detects popular natural and human-made structures within an image.
 
 ```php
-use AhmadMayahi\GoogleVision\Vision;
+use AhmadMayahi\Vision\Vision;
 
 $landmarks = (new Vision($config))
-    ->file(__DIR__ . '/files/baghdad.jpg')
+    ->inputFile(__DIR__ . '/files/baghdad.jpg')
     ->landmarkDetection()
     ->detect();
 
@@ -298,13 +310,13 @@ foreach ($landmarks as $landmark) {
 
 [SafeSearch Detection](https://cloud.google.com/vision/docs/detecting-safe-search) detects explicit content such as adult content or violent content within an image.
 
-The `detect` method returns a collection (`array`) of `AhmadMayahi\GoogleVision\Data\SafeSearchData`:
+The `detect` method returns a collection (`array`) of `AhmadMayahi\Vision\Data\SafeSearchData`:
 
 ```php
-use AhmadMayahi\GoogleVision\Vision;
+use AhmadMayahi\Vision\Vision;
 
 $result = (new Vision($config))
-    ->file(__DIR__ . '/files/my-image.jpg')
+    ->inputFile(__DIR__ . '/files/my-image.jpg')
     ->safeSearchDetection()
     ->detect();
 
@@ -326,10 +338,10 @@ $result->getSpoof();
 The `detect` method returns an array of labels:
 
 ```php
-use AhmadMayahi\GoogleVision\Vision;
+use AhmadMayahi\Vision\Vision;
 
 $labels = (new Vision($config))
-    ->file(__DIR__ . '/files/my-image.jpg')
+    ->inputFile(__DIR__ . '/files/my-image.jpg')
     ->labelDetection()
     ->detect();
 ```
@@ -341,21 +353,110 @@ $labels = (new Vision($config))
 The `detect` method returns an array of logos:
 
 ```php
-use AhmadMayahi\GoogleVision\Vision;
+use AhmadMayahi\Vision\Vision;
 
 $labels = (new Vision($config))
-    ->file(__DIR__ . '/files/my-image.jpg')
+    ->inputFile(__DIR__ . '/files/my-image.jpg')
     ->logoDetection()
     ->detect();
 ```
 
-## Todo List
-- [ ] Localized Object
-- [ ] Pdf Scanning
-- [ ] Tiff Scanning
-- [ ] Web
-- [ ] Video-to-Text
-- [ ] Speech-to-Text
+## Object Localizer
+
+[Object Localizer](https://cloud.google.com/vision/docs/object-localizer) detects and extract multiple objects in an image with Object Localization.
+
+### Detect Objects
+
+The `detect` method returns a `Generator` of `AhmadMayahi\Vision\Data\LocalizedObjectData`:
+
+```php
+use AhmadMayahi\Vision\Vision;
+
+$objects = (new Vision($config))
+    ->inputFile('/path/to/image.jpg')
+    ->objectLocalizer()
+    ->detect();
+
+/** @var AhmadMayahi\Vision\Data\LocalizedObjectData $obj */
+foreach ($objects as $obj) {
+    $obj->getName();
+    
+    $obj->getLanguageCode();
+    
+    $obj->getMid();
+    
+    $obj->getNormalizedVertices();
+    
+    $obj->getScore();
+}
+```
+
+### Draw Box Around Objects
+
+You may draw box around objects using the `drawBoxAroundObjects` method:
+
+```php
+use AhmadMayahi\Vision\Vision;
+use AhmadMayahi\Vision\Enums\ColorEnum;
+
+$objects = (new Vision($config))
+    ->inputFile('/path/to/input/image.jpg')
+    ->outputFile('/path/to/output/image.jpg')
+    ->objectLocalizer()
+    ->drawBoxAroundObjects(ColorEnum::GREEN);
+```
+
+![Larry Page and Sergey Brin faces](tests/files/output/larry-sergey-objects.jpg)
+
+The `drawBoxAroundObjects()` takes an optional`callback` as a second parameter:
+
+```php
+use AhmadMayahi\Vision\Vision;
+use AhmadMayahi\Vision\Enums\ColorEnum;
+use AhmadMayahi\Vision\Utils\Image;
+use AhmadMayahi\Vision\Data\LocalizedObjectData;
+
+$objects = (new Vision($config))
+    ->inputFile('/path/to/input/image.jpg')
+    ->outputFile('/path/to/output/image.jpg')
+    ->objectLocalizer()
+    ->drawBoxAroundObjects(ColorEnum::GREEN, function(Image $outputImage, LocalizedObjectData $object) {
+        // Get GD Image
+        $outputImage->getImage();
+        
+        // Get object info
+        $object->getName();
+    });
+```
+
+> This feature doesn't support Google Storage yet.
+
+### Draw Box Around Objects With Text
+
+You may want to draw box around objects and include the object's text as well:
+
+```php
+use AhmadMayahi\Vision\Vision;
+use AhmadMayahi\Vision\Enums\ColorEnum;
+use AhmadMayahi\Vision\Enums\FontEnum;
+use AhmadMayahi\Vision\Utils\Image;
+use AhmadMayahi\Vision\Data\LocalizedObjectData;
+
+$objects = (new Vision($config))
+    ->inputFile('/path/to/input/image.jpg')
+    ->outputFile('/path/to/output/image.jpg')
+    ->objectLocalizer()
+    ->drawBoxAroundObjectsWithText(
+        boxColor: ColorEnum::GREEN,
+        textColor: ColorEnum::RED,
+        fontSize: 15,
+        font: FontEnum::OPEN_SANS_BOLD_ITALIC,
+    );
+```
+
+![Larry Page and Sergey Brin Objects](tests/files/output/larry-sergey-objects-text.jpg)
+
+> This feature doesn't support Google Storage yet.
 
 ## Testing
 
