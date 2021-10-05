@@ -6,7 +6,6 @@ class VertexData
 {
     public function __construct(private float $x, private float $y)
     {
-
     }
 
     /**

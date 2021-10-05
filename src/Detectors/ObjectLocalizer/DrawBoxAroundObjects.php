@@ -28,14 +28,12 @@ class DrawBoxAroundObjects implements Drawable
         return $this;
     }
 
-
     public function setCallback(?Closure $closure): static
     {
         $this->callback = $closure;
 
         return $this;
     }
-
 
     public function draw(): Image
     {
