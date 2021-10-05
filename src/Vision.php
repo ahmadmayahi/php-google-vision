@@ -10,6 +10,7 @@ use AhmadMayahi\Vision\Detectors\Landmark;
 use AhmadMayahi\Vision\Detectors\Logo;
 use AhmadMayahi\Vision\Detectors\ObjectLocalizer;
 use AhmadMayahi\Vision\Detectors\SafeSearch;
+use AhmadMayahi\Vision\Detectors\Web;
 use AhmadMayahi\Vision\Utils\File;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 use SplFileObject;
@@ -39,16 +40,9 @@ class Vision
      * @return Vision|static
      * @throws \Exception
      */
-    public function inputFile($file): static
+    public function file($file): static
     {
         $this->inputFile = $file;
-
-        return $this;
-    }
-
-    public function outputFile(string $file)
-    {
-        $this->outputFile = $file;
 
         return $this;
     }
@@ -58,7 +52,7 @@ class Vision
         return new Face(
             imageAnnotatorClient:  $this->imageAnnotator(),
             file: $this->getFile(),
-            image: $this->outputFile ? new Utils\Image($this->getFile()->getLocalPathname(), $this->outputFile) : null,
+            image: new Utils\Image($this->getFile()),
         );
     }
 
@@ -92,13 +86,18 @@ class Vision
         return new ObjectLocalizer(
             imageAnnotatorClient:  $this->imageAnnotator(),
             file: $this->getFile(),
-            image: $this->outputFile ? new Utils\Image($this->getFile()->getLocalPathname(), $this->outputFile) : null,
+            image: new Utils\Image($this->getFile()),
         );
     }
 
     public function safeSearchDetection(): SafeSearch
     {
         return new SafeSearch($this->imageAnnotator(), $this->getFile());
+    }
+
+    public function webDetection(): Web
+    {
+        return new Web($this->imageAnnotator(), $this->getFile());
     }
 
     private function imageAnnotator(): ImageAnnotatorClient
