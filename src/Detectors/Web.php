@@ -26,7 +26,7 @@ class Web extends AbstractDetector
     {
         $response = $this->getOriginalResponse();
 
-        if (!$response) {
+        if (! $response) {
             return null;
         }
 
