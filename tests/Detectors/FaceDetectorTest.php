@@ -3,9 +3,9 @@
 namespace AhmadMayahi\Vision\Tests\Detectors;
 
 use AhmadMayahi\Vision\Data\FaceData;
+use AhmadMayahi\Vision\Data\VertexData;
 use AhmadMayahi\Vision\Detectors\Face;
 use AhmadMayahi\Vision\Tests\TestCase;
-use AhmadMayahi\Vision\Utils\File;
 use AhmadMayahi\Vision\Utils\Image;
 use Generator;
 use Google\Cloud\Vision\V1\AnnotateImageResponse;
@@ -17,10 +17,10 @@ use Google\Cloud\Vision\V1\Vertex;
 use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\RepeatedFieldIter;
 
-class FaceDetectorTest extends TestCase
+final class FaceDetectorTest extends TestCase
 {
     /** @test */
-    public function it_should_get_face_original_google_vision_response(): void
+    public function it_should_get_face_original_response(): void
     {
         $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
         $repeatedField = $this->createMock(RepeatedField::class);
@@ -36,7 +36,8 @@ class FaceDetectorTest extends TestCase
             ->method('faceDetection')
             ->willReturn($annotatorImageResponse);
 
-        $face = new Face($imageAnnotatorClient, new File($this->getFilePathname(), $this->getConfig()));
+        $image = $this->createMock(Image::class);
+        $face = new Face($imageAnnotatorClient, $this->getFile(), $image);
         $this->assertInstanceOf(RepeatedField::class, $face->getOriginalResponse());
     }
 
@@ -49,8 +50,14 @@ class FaceDetectorTest extends TestCase
         $boundingPoly = $this->createMock(BoundingPoly::class);
 
         $vertex = $this->createMock(Vertex::class);
-        $vertex->expects($this->once())->method('getX')->willReturn(100);
-        $vertex->expects($this->once())->method('getY')->willReturn(100);
+        $vertex
+            ->expects($this->once())
+            ->method('getX')
+            ->willReturn(89.99);
+        $vertex
+            ->expects($this->once())
+            ->method('getY')
+            ->willReturn(74.22);
 
         $boundingPoly
             ->expects($this->once())
@@ -86,7 +93,7 @@ class FaceDetectorTest extends TestCase
 
         $annotatorImageResponse = $this->createMock(AnnotateImageResponse::class);
         $annotatorImageResponse
-            ->expects($this->any())
+            ->expects($this->once())
             ->method('getFaceAnnotations')
             ->willReturn($repeatedField);
 
@@ -97,19 +104,21 @@ class FaceDetectorTest extends TestCase
 
         $imageAnnotatorClient->expects($this->once())->method('close');
 
-        $face = new Face($imageAnnotatorClient, $this->getFile());
+        $image = $this->createMock(Image::class);
+
+        $face = new Face($imageAnnotatorClient, $this->getFile(), $image);
         $face = $face->detect();
 
         $this->assertInstanceOf(Generator::class, $face);
 
-        $face = iterator_to_array($face);
+        $faces = iterator_to_array($face);
 
-        $this->assertCount(1, $face);
-        $this->assertInstanceOf(FaceData::class, $face[0]);
-        $this->assertEquals('VERY_UNLIKELY', $face[0]->getAnger());
-        $this->assertEquals('VERY_LIKELY', $face[0]->getJoy());
-        $this->assertEquals('POSSIBLE', $face[0]->getSurprise());
-        $this->assertSame([['x' => 100, 'y' => 100]], $face[0]->getBounds());
+        $this->assertCount(1, $faces);
+        $this->assertInstanceOf(FaceData::class, $faces[0]);
+        $this->assertEquals('VERY_UNLIKELY', $faces[0]->getAnger());
+        $this->assertEquals('VERY_LIKELY', $faces[0]->getJoy());
+        $this->assertEquals('POSSIBLE', $faces[0]->getSurprise());
+        $this->assertEquals([new VertexData(89.99, 74.22)], $faces[0]->getBounds());
     }
 
     /** @test */
@@ -117,63 +126,55 @@ class FaceDetectorTest extends TestCase
     {
         $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
         $repeatedField = $this->createMock(RepeatedField::class);
-        $faceAnnotation1 = $this->createMock(FaceAnnotation::class);
-        $faceAnnotation2 = $this->createMock(FaceAnnotation::class);
-        $boundingPoly1 = $this->createMock(BoundingPoly::class);
-        $boundingPoly2 = $this->createMock(BoundingPoly::class);
+        $faceAnnotation = $this->createMock(FaceAnnotation::class);
+        $boundingPoly = $this->createMock(BoundingPoly::class);
 
         $vertex = $this->createMock(Vertex::class);
         $vertex
+            ->expects($this->exactly(4))
             ->method('getX')
-            ->willReturnOnConsecutiveCalls(330, 546, 77, 273);
+            ->willReturnOnConsecutiveCalls(89.99, 50.77, 109.22, 98.39);
+
         $vertex
+            ->expects($this->exactly(4))
             ->method('getY')
-            ->willReturnOnConsecutiveCalls(24, 276, 23, 250);
+            ->willReturnOnConsecutiveCalls(74.22, 68.40, 209.87, 110.28);
 
-        $boundingPoly1
+        $boundingPoly
             ->expects($this->once())
             ->method('getVertices')
-            ->willReturn([
-                0 => $vertex,
-                2 => $vertex,
-            ]);
+            ->willReturn([$vertex, $vertex, $vertex, $vertex]);
 
-        $vertex2 = $this->createMock(Vertex::class);
-        $vertex2
-            ->method('getX')
-            ->willReturnOnConsecutiveCalls(330, 546);
-        $vertex2
-            ->method('getY')
-            ->willReturnOnConsecutiveCalls(24, 276);
-
-        $boundingPoly2
+        $faceAnnotation
             ->expects($this->once())
-            ->method('getVertices')
-            ->willReturn([
-                0 => $vertex,
-                2 => $vertex,
-            ]);
+            ->method('getAngerLikelihood')
+            ->willReturn(Likelihood::VERY_UNLIKELY);
 
-        $faceAnnotation1
+        $faceAnnotation
+            ->expects($this->once())
+            ->method('getJoyLikelihood')
+            ->willReturn(Likelihood::VERY_LIKELY);
+
+        $faceAnnotation
+            ->expects($this->once())
+            ->method('getSurpriseLikelihood')
+            ->willReturn(Likelihood::POSSIBLE);
+
+        $faceAnnotation
             ->expects($this->once())
             ->method('getBoundingPoly')
-            ->willReturn($boundingPoly1);
-
-        $faceAnnotation2
-            ->expects($this->once())
-            ->method('getBoundingPoly')
-            ->willReturn($boundingPoly2);
+            ->willReturn($boundingPoly);
 
         $repeatedFieldIter = $this->createMock(RepeatedFieldIter::class);
 
         $repeatedField
             ->expects($this->once())
             ->method('getIterator')
-            ->willReturn($this->mockIterator($repeatedFieldIter, [$faceAnnotation1, $faceAnnotation2]));
+            ->willReturn($this->mockIterator($repeatedFieldIter, [$faceAnnotation]));
 
         $annotatorImageResponse = $this->createMock(AnnotateImageResponse::class);
         $annotatorImageResponse
-            ->expects($this->any())
+            ->expects($this->once())
             ->method('getFaceAnnotations')
             ->willReturn($repeatedField);
 
@@ -184,19 +185,13 @@ class FaceDetectorTest extends TestCase
 
         $imageAnnotatorClient->expects($this->once())->method('close');
 
-        $outFilename = dirname(__DIR__).DIRECTORY_SEPARATOR . 'files/temp/detect-faces.jpg';
-
-        $drawBoxImage = $this->createMock(Image::class);
-
-        $drawBoxImage
-            ->expects($this->exactly(2))
-            ->method('drawRectangle')
-            ->withConsecutive([330, 24, 546, 276], [77, 23, 273, 250]);
-
-        $drawBoxImage
+        $image = $this->createMock(Image::class);
+        $image
             ->expects($this->once())
-            ->method('save');
+            ->method('drawRectangle')
+            ->with(89.99, 74.22, 109.22, 209.87);
 
-        (new Face($imageAnnotatorClient, $this->getFile(), $drawBoxImage))->drawBoxAroundFaces();
+        $face = new Face($imageAnnotatorClient, $this->getFile(), $image);
+        $face->drawBoxAroundFaces()->toJpeg('out.jpg');
     }
 }
