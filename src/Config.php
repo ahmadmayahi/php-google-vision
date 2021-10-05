@@ -55,6 +55,20 @@ final class Config
         return $this->config['tempDirPath'] ?? sys_get_temp_dir();
     }
 
+    /**
+     * The address of the API remote host. May optionally include the port, formatted
+     * as "<uri>:<port>". Default 'vision.googleapis.com:443'.
+     *
+     * @param string $endpoint
+     * @return $this
+     */
+    public function setApiEndpoint(string $endpoint): static
+    {
+        $this->config['apiEndpoint'] = $endpoint;
+
+        return $this;
+    }
+
     public function connectConfig(): array
     {
         return [
