@@ -95,7 +95,7 @@ Depending on the feature, the response type might vary, here is a list of all th
 |`objectLocalizer`|`Google\Protobuf\Internal\RepeatedField`|
 |`safeSearchDetection`|`Google\Cloud\Vision\V1\SafeSearchAnnotation`|
 
-The `inputFile()` method accepts the following types:
+The `file()` method accepts the following types:
 
 - Local file path: `path/to/your/file`.
 - Google Storage path: `gs://path/to/file`.
@@ -211,11 +211,12 @@ use AhmadMayahi\Vision\Enums\ColorEnum;
 
 $analyzer = (new Vision($config))
     ->file('/path/to/input/image.jpg')
-    ->outputFile('/path/to/output/image.jpg')
     ->faceDetection()
     ->drawBoxAroundFaces(ColorEnum::MAGENTA)
-    ->save('');
+    ->toJpeg('faces.jpg'); // Alternatively, you may use "toPng", "toGif", "toBmp".
 ```
+
+> All the drawing methods return an object of type `AhmadMayahi\Vision\Utils\Image`.
 
 ![Larry Page and Sergey Brin Faces](tests/files/output/larry-sergey.jpg)
 
@@ -231,7 +232,7 @@ The `getPlainText` returns an object of type `AhmadMayahi\Vision\Data\ImageTextD
 use AhmadMayahi\Vision\Vision;
 
 $response = (new Vision($config))
-    ->file(__DIR__ . '/files/my-image.jpg')
+    ->file('/path/to/input/image.jpg')
     ->imageTextDetection()
     ->getPlainText();
 
@@ -253,7 +254,7 @@ The `getDocument` returns an object of type `AhmadMayahi\Vision\Data\ImageTextDa
 use AhmadMayahi\Vision\Vision;
 
 $response = (new Vision($config))
-    ->file(__DIR__ . '/files/my-image.jpg')
+    ->file('/path/to/input/image.jpg')
     ->imageTextDetection()
     ->getDocument();
  
@@ -273,7 +274,7 @@ The `detect` method returns a `Generator` of `AhmadMayahi\Vision\Data\ImagePrope
 use AhmadMayahi\Vision\Vision;
 
 $properties = (new Vision($config))
-    ->file(__DIR__ . '/files/my-image.jpg')
+    ->file('/path/to/input/image.jpg')
     ->imagePropertiesDetection()
     ->detect();
 
@@ -296,7 +297,7 @@ foreach ($properties as $item) {
 use AhmadMayahi\Vision\Vision;
 
 $landmarks = (new Vision($config))
-    ->file(__DIR__ . '/files/baghdad.jpg')
+    ->file('/path/to/baghdad.jpg')
     ->landmarkDetection()
     ->detect();
 
@@ -318,7 +319,7 @@ The `detect` method returns an object of type `AhmadMayahi\Vision\Data\SafeSearc
 use AhmadMayahi\Vision\Vision;
 
 $result = (new Vision($config))
-    ->file(__DIR__ . '/files/my-image.jpg')
+    ->file('/path/to/input/image.jpg')
     ->safeSearchDetection()
     ->detect();
 
@@ -343,7 +344,7 @@ The `detect` method returns an a `Generator` of labels:
 use AhmadMayahi\Vision\Vision;
 
 $labels = (new Vision($config))
-    ->file(__DIR__ . '/files/my-image.jpg')
+    ->file('/path/to/input/image.jpg')
     ->labelDetection()
     ->detect();
 ```
@@ -358,7 +359,7 @@ The `detect` method returns an `Generator` of logos:
 use AhmadMayahi\Vision\Vision;
 
 $labels = (new Vision($config))
-    ->file(__DIR__ . '/files/my-image.jpg')
+    ->file('/path/to/input/image.jpg')
     ->logoDetection()
     ->detect();
 ```
@@ -403,9 +404,9 @@ use AhmadMayahi\Vision\Enums\ColorEnum;
 
 $objects = (new Vision($config))
     ->file('/path/to/input/image.jpg')
-    ->outputFile('/path/to/output/image.jpg')
     ->objectLocalizer()
-    ->drawBoxAroundObjects(ColorEnum::GREEN);
+    ->drawBoxAroundObjects(ColorEnum::GREEN)
+    ->toJpeg('out.jpg');
 ```
 
 ![Larry Page and Sergey Brin faces](tests/files/output/larry-sergey-objects.jpg)
@@ -420,7 +421,6 @@ use AhmadMayahi\Vision\Data\LocalizedObjectData;
 
 $objects = (new Vision($config))
     ->file('/path/to/input/image.jpg')
-    ->outputFile('/path/to/output/image.jpg')
     ->objectLocalizer()
     ->drawBoxAroundObjects(ColorEnum::GREEN, function(Image $outputImage, LocalizedObjectData $object) {
         // Get GD Image
