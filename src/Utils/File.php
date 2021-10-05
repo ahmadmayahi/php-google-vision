@@ -85,6 +85,29 @@ class File implements FileContract
         return $tempFile;
     }
 
+    public function getContents()
+    {
+        if ($this->isGoogleStorage()) {
+            throw new Exception('Google Storage is not supported!');
+        }
+
+        if (is_string($this->file)) {
+            return file_get_contents($this->file);
+        }
+
+        if (is_resource($this->file)) {
+            return stream_get_contents($this->file);
+        }
+
+        if ($this->file instanceof SplFileInfo) {
+            return file_get_contents($this->file->getPathname());
+        }
+
+        if ($this->file instanceof SplFileObject) {
+            return file_get_contents($this->file->getFileInfo()->getPathname());
+        }
+    }
+
     public function isGoogleStorage(): bool
     {
         return is_string($this->file) && str_starts_with($this->file, 'gs://');
