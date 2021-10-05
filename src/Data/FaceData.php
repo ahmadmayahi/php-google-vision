@@ -37,7 +37,7 @@ class FaceData
     }
 
     /**
-     * @return array
+     * @return VertexData[]
      */
     public function getBounds(): array
     {
