@@ -133,12 +133,12 @@ final class FaceDetectorTest extends TestCase
         $vertex
             ->expects($this->exactly(4))
             ->method('getX')
-            ->willReturnOnConsecutiveCalls(89.99, 50.77, 109.22, 98.39);
+            ->willReturnOnConsecutiveCalls(89, 50, 109, 98);
 
         $vertex
             ->expects($this->exactly(4))
             ->method('getY')
-            ->willReturnOnConsecutiveCalls(74.22, 68.40, 209.87, 110.28);
+            ->willReturnOnConsecutiveCalls(74, 68, 209, 110);
 
         $boundingPoly
             ->expects($this->once())
@@ -189,7 +189,7 @@ final class FaceDetectorTest extends TestCase
         $image
             ->expects($this->once())
             ->method('drawRectangle')
-            ->with(89.99, 74.22, 109.22, 209.87);
+            ->with(89, 74, 109, 209);
 
         $face = new Face($imageAnnotatorClient, $this->getFile(), $image);
         $face->drawBoxAroundFaces()->toJpeg('out.jpg');

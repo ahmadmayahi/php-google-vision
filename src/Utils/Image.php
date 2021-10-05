@@ -30,7 +30,7 @@ class Image
         return imagesy($this->gdImage);
     }
 
-    public function drawRectangle(float $x1, float $y1, float $x2, float $y2, float $color): void
+    public function drawRectangle(int $x1, int $y1, int $x2, int $y2, int $color): void
     {
         imagerectangle($this->gdImage, $x1, $y1, $x2, $y2, $color);
     }
