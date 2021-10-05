@@ -38,10 +38,6 @@ It's an effort to make Google Vision API easy and fun to work with.
   - [Draw Box Around Objects](#draw-box-around-objects)
   - [Draw Box Around Objects With Text](#draw-box-around-objects-with-text)
 - [Web Detection](#web-detection)
-- [Text To Speech](#text-to-speech)
-- [Speech To Text](#speech-to-text)
-- [Video To Text](#video-to-text)
-- [PDF To Text](#pdf-to-text)
 
 ## Installation
 
