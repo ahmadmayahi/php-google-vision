@@ -8,8 +8,8 @@ use AhmadMayahi\Vision\Data\VertexData;
 use AhmadMayahi\Vision\Detectors\Face\DrawBoxAroundFaces;
 use AhmadMayahi\Vision\Enums\ColorEnum;
 use AhmadMayahi\Vision\Enums\LikelihoodEnum;
-use AhmadMayahi\Vision\Utils\AbstractDetector;
-use AhmadMayahi\Vision\Utils\Image;
+use AhmadMayahi\Vision\Support\AbstractDetector;
+use AhmadMayahi\Vision\Support\Image;
 use Generator;
 use Google\Cloud\Vision\V1\FaceAnnotation;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
@@ -22,7 +22,7 @@ class Face extends AbstractDetector
     {
     }
 
-    public function getOriginalResponse(): RepeatedField
+    public function getOriginalResponse(): ?RepeatedField
     {
         $response = $this
             ->imageAnnotatorClient
@@ -34,6 +34,10 @@ class Face extends AbstractDetector
     public function detect(): Generator
     {
         $faces = $this->getOriginalResponse();
+
+        if (!$faces) {
+            return null;
+        }
 
         /** @var FaceAnnotation $face */
         foreach ($faces as $face) {

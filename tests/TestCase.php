@@ -3,7 +3,7 @@
 namespace AhmadMayahi\Vision\Tests;
 
 use AhmadMayahi\Vision\Config;
-use AhmadMayahi\Vision\Utils\File;
+use AhmadMayahi\Vision\Support\File;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 

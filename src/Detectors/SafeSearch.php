@@ -4,7 +4,7 @@ namespace AhmadMayahi\Vision\Detectors;
 
 use AhmadMayahi\Vision\Data\SafeSearchData;
 use AhmadMayahi\Vision\Enums\LikelihoodEnum;
-use AhmadMayahi\Vision\Utils\AbstractDetector;
+use AhmadMayahi\Vision\Support\AbstractDetector;
 use Google\Cloud\Vision\V1\SafeSearchAnnotation;
 
 class SafeSearch extends AbstractDetector

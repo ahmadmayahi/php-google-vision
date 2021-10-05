@@ -416,7 +416,7 @@ The `drawBoxAroundObjects()` takes an optional`callback` as a second parameter:
 ```php
 use AhmadMayahi\Vision\Vision;
 use AhmadMayahi\Vision\Enums\ColorEnum;
-use AhmadMayahi\Vision\Utils\Image;
+use AhmadMayahi\Vision\Support\Image;
 use AhmadMayahi\Vision\Data\LocalizedObjectData;
 
 $objects = (new Vision($config))
@@ -441,7 +441,7 @@ You may want to draw box around objects and include the object's text as well:
 use AhmadMayahi\Vision\Vision;
 use AhmadMayahi\Vision\Enums\ColorEnum;
 use AhmadMayahi\Vision\Enums\FontEnum;
-use AhmadMayahi\Vision\Utils\Image;
+use AhmadMayahi\Vision\Support\Image;
 use AhmadMayahi\Vision\Data\LocalizedObjectData;
 
 $objects = (new Vision($config))
@@ -468,7 +468,7 @@ $objects = (new Vision($config))
 use AhmadMayahi\Vision\Vision;
 use AhmadMayahi\Vision\Enums\ColorEnum;
 use AhmadMayahi\Vision\Enums\FontEnum;
-use AhmadMayahi\Vision\Utils\Image;
+use AhmadMayahi\Vision\Support\Image;
 use AhmadMayahi\Vision\Data\LocalizedObjectData;
 
 $response = (new Vision($config))

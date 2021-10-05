@@ -6,7 +6,7 @@ use AhmadMayahi\Vision\Contracts\Drawable;
 use AhmadMayahi\Vision\Data\LocalizedObjectData;
 use AhmadMayahi\Vision\Detectors\ObjectLocalizer;
 use AhmadMayahi\Vision\Enums\ColorEnum;
-use AhmadMayahi\Vision\Utils\Image;
+use AhmadMayahi\Vision\Support\Image;
 use Closure;
 
 class DrawBoxAroundObjects implements Drawable

@@ -3,7 +3,7 @@
 namespace AhmadMayahi\Vision\Detectors;
 
 use AhmadMayahi\Vision\Data\ImageTextData;
-use AhmadMayahi\Vision\Utils\AbstractDetector;
+use AhmadMayahi\Vision\Support\AbstractDetector;
 use Google\Cloud\Vision\V1\EntityAnnotation;
 use Google\Protobuf\Internal\RepeatedField;
 
@@ -32,7 +32,7 @@ class Image extends AbstractDetector
     /**
      * @return RepeatedField
      */
-    public function getOriginalResponse(): RepeatedField
+    public function getOriginalResponse(): ?RepeatedField
     {
         return $this->getTextAnnotations();
     }

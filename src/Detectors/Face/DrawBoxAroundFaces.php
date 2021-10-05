@@ -6,7 +6,7 @@ use AhmadMayahi\Vision\Contracts\Drawable;
 use AhmadMayahi\Vision\Data\FaceData;
 use AhmadMayahi\Vision\Detectors\Face;
 use AhmadMayahi\Vision\Enums\ColorEnum;
-use AhmadMayahi\Vision\Utils\Image;
+use AhmadMayahi\Vision\Support\Image;
 
 class DrawBoxAroundFaces implements Drawable
 {

@@ -4,7 +4,7 @@ namespace AhmadMayahi\Vision\Tests\Detectors;
 
 use AhmadMayahi\Vision\Detectors\ObjectLocalizer;
 use AhmadMayahi\Vision\Tests\TestCase;
-use AhmadMayahi\Vision\Utils\Image;
+use AhmadMayahi\Vision\Support\Image;
 use Google\Cloud\Vision\V1\AnnotateImageResponse;
 use Google\Cloud\Vision\V1\BoundingPoly;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;

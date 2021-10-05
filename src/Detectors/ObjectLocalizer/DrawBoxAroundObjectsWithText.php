@@ -7,7 +7,7 @@ use AhmadMayahi\Vision\Data\LocalizedObjectData;
 use AhmadMayahi\Vision\Detectors\ObjectLocalizer;
 use AhmadMayahi\Vision\Enums\ColorEnum;
 use AhmadMayahi\Vision\Enums\FontEnum;
-use AhmadMayahi\Vision\Utils\Image;
+use AhmadMayahi\Vision\Support\Image;
 
 class DrawBoxAroundObjectsWithText implements Drawable
 {

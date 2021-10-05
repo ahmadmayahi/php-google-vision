@@ -2,7 +2,7 @@
 
 namespace AhmadMayahi\Vision;
 
-use AhmadMayahi\Vision\Utils\File;
+use AhmadMayahi\Vision\Support\File;
 use Exception;
 use SplFileInfo;
 use SplFileObject;

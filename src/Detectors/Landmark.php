@@ -3,7 +3,7 @@
 namespace AhmadMayahi\Vision\Detectors;
 
 use AhmadMayahi\Vision\Data\LandmarkData;
-use AhmadMayahi\Vision\Utils\AbstractDetector;
+use AhmadMayahi\Vision\Support\AbstractDetector;
 use Generator;
 use Google\Cloud\Vision\V1\EntityAnnotation;
 use Google\Cloud\Vision\V1\LocationInfo;

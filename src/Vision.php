@@ -11,7 +11,7 @@ use AhmadMayahi\Vision\Detectors\Logo;
 use AhmadMayahi\Vision\Detectors\ObjectLocalizer;
 use AhmadMayahi\Vision\Detectors\SafeSearch;
 use AhmadMayahi\Vision\Detectors\Web;
-use AhmadMayahi\Vision\Utils\File;
+use AhmadMayahi\Vision\Support\File;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 use SplFileObject;
 use Symfony\Component\Finder\SplFileInfo;
@@ -52,7 +52,7 @@ class Vision
         return new Face(
             imageAnnotatorClient:  $this->imageAnnotator(),
             file: $this->getFile(),
-            image: new Utils\Image($this->getFile()),
+            image: new Support\Image($this->getFile()),
         );
     }
 
@@ -86,7 +86,7 @@ class Vision
         return new ObjectLocalizer(
             imageAnnotatorClient:  $this->imageAnnotator(),
             file: $this->getFile(),
-            image: new Utils\Image($this->getFile()),
+            image: new Support\Image($this->getFile()),
         );
     }
 

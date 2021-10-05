@@ -3,7 +3,7 @@
 namespace AhmadMayahi\Vision\Tests\Utils;
 
 use AhmadMayahi\Vision\Tests\TestCase;
-use AhmadMayahi\Vision\Utils\File;
+use AhmadMayahi\Vision\Support\File;
 use SplFileInfo;
 use SplFileObject;
 

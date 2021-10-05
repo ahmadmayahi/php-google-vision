@@ -1,6 +1,6 @@
 <?php
 
-namespace AhmadMayahi\Vision\Utils;
+namespace AhmadMayahi\Vision\Support;
 
 use AhmadMayahi\Vision\Config;
 use AhmadMayahi\Vision\Contracts\File as FileContract;

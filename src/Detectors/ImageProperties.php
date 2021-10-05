@@ -3,7 +3,7 @@
 namespace AhmadMayahi\Vision\Detectors;
 
 use AhmadMayahi\Vision\Data\ImagePropertiesData;
-use AhmadMayahi\Vision\Utils\AbstractDetector;
+use AhmadMayahi\Vision\Support\AbstractDetector;
 use Generator;
 use Google\Cloud\Vision\V1\ColorInfo;
 use Google\Cloud\Vision\V1\ImageProperties as GoogleVisionImageProperties;

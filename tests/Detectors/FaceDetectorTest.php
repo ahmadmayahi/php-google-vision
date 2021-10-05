@@ -6,7 +6,7 @@ use AhmadMayahi\Vision\Data\FaceData;
 use AhmadMayahi\Vision\Data\VertexData;
 use AhmadMayahi\Vision\Detectors\Face;
 use AhmadMayahi\Vision\Tests\TestCase;
-use AhmadMayahi\Vision\Utils\Image;
+use AhmadMayahi\Vision\Support\Image;
 use Generator;
 use Google\Cloud\Vision\V1\AnnotateImageResponse;
 use Google\Cloud\Vision\V1\BoundingPoly;

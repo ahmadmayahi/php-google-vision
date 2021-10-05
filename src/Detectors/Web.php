@@ -6,7 +6,7 @@ use AhmadMayahi\Vision\Data\WebData;
 use AhmadMayahi\Vision\Data\WebEntityData;
 use AhmadMayahi\Vision\Data\WebImageData;
 use AhmadMayahi\Vision\Data\WebPageData;
-use AhmadMayahi\Vision\Utils\AbstractDetector;
+use AhmadMayahi\Vision\Support\AbstractDetector;
 use Google\Cloud\Vision\V1\WebDetection;
 use Google\Cloud\Vision\V1\WebDetection\WebEntity;
 use Google\Cloud\Vision\V1\WebDetection\WebImage;

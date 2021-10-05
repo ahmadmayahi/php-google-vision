@@ -2,7 +2,7 @@
 
 namespace AhmadMayahi\Vision\Contracts;
 
-use AhmadMayahi\Vision\Utils\Image;
+use AhmadMayahi\Vision\Support\Image;
 
 interface Drawable
 {
