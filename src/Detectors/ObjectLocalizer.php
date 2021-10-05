@@ -2,11 +2,15 @@
 
 namespace AhmadMayahi\Vision\Detectors;
 
+use AhmadMayahi\Vision\Contracts\File;
 use AhmadMayahi\Vision\Data\LocalizedObjectData;
+use AhmadMayahi\Vision\Detectors\ObjectLocalizer\DrawBoxAroundObjects;
+use AhmadMayahi\Vision\Detectors\ObjectLocalizer\DrawBoxAroundObjectsWithText;
 use AhmadMayahi\Vision\Enums\ColorEnum;
 use AhmadMayahi\Vision\Enums\FontEnum;
 use AhmadMayahi\Vision\Utils\AbstractDetector;
 use AhmadMayahi\Vision\Utils\Image;
+use Closure;
 use Exception;
 use Generator;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
@@ -18,8 +22,8 @@ class ObjectLocalizer extends AbstractDetector
 {
     public function __construct(
         protected ImageAnnotatorClient $imageAnnotatorClient,
-        protected \AhmadMayahi\Vision\Contracts\File $file,
-        protected ?Image $image = null
+        protected File $file,
+        protected Image $image
     ) {
     }
 
@@ -53,59 +57,24 @@ class ObjectLocalizer extends AbstractDetector
         }
     }
 
-    public function drawBoxAroundObjects($color = ColorEnum::GREEN, ?callable $callback = null)
+    public function drawBoxAroundObjects($color = ColorEnum::GREEN, ?Closure $callback = null): Image
     {
-        $width = $this->image->getWidth();
-        $height = $this->image->getHeight();
-
-        /** @var LocalizedObjectData $obj */
-        foreach ($this->detect() as $obj) {
-            $vertices = $obj->getNormalizedVertices();
-
-            if ($vertices) {
-                $x1 = $vertices[0]['x'];
-                $y1 = $vertices[0]['y'];
-
-                $x2 = $vertices[2]['x'];
-                $y2 = $vertices[2]['y'];
-
-                $this->image->drawRectangle(
-                    x1: ($x1 * $width),
-                    y1: ($y1 * $height),
-                    x2: ($x2 * $width),
-                    y2: ($y2 * $height),
-                    color: $color,
-                );
-
-                if ($callback) {
-                    $callback($this->image, $obj);
-                }
-            }
-        }
-
-        $this->image->save();
+        return (new DrawBoxAroundObjects($this, $this->image))
+            ->setBoxColor($color)
+            ->setCallback($callback)
+            ->draw();
     }
 
     /**
      * @throws Exception
      */
-    public function drawBoxAroundObjectsWithText(int $boxColor = ColorEnum::GREEN, $textColor = ColorEnum::RED, int $fontSize = 15, string $font = FontEnum::OPEN_SANS_BOLD)
+    public function drawBoxAroundObjectsWithText(int $boxColor = ColorEnum::GREEN, $textColor = ColorEnum::RED, int $fontSize = 15, string $font = FontEnum::OPEN_SANS_BOLD): Image
     {
-        $this->drawBoxAroundObjects($boxColor, function (Image $image, LocalizedObjectData $obj) use ($textColor, $fontSize, $font) {
-            $width = $image->getWidth();
-            $height = $image->getHeight();
-
-            $x1 = $obj->getNormalizedVertices()[0]['x'];
-            $y2 = $obj->getNormalizedVertices()[2]['y'];
-
-            $image->writeText(
-                text: $obj->getName(),
-                fontFile: $font,
-                color: $textColor,
-                fontSize: $fontSize,
-                x: ($x1 * $width) + 5,
-                y: ($y2 * $height) - 5
-            );
-        });
+        return (new DrawBoxAroundObjectsWithText($this, $this->image))
+            ->setBoxColor($boxColor)
+            ->setTextColor($textColor)
+            ->setFontSize($fontSize)
+            ->setFont($font)
+            ->draw();
     }
 }
