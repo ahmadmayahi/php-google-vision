@@ -10,10 +10,10 @@ use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 use Google\Cloud\Vision\V1\Likelihood;
 use Google\Cloud\Vision\V1\SafeSearchAnnotation;
 
-class SafeSearchTest extends TestCase
+final class SafeSearchTest extends TestCase
 {
     /** @test */
-    public function it_should_get_safe_search_original_google_vision_response(): void
+    public function it_should_get_safe_search_original_response(): void
     {
         $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
         $annotatorImageResponse = $this->createMock(AnnotateImageResponse::class);

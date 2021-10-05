@@ -10,10 +10,10 @@ use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\RepeatedFieldIter;
 
-class LabelTest extends TestCase
+final class LabelTest extends TestCase
 {
     /** @test */
-    public function it_should_get_label_original_google_vision_response(): void
+    public function it_should_get_label_original_response(): void
     {
         $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
         $repeatedField = $this->createMock(RepeatedField::class);

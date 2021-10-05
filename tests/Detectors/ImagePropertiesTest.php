@@ -14,10 +14,10 @@ use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\RepeatedFieldIter;
 use Google\Type\Color;
 
-class ImagePropertiesTest extends TestCase
+final class ImagePropertiesTest extends TestCase
 {
     /** @test */
-    public function it_should_get_image_properties_original_google_vision_response()
+    public function it_should_get_image_properties_original_response()
     {
         $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
         $imageProperties = $this->createMock(GoogleVisionImageProperties::class);

@@ -13,10 +13,10 @@ use Google\Cloud\Vision\V1\NormalizedVertex;
 use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\RepeatedFieldIter;
 
-class ObjectLocalizerTest extends TestCase
+final class ObjectLocalizerTest extends TestCase
 {
     /** @test */
-    public function it_should_get_object_localizer_original_google_vision_response(): void
+    public function it_should_get_object_localizer_original_response(): void
     {
         $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
         $repeatedField = $this->createMock(RepeatedField::class);
@@ -32,7 +32,9 @@ class ObjectLocalizerTest extends TestCase
             ->method('objectLocalization')
             ->willReturn($annotateImageResponse);
 
-        $response = (new ObjectLocalizer($imageAnnotatorClient, $this->getFile()))->getOriginalResponse();
+        $drawBoxImage = $this->createMock(Image::class);
+
+        $response = (new ObjectLocalizer($imageAnnotatorClient, $this->getFile(), $drawBoxImage))->getOriginalResponse();
 
         $this->assertInstanceOf(RepeatedField::class, $response);
     }
@@ -114,7 +116,7 @@ class ObjectLocalizerTest extends TestCase
             ->method('objectLocalization')
             ->willReturn($annotateImageResponse);
 
-        $image = new Image($this->getFilePathname(), $this->getTempDir('out.jpg'));
+        $image = new Image($this->getFile());
 
         $objectLocalizer = new ObjectLocalizer($imageAnnotatorClient, $this->getFile(), $image);
         $objectLocalizer->drawBoxAroundObjects();

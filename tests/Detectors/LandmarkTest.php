@@ -12,10 +12,10 @@ use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\RepeatedFieldIter;
 use Google\Type\LatLng;
 
-class LandmarkTest extends TestCase
+final class LandmarkTest extends TestCase
 {
     /** @test */
-    public function it_should_get_landmark_original_google_vision_response(): void
+    public function it_should_get_landmark_original_response(): void
     {
         $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
         $annotateImageResponse = $this->createMock(AnnotateImageResponse::class);
