@@ -8,9 +8,9 @@ class Image
 {
     protected GdImage $gdImage;
 
-    public function __construct(string $inputFilePathname, private string $outputFilePathName)
+    public function __construct(File $file)
     {
-        $this->gdImage = imagecreatefromstring(file_get_contents($inputFilePathname));
+        $this->gdImage = imagecreatefromstring($file->getContents());
 
         return $this;
     }
@@ -30,7 +30,7 @@ class Image
         return imagesy($this->gdImage);
     }
 
-    public function drawRectangle(int $x1, int $y1, int $x2, int $y2, int $color): void
+    public function drawRectangle(float $x1, float $y1, float $x2, float $y2, float $color): void
     {
         imagerectangle($this->gdImage, $x1, $y1, $x2, $y2, $color);
     }
@@ -51,8 +51,23 @@ class Image
         );
     }
 
-    public function save(): bool
+    public function toJpeg(string $outputFileName): bool
     {
-        return imagejpeg($this->gdImage, $this->outputFilePathName);
+        return imagejpeg($this->gdImage, $outputFileName);
+    }
+
+    public function toPng(string $outputFileName): bool
+    {
+        return imagepng($this->gdImage, $outputFileName);
+    }
+
+    public function toGif(string $outputFileName): bool
+    {
+        return imagegif($this->gdImage, $outputFileName);
+    }
+
+    public function toBmp(string $outputFileName): bool
+    {
+        return imagebmp($this->gdImage, $outputFileName);
     }
 }
