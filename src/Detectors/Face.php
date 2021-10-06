@@ -35,7 +35,7 @@ class Face extends AbstractDetector
     {
         $faces = $this->getOriginalResponse();
 
-        if (!$faces) {
+        if (! $faces) {
             return null;
         }
 

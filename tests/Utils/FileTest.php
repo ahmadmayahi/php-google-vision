@@ -2,8 +2,8 @@
 
 namespace AhmadMayahi\Vision\Tests\Utils;
 
-use AhmadMayahi\Vision\Tests\TestCase;
 use AhmadMayahi\Vision\Support\File;
+use AhmadMayahi\Vision\Tests\TestCase;
 use SplFileInfo;
 use SplFileObject;
 
