@@ -9,11 +9,11 @@ use Google\Protobuf\Internal\RepeatedField;
 
 class Image extends AbstractDetector
 {
-    public function getPlainText(): ?ImageTextData
+    public function plain(): ?ImageTextData
     {
         $annotations = $this
             ->imageAnnotatorClient
-            ->textDetection($this->file->toGoogleVisionFile())
+            ->textDetection($this->file->toVisionFile())
             ->getTextAnnotations();
 
         if (0 === $annotations->count()) {
@@ -41,13 +41,13 @@ class Image extends AbstractDetector
     {
         return $this
             ->imageAnnotatorClient
-            ->documentTextDetection($this->file->toGoogleVisionFile())
+            ->documentTextDetection($this->file->toVisionFile())
             ->getTextAnnotations();
     }
 
-    public function getDocument(): ImageTextData
+    public function document(): ImageTextData
     {
-        $text = $this->getTextAnnotations()[0];
+        $text = $this->getTextAnnotations()->offsetGet(0);
 
         return new ImageTextData(
             locale: $text->getLocale(),
@@ -57,6 +57,6 @@ class Image extends AbstractDetector
 
     public function __toString(): string
     {
-        return $this->getPlainText()->getText();
+        return $this->plain()->text;
     }
 }
