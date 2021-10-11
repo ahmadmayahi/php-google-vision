@@ -2,40 +2,43 @@
 
 namespace AhmadMayahi\Vision;
 
-use AhmadMayahi\Vision\Detectors\Face;
-use AhmadMayahi\Vision\Detectors\Image;
-use AhmadMayahi\Vision\Detectors\ImageProperties;
-use AhmadMayahi\Vision\Detectors\Label;
-use AhmadMayahi\Vision\Detectors\Landmark;
-use AhmadMayahi\Vision\Detectors\Logo;
-use AhmadMayahi\Vision\Detectors\ObjectLocalizer;
-use AhmadMayahi\Vision\Detectors\SafeSearch;
-use AhmadMayahi\Vision\Detectors\Web;
+use AhmadMayahi\Vision\Detectors\Face as FaceDetector;
+use AhmadMayahi\Vision\Detectors\ImageText as ImageTextDetector;
+use AhmadMayahi\Vision\Detectors\ImageProperties as ImagePropertiesDetector;
+use AhmadMayahi\Vision\Detectors\Label as LabelDetector;
+use AhmadMayahi\Vision\Detectors\Landmark as LandmarkDetector;
+use AhmadMayahi\Vision\Detectors\Logo as LogoDetector;
+use AhmadMayahi\Vision\Detectors\ObjectLocalizer as ObjectLocalizerDetector;
+use AhmadMayahi\Vision\Detectors\SafeSearch as SafeSearchDetector;
+use AhmadMayahi\Vision\Detectors\Web as WebDetector;
 use AhmadMayahi\Vision\Support\File;
+use AhmadMayahi\Vision\Support\Image;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
-use SplFileObject;
-use Symfony\Component\Finder\SplFileInfo;
 
 class Vision
 {
     /**
-     * @var string|resource|SplFileInfo|SplFileObject
+     * @var string|resource|\SplFileInfo|\SplFileObject
      */
     protected $inputFile;
 
-    protected ?string $outputFile = null;
+    protected static ?self $instance = null;
 
-    public function __construct(private Config $config)
+    protected function __construct(protected Config $config, protected ImageAnnotatorClient $annotatorClient)
     {
     }
 
-    public static function new(Config $config): static
+    public static function init(Config $config): static
     {
-        return new self($config);
+        if (is_null(self::$instance)) {
+            self::$instance = new self($config, new ImageAnnotatorClient($config->connectConfig()));
+        }
+
+        return self::$instance;
     }
 
     /**
-     * @param string|resource|SplFileInfo|SplFileObject $file
+     * @param string|resource|\SplFileInfo|\SplFileObject $file
      *
      * @return Vision|static
      * @throws \Exception
@@ -47,66 +50,74 @@ class Vision
         return $this;
     }
 
-    public function faceDetection(): Face
+    public function faceDetection(): FaceDetector
     {
-        return new Face(
-            imageAnnotatorClient:  $this->imageAnnotator(),
+        return new FaceDetector(
+            imageAnnotatorClient: $this->annotatorClient,
+            file: $this->getFile(),
+            image: new Image($this->getFile()),
+        );
+    }
+
+    public function imageTextDetection(): ImageTextDetector
+    {
+        return new ImageTextDetector($this->annotatorClient, $this->getFile());
+    }
+
+    public function imagePropertiesDetection(): ImagePropertiesDetector
+    {
+        return new ImagePropertiesDetector($this->annotatorClient, $this->getFile());
+    }
+
+    public function labelDetection(): LabelDetector
+    {
+        return new LabelDetector($this->annotatorClient, $this->getFile());
+    }
+
+    public function landmarkDetection(): LandmarkDetector
+    {
+        return new LandmarkDetector($this->annotatorClient, $this->getFile());
+    }
+
+    public function logoDetection(): LogoDetector
+    {
+        return new LogoDetector($this->annotatorClient, $this->getFile());
+    }
+
+    public function objectLocalizer(): ObjectLocalizerDetector
+    {
+        return new ObjectLocalizerDetector(
+            imageAnnotatorClient:  $this->annotatorClient,
             file: $this->getFile(),
             image: new Support\Image($this->getFile()),
         );
     }
 
-    public function imageTextDetection(): Image
+    public function safeSearchDetection(): SafeSearchDetector
     {
-        return new Image($this->imageAnnotator(), $this->getFile());
+        return new SafeSearchDetector($this->annotatorClient, $this->getFile());
     }
 
-    public function imagePropertiesDetection(): ImageProperties
+    public function webDetection(): WebDetector
     {
-        return new ImageProperties($this->imageAnnotator(), $this->getFile());
+        return new WebDetector($this->annotatorClient, $this->getFile());
     }
 
-    public function labelDetection(): Label
+    protected function getFile(): File
     {
-        return new Label($this->imageAnnotator(), $this->getFile());
+        return new File($this->inputFile, $this->config->getTempDirPath());
     }
 
-    public function landmarkDetection(): Landmark
+    public function __clone()
     {
-        return new Landmark($this->imageAnnotator(), $this->getFile());
     }
 
-    public function logoDetection(): Logo
+    public function __wakeup()
     {
-        return new Logo($this->imageAnnotator(), $this->getFile());
     }
 
-    public function objectLocalizer(): ObjectLocalizer
+    public function __sleep(): array
     {
-        return new ObjectLocalizer(
-            imageAnnotatorClient:  $this->imageAnnotator(),
-            file: $this->getFile(),
-            image: new Support\Image($this->getFile()),
-        );
-    }
-
-    public function safeSearchDetection(): SafeSearch
-    {
-        return new SafeSearch($this->imageAnnotator(), $this->getFile());
-    }
-
-    public function webDetection(): Web
-    {
-        return new Web($this->imageAnnotator(), $this->getFile());
-    }
-
-    private function imageAnnotator(): ImageAnnotatorClient
-    {
-        return new ImageAnnotatorClient($this->config->connectConfig());
-    }
-
-    private function getFile(): File
-    {
-        return new File($this->inputFile, $this->config);
+        return [];
     }
 }

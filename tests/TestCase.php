@@ -10,7 +10,7 @@ use stdClass;
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
     /** @after */
-    public function tempCleanUp()
+    public function tempCleanUp(): void
     {
         $tempPath = __DIR__ . DIRECTORY_SEPARATOR . 'files/temp' . DIRECTORY_SEPARATOR;
 
@@ -24,7 +24,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     protected function getConfig(): Config
     {
         return (new Config())
-            ->setCredentialsPathname(__DIR__ . DIRECTORY_SEPARATOR . 'files/service-account.json');
+            ->setCredentials(__DIR__ . DIRECTORY_SEPARATOR . 'files/service-account.json');
     }
 
     public function mockIterator(MockObject $iteratorMock, array $items): MockObject
@@ -98,6 +98,11 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 
     protected function getFile(): File
     {
-        return new File($this->getFilePathname(), $this->getConfig());
+        return new File($this->getFilePathname(), $this->getTempDir());
+    }
+
+    protected function createIterator(array $array): Iter
+    {
+        return new Iter($array);
     }
 }

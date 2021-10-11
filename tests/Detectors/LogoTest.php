@@ -2,6 +2,7 @@
 
 namespace AhmadMayahi\Vision\Tests\Detectors;
 
+use AhmadMayahi\Vision\Data\LogoData;
 use AhmadMayahi\Vision\Detectors\Logo;
 use AhmadMayahi\Vision\Tests\TestCase;
 use Google\Cloud\Vision\V1\AnnotateImageResponse;
@@ -64,11 +65,13 @@ final class LogoTest extends TestCase
             ->method('logoDetection')
             ->willReturn($annotateImageResponse);
 
-        $response = (new Logo($imageAnnotatorClient, $this->getFile()))->detect();
-        $response = iterator_to_array($response);
+        $logoDetector = (new Logo($imageAnnotatorClient, $this->getFile()))->detect();
+
+        /** @var LogoData[] $response */
+        $response = iterator_to_array($logoDetector);
 
         $this->assertIsArray($response);
         $this->assertCount(1, $response);
-        $this->assertEquals('Google', $response[0]->getDescription());
+        $this->assertEquals('Google', $response[0]->description);
     }
 }

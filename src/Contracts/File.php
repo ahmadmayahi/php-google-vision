@@ -9,5 +9,6 @@ interface File
     /**
      * @return resource|string
      */
-    public function toGoogleVisionFile();
+    public function toVisionFile();
 }
+

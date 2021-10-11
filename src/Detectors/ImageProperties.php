@@ -4,6 +4,8 @@ namespace AhmadMayahi\Vision\Detectors;
 
 use AhmadMayahi\Vision\Data\ImagePropertiesData;
 use AhmadMayahi\Vision\Support\AbstractDetector;
+use AhmadMayahi\Vision\Traits\Arrayable;
+use AhmadMayahi\Vision\Traits\Jsonable;
 use Generator;
 use Google\Cloud\Vision\V1\ColorInfo;
 use Google\Cloud\Vision\V1\ImageProperties as GoogleVisionImageProperties;
@@ -11,18 +13,24 @@ use Google\Type\Color;
 
 class ImageProperties extends AbstractDetector
 {
+    use Arrayable, Jsonable;
+
     public function getOriginalResponse(): ?GoogleVisionImageProperties
     {
         $response = $this
             ->imageAnnotatorClient
-            ->imagePropertiesDetection($this->file->toGoogleVisionFile());
+            ->imagePropertiesDetection($this->file->toVisionFile());
 
         return $response->getImagePropertiesAnnotation();
     }
 
-    public function detect(): Generator
+    public function detect(): ?Generator
     {
         $response = $this->getOriginalResponse();
+
+        if (! $response) {
+            return null;
+        }
 
         /** @var ColorInfo $colorInfo */
         foreach ($response->getDominantColors()->getColors() as $colorInfo) {

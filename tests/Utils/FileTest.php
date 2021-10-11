@@ -14,11 +14,11 @@ final class FileTest extends TestCase
     {
         $filePath = $this->getFilePathname();
 
-        $file = new File($filePath, $this->getConfig());
+        $file = new File($filePath, $this->getTempDir());
 
         $this->assertEquals($filePath, $file->getLocalPathname());
 
-        $this->assertEquals(file_get_contents($filePath), $file->toGoogleVisionFile());
+        $this->assertEquals(file_get_contents($filePath), $file->toVisionFile());
     }
 
     /** @test */
@@ -28,11 +28,11 @@ final class FileTest extends TestCase
 
         $splFileInfo = new SplFileInfo($filePath);
 
-        $file = new File($splFileInfo, $this->getConfig());
+        $file = new File($splFileInfo, $this->getTempDir());
 
         $this->assertEquals($this->getFilePathname(), $file->getLocalPathname());
 
-        $this->assertEquals(file_get_contents($filePath), $file->toGoogleVisionFile());
+        $this->assertEquals(file_get_contents($filePath), $file->toVisionFile());
     }
 
     /** @test */
@@ -42,11 +42,11 @@ final class FileTest extends TestCase
 
         $splFileObject = new SplFileObject($filePath);
 
-        $file = new File($splFileObject, $this->getConfig());
+        $file = new File($splFileObject, $this->getTempDir());
 
         $this->assertEquals($this->getFilePathname(), $file->getLocalPathname());
 
-        $this->assertEquals(file_get_contents($filePath), $file->toGoogleVisionFile());
+        $this->assertEquals(file_get_contents($filePath), $file->toVisionFile());
     }
 
     /** @test */
@@ -56,13 +56,13 @@ final class FileTest extends TestCase
 
         $config = $this->getConfig()->setTempDirPath($this->getTempDir());
 
-        $file = new File($resource, $config);
+        $file = new File($resource, $this->getTempDir());
 
         $this->assertFileExists($file->getLocalPathname());
 
-        $this->assertIsResource($file->toGoogleVisionFile());
+        $this->assertIsResource($file->toVisionFile());
 
-        $this->assertSame($resource, $file->toGoogleVisionFile());
+        $this->assertSame($resource, $file->toVisionFile());
     }
 
     /** @test */
@@ -70,10 +70,10 @@ final class FileTest extends TestCase
     {
         $storage = 'gs://path/to/my/file.jpg';
 
-        $file = new File($storage, $this->getConfig());
+        $file = new File($storage, $this->getTempDir());
 
-        $this->assertTrue($file->isGoogleStorage());
+        $this->assertTrue($file->isGoogleStoragePath());
 
-        $this->assertEquals($storage, $file->toGoogleVisionFile());
+        $this->assertEquals($storage, $file->toVisionFile());
     }
 }

@@ -4,16 +4,7 @@ namespace AhmadMayahi\Vision\Data;
 
 class LogoData
 {
-    public function __construct(
-        private string $description
-    ) {
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription(): string
+    public function __construct(public string $description)
     {
-        return $this->description;
     }
 }

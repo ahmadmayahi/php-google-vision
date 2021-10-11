@@ -17,7 +17,9 @@ class Web extends AbstractDetector
 {
     public function getOriginalResponse(): ?WebDetection
     {
-        $web = $this->imageAnnotatorClient->webDetection($this->file->toGoogleVisionFile());
+        $web = $this
+            ->imageAnnotatorClient
+            ->webDetection($this->file->toVisionFile());
 
         return $web->getWebDetection();
     }
@@ -30,25 +32,13 @@ class Web extends AbstractDetector
             return null;
         }
 
-        $bestGuessLabels = $this->getBestGuessLabels($response);
-
-        $pagesWithMatchingImages = $this->getPagesWithMatchingImages($response);
-
-        $fullMatchingImages = $this->getFullMatchingImages($response);
-
-        $partialMatchingImages = $this->getPartialMatchingImages($response);
-
-        $visuallySimilarImages = $this->getVisuallySimilarImages($response);
-
-        $webEntiries = $this->getWebEntiries($response);
-
         return new WebData(
-            $bestGuessLabels,
-            $pagesWithMatchingImages,
-            $fullMatchingImages,
-            $partialMatchingImages,
-            $visuallySimilarImages,
-            $webEntiries
+            $this->getBestGuessLabels($response),
+            $this->getPagesWithMatchingImages($response),
+            $this->getFullMatchingImages($response),
+            $this->getPartialMatchingImages($response),
+            $this->getVisuallySimilarImages($response),
+            $this->getWebEntries($response)
         );
     }
 
@@ -56,7 +46,7 @@ class Web extends AbstractDetector
      * @param WebDetection $response
      * @return array|string[]
      */
-    public function getBestGuessLabels(WebDetection $response): array
+    protected function getBestGuessLabels(WebDetection $response): array
     {
         return array_map(function (WebLabel $label) {
             return $label->getLabel();
@@ -67,7 +57,7 @@ class Web extends AbstractDetector
      * @param WebDetection $response
      * @return WebPageData[]
      */
-    public function getPagesWithMatchingImages(WebDetection $response): array
+    protected function getPagesWithMatchingImages(WebDetection $response): array
     {
         return array_map(function (WebPage $item) {
             return new WebPageData($item->getUrl(), $item->getPageTitle(), $item->getScore());
@@ -78,7 +68,7 @@ class Web extends AbstractDetector
      * @param WebDetection $response
      * @return WebImageData[]
      */
-    public function getFullMatchingImages(WebDetection $response): array
+    protected function getFullMatchingImages(WebDetection $response): array
     {
         return array_map(function (WebImage $item) {
             return new WebImageData($item->getUrl(), $item->getScore());
@@ -89,7 +79,7 @@ class Web extends AbstractDetector
      * @param WebDetection $response
      * @return WebImageData[]
      */
-    public function getPartialMatchingImages(WebDetection $response): array
+    protected function getPartialMatchingImages(WebDetection $response): array
     {
         return array_map(function (WebImage $item) {
             return new WebImageData($item->getUrl(), $item->getScore());
@@ -100,7 +90,7 @@ class Web extends AbstractDetector
      * @param WebDetection $response
      * @return WebImageData[]
      */
-    public function getVisuallySimilarImages(WebDetection $response): array
+    protected function getVisuallySimilarImages(WebDetection $response): array
     {
         return array_map(function (WebImage $item) {
             return new WebImageData($item->getUrl(), $item->getScore());
@@ -111,7 +101,7 @@ class Web extends AbstractDetector
      * @param WebDetection $response
      * @return WebEntityData[]
      */
-    public function getWebEntiries(WebDetection $response): array
+    protected function getWebEntries(WebDetection $response): array
     {
         return array_map(function (WebEntity $item) {
             return new WebEntityData($item->getEntityId(), $item->getScore(), $item->getDescription());

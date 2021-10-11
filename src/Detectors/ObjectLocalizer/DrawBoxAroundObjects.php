@@ -42,7 +42,7 @@ class DrawBoxAroundObjects implements Drawable
 
         /** @var LocalizedObjectData $obj */
         foreach ($this->objectLocalizer->detect() as $obj) {
-            $vertices = $obj->getNormalizedVertices();
+            $vertices = $obj->normalizedVertices;
 
             if ($vertices) {
                 $x1 = $vertices[0]['x'];

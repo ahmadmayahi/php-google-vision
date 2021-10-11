@@ -2,7 +2,7 @@
 
 namespace AhmadMayahi\Vision\Tests\Detectors;
 
-use AhmadMayahi\Vision\Detectors\Image;
+use AhmadMayahi\Vision\Detectors\ImageText;
 use AhmadMayahi\Vision\Tests\TestCase;
 use Google\Cloud\Vision\V1\AnnotateImageResponse;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
@@ -27,7 +27,7 @@ final class ImageDetectorTest extends TestCase
             ->method('documentTextDetection')
             ->willReturn($annotatorImageResponse);
 
-        $image = new Image(
+        $image = new ImageText(
             $imageAnnotatorClient,
             $this->getFile(),
         );

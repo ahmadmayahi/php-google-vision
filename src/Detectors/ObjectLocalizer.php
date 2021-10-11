@@ -10,6 +10,8 @@ use AhmadMayahi\Vision\Enums\ColorEnum;
 use AhmadMayahi\Vision\Enums\FontEnum;
 use AhmadMayahi\Vision\Support\AbstractDetector;
 use AhmadMayahi\Vision\Support\Image;
+use AhmadMayahi\Vision\Traits\Arrayable;
+use AhmadMayahi\Vision\Traits\Jsonable;
 use Closure;
 use Exception;
 use Generator;
@@ -20,6 +22,8 @@ use Google\Protobuf\Internal\RepeatedField;
 
 class ObjectLocalizer extends AbstractDetector
 {
+    use Arrayable, Jsonable;
+
     public function __construct(
         protected ImageAnnotatorClient $imageAnnotatorClient,
         protected File $file,
@@ -31,15 +35,21 @@ class ObjectLocalizer extends AbstractDetector
     {
         $response = $this
             ->imageAnnotatorClient
-            ->objectLocalization($this->file->toGoogleVisionFile());
+            ->objectLocalization($this->file->toVisionFile());
 
         return $response->getLocalizedObjectAnnotations();
     }
 
-    public function detect(): Generator
+    public function detect(): ?Generator
     {
+        $response = $this->getOriginalResponse();
+
+        if (0 === $response->count()) {
+            return null;
+        }
+
         /** @var LocalizedObjectAnnotation $obj */
-        foreach ($this->getOriginalResponse() as $obj) {
+        foreach ($response as $obj) {
             $vertices = $obj->getBoundingPoly()->getNormalizedVertices();
 
             yield new LocalizedObjectData(

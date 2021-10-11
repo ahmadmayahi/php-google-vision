@@ -13,14 +13,18 @@ class SafeSearch extends AbstractDetector
     {
         $response = $this
             ->imageAnnotatorClient
-            ->safeSearchDetection($this->file->toGoogleVisionFile());
+            ->safeSearchDetection($this->file->toVisionFile());
 
         return $response->getSafeSearchAnnotation();
     }
 
-    public function detect(): SafeSearchData
+    public function detect(): ?SafeSearchData
     {
         $response = $this->getOriginalResponse();
+
+        if (! $response) {
+            return null;
+        }
 
         return (new SafeSearchData(
             adult: LikelihoodEnum::fromKey($response->getAdult()),

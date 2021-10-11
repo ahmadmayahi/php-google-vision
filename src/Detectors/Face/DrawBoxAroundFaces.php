@@ -27,14 +27,14 @@ class DrawBoxAroundFaces implements Drawable
     {
         /** @var FaceData $face */
         foreach ($this->face->detect() as $face) {
-            $vertices = $face->getBounds();
+            $vertices = $face->bounds;
 
             if ($vertices) {
-                $x1 = $vertices[0]->getX();
-                $y1 = $vertices[0]->getY();
+                $x1 = $vertices[0]->x;
+                $y1 = $vertices[0]->y;
 
-                $x2 = $vertices[2]->getX();
-                $y2 = $vertices[2]->getY();
+                $x2 = $vertices[2]->x;
+                $y2 = $vertices[2]->y;
 
                 $this->image->drawRectangle($x1, $y1, $x2, $y2, $this->borderColor);
             }

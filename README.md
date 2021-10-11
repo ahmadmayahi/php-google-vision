@@ -64,7 +64,7 @@ $config = (new Config())
     ->setTempDirPath('/path/to/temp')
     
     // Required: path to your google service account;
-    ->setCredentialsPathname('path/to/google-service-account.json');
+    ->setCredentials('path/to/google-service-account.json');
 ```
 
 ## Original Responses
@@ -76,7 +76,7 @@ You may get the original response for any feature as follows:
 ```php
 use AhmadMayahi\Vision\Vision;
 
-$response = (new Vision($config))
+$response = Vision::init($config)
     ->file('/path/to/input/file')
     ->faceDetection()
     ->getOriginalResponse();
@@ -103,12 +103,12 @@ The `file()` method accepts the following types:
 - `SplFileInfo`.
 - `SplFileObject`.
 
-You may also use the static `new` method to instanciate the `Vision` object:
+You may also use the static `new` method to instantiate the `Vision` object:
 
 ```php
 use AhmadMayahi\Vision\Vision;
 
-$vision = Vision::new($config)
+$vision = Vision::init($config)
     ->file('/path/to/image.jpg')
     ->faceDetection()
     ->getOriginalResponse();
@@ -126,9 +126,9 @@ public function register()
 {
     $this->app->singleton(Vision::class, function ($app) {
         $config = (new Config())
-            ->setCredentialsPathname(config('vision.service_account_path'));
+            ->setCredentials(config('vision.service_account_path'));
     
-        return new Vision($config);
+        return Vision::init($config);
     });
 }
 ```
@@ -178,30 +178,49 @@ The `detect` method returns a `Generator` of `AhmadMayahi\Vision\Data\FaceData`:
 ```php
 use AhmadMayahi\Vision\Vision;
 
-$faces = (new Vision($config))
+$vision = Vision::init($config);
+
+$faces = $vision
     ->file('/path/to/image.jpg')
     ->faceDetection()
     ->detect();
 
 echo count($faces). ' faces found';
 
+/** @var \AhmadMayahi\Vision\Data\FaceData $faceData */
 foreach ($faces as $faceData) {
     // How angry the face is? 
-    $faceData->getAnger();
+    $faceData->anger;
     
     // Surprise reaction? 
-    $faceData->getSurprise();
+    $faceData->surprise;
     
     // Is he/she happy?
-    $faceData->getJoy();
+    $faceData->joy;
     
     // Bounds
-    $faceData->getBounds();
+    $faceData->bounds;
 }
 ```
 
-> `getAnger`, `getSurprise` and `getJoy` return Likelihoods ratings which are expressed as 6 different values: `UNKNOWN`, `VERY_UNLIKELY`, `UNLIKELY`, `POSSIBLE`, `LIKELY`, or `VERY_LIKELY`.
+> `anger`, `surprise` and `joy` return Likelihoods ratings which are expressed as six different values: `UNKNOWN`, `VERY_UNLIKELY`, `UNLIKELY`, `POSSIBLE`, `LIKELY`, or `VERY_LIKELY`.
 > See [Likelihood](https://cloud.google.com/vision/docs/reference/rpc/google.cloud.vision.v1#likelihood).
+
+Get the `detect` method as array:
+```php
+$faces = $vision
+    ->file('/path/to/image.jpg')
+    ->faceDetection()
+    ->asArray();
+```
+
+Get the `detect` method as JSON:
+```php
+$faces = $vision
+    ->file('/path/to/image.jpg')
+    ->faceDetection()
+    ->asJson();
+```
 
 ### Draw box around faces
 
@@ -209,13 +228,14 @@ foreach ($faces as $faceData) {
 use AhmadMayahi\Vision\Vision;
 use AhmadMayahi\Vision\Enums\ColorEnum;
 
-$analyzer = (new Vision($config))
+$analyzer = Vision::init($config)
     ->file('/path/to/input/image.jpg')
     ->faceDetection()
     ->drawBoxAroundFaces(ColorEnum::MAGENTA)
-    ->toJpeg('faces.jpg'); // Alternatively, you may use "toPng", "toGif", "toBmp".
+    ->toJpeg('faces.jpg');
 ```
 
+> Alternatively, you may use `toPng`, `toGif`, `toBmp` methods.
 > All the drawing methods return an object of type `AhmadMayahi\Vision\Utils\Image`.
 
 ![Larry Page and Sergey Brin Faces](tests/files/output/larry-sergey.jpg)
@@ -231,10 +251,10 @@ The `getPlainText` returns an object of type `AhmadMayahi\Vision\Data\ImageTextD
 ```php
 use AhmadMayahi\Vision\Vision;
 
-$response = (new Vision($config))
+$response = Vision::init($config)
     ->file('/path/to/input/image.jpg')
     ->imageTextDetection()
-    ->getPlainText();
+    ->plain();
 
 $response->getLocale(); // locale, for example "en" for English
 $response->getText();   // Image text
@@ -253,16 +273,16 @@ The `getDocument` returns an object of type `AhmadMayahi\Vision\Data\ImageTextDa
 ```php
 use AhmadMayahi\Vision\Vision;
 
-$response = (new Vision($config))
+$response = Vision::init($config)
     ->file('/path/to/input/image.jpg')
     ->imageTextDetection()
-    ->getDocument();
+    ->document();
  
 $response->getLocale(); // locale, for example "en" for English
 $response->getText();   // Image text
 ```
 
-> The difference between `getPlainText()` and `getDocuemnt()` is that the first one only retrieves the plain text (no bullets, signs, etc...), whereas the latter one tries to retrieve the entire document (including bullets, symbols, etc...).
+> The difference between `plain()` and `docuemnt()` is that the first one only retrieves the plain text (no bullets, signs, etc...), whereas the latter one tries to retrieve the entire document (including bullets, symbols, etc...).
 
 ## Image Properties Detection
 
@@ -273,19 +293,20 @@ The `detect` method returns a `Generator` of `AhmadMayahi\Vision\Data\ImagePrope
 ```php
 use AhmadMayahi\Vision\Vision;
 
-$properties = (new Vision($config))
+$properties = Vision::init($config)
     ->file('/path/to/input/image.jpg')
     ->imagePropertiesDetection()
     ->detect();
 
+/** @var \AhmadMayahi\Vision\Data\ImagePropertiesData $item */
 foreach ($properties as $item) {
-    $item->getRed();
+    $item->red;
 
-    $item->getBlue();
+    $item->blue;
 
-    $item->getGreen();
+    $item->green;
 
-    $item->getPixelFraction();    
+    $item->pixelFraction;    
 }
 ```
 
@@ -296,7 +317,7 @@ foreach ($properties as $item) {
 ```php
 use AhmadMayahi\Vision\Vision;
 
-$landmarks = (new Vision($config))
+$landmarks = Vision::init($config)
     ->file('/path/to/baghdad.jpg')
     ->landmarkDetection()
     ->detect();
@@ -318,7 +339,7 @@ The `detect` method returns an object of type `AhmadMayahi\Vision\Data\SafeSearc
 ```php
 use AhmadMayahi\Vision\Vision;
 
-$result = (new Vision($config))
+$result = Vision::init($config)
     ->file('/path/to/input/image.jpg')
     ->safeSearchDetection()
     ->detect();
@@ -343,7 +364,7 @@ The `detect` method returns an a `Generator` of labels:
 ```php
 use AhmadMayahi\Vision\Vision;
 
-$labels = (new Vision($config))
+$labels = Vision::init($config)
     ->file('/path/to/input/image.jpg')
     ->labelDetection()
     ->detect();
@@ -358,7 +379,7 @@ The `detect` method returns an `Generator` of logos:
 ```php
 use AhmadMayahi\Vision\Vision;
 
-$labels = (new Vision($config))
+$labels = Vision::init($config)
     ->file('/path/to/input/image.jpg')
     ->logoDetection()
     ->detect();
@@ -375,7 +396,7 @@ The `detect` method returns a `Generator` of `AhmadMayahi\Vision\Data\LocalizedO
 ```php
 use AhmadMayahi\Vision\Vision;
 
-$objects = (new Vision($config))
+$objects = Vision::init($config)
     ->file('/path/to/image.jpg')
     ->objectLocalizer()
     ->detect();
@@ -402,7 +423,7 @@ You may draw box around objects using the `drawBoxAroundObjects` method:
 use AhmadMayahi\Vision\Vision;
 use AhmadMayahi\Vision\Enums\ColorEnum;
 
-$objects = (new Vision($config))
+$objects = Vision::init($config)
     ->file('/path/to/input/image.jpg')
     ->objectLocalizer()
     ->drawBoxAroundObjects(ColorEnum::GREEN)
@@ -419,7 +440,7 @@ use AhmadMayahi\Vision\Enums\ColorEnum;
 use AhmadMayahi\Vision\Support\Image;
 use AhmadMayahi\Vision\Data\LocalizedObjectData;
 
-$objects = (new Vision($config))
+$objects = Vision::init($config)
     ->file('/path/to/input/image.jpg')
     ->objectLocalizer()
     ->drawBoxAroundObjects(ColorEnum::GREEN, function(Image $outputImage, LocalizedObjectData $object) {
@@ -444,7 +465,7 @@ use AhmadMayahi\Vision\Enums\FontEnum;
 use AhmadMayahi\Vision\Support\Image;
 use AhmadMayahi\Vision\Data\LocalizedObjectData;
 
-$objects = (new Vision($config))
+$objects = Vision::init($config)
     ->file('/path/to/input/image.jpg')
     ->objectLocalizer()
     ->drawBoxAroundObjectsWithText(
@@ -471,7 +492,7 @@ use AhmadMayahi\Vision\Enums\FontEnum;
 use AhmadMayahi\Vision\Support\Image;
 use AhmadMayahi\Vision\Data\LocalizedObjectData;
 
-$response = (new Vision($config))
+$response = Vision::init($config)
     ->file('/path/to/input/image.jpg')
     ->webDetection()
     ->detect(); 

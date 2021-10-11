@@ -69,6 +69,6 @@ final class LabelTest extends TestCase
 
         $this->assertIsArray($response);
         $this->assertCount(1, $response);
-        $this->assertEquals('Wall', $response[0]->getDescription());
+        $this->assertEquals('Wall', $response[0]->description);
     }
 }

@@ -95,8 +95,9 @@ final class LandmarkTest extends TestCase
 
         $this->assertIsArray($response);
         $this->assertCount(1, $response);
-        $this->assertEquals('Golden Gate Bridge', $response[0]->getName());
-        $this->assertEquals(37.811013, $response[0]->getLocations()[0]['latitude']);
-        $this->assertEquals(-122.477801, $response[0]->getLocations()[0]['longitude']);
+        $this->assertEquals('Golden Gate Bridge', $response[0]->name);
+
+        $this->assertEquals(37.811013, $response[0]->locations[0]->latitude);
+        $this->assertEquals(-122.477801, $response[0]->locations[0]->longitude);
     }
 }

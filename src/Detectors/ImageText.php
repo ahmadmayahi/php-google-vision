@@ -7,7 +7,12 @@ use AhmadMayahi\Vision\Support\AbstractDetector;
 use Google\Cloud\Vision\V1\EntityAnnotation;
 use Google\Protobuf\Internal\RepeatedField;
 
-class Image extends AbstractDetector
+/**
+ * Detect text in images
+ *
+ * @see https://cloud.google.com/vision/docs/ocr
+ */
+class ImageText extends AbstractDetector
 {
     public function plain(): ?ImageTextData
     {
@@ -30,7 +35,7 @@ class Image extends AbstractDetector
     }
 
     /**
-     * @return RepeatedField
+     * @return RepeatedField|null
      */
     public function getOriginalResponse(): ?RepeatedField
     {
@@ -57,6 +62,6 @@ class Image extends AbstractDetector
 
     public function __toString(): string
     {
-        return $this->plain()->text;
+        return $this->plain()?->text ?? '';
     }
 }

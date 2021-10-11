@@ -32,11 +32,11 @@ class DrawBoxAroundObjectsWithText implements Drawable
             $width = $image->getWidth();
             $height = $image->getHeight();
 
-            $x1 = $obj->getNormalizedVertices()[0]['x'];
-            $y2 = $obj->getNormalizedVertices()[2]['y'];
+            $x1 = $obj->normalizedVertices[0]->x;
+            $y2 = $obj->normalizedVertices[2]->y;
 
             $image->writeText(
-                text: $obj->getName(),
+                text: $obj->name,
                 fontFile: $this->font,
                 color: $this->textColor,
                 fontSize: $this->fontSize,

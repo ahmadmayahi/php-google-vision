@@ -4,10 +4,12 @@ namespace AhmadMayahi\Vision;
 
 use AhmadMayahi\Vision\Support\File;
 use Exception;
+use Google\ApiCore\CredentialsWrapper;
+use Google\Auth\FetchAuthTokenInterface;
 use SplFileInfo;
 use SplFileObject;
 
-final class Config
+class Config
 {
     protected array $config = [];
 
@@ -19,7 +21,7 @@ final class Config
      */
     public function setInputFile($file): static
     {
-        $this->config['file'] = new File($file, $this);
+        $this->config['file'] = new File($file, $this->getTempDirPath());
 
         return $this;
     }
@@ -29,9 +31,16 @@ final class Config
         return $this->config['file'];
     }
 
-    public function setCredentialsPathname(string $path): static
+    public function setCredentials(string|array|FetchAuthTokenInterface|CredentialsWrapper $val): static
     {
-        $this->config['credentials'] = $path;
+        $this->config['credentials'] = $val;
+
+        return $this;
+    }
+
+    public function setCredentialsConfig(array $val): static
+    {
+        $this->config['credentialsConfig'] = $val;
 
         return $this;
     }
@@ -43,16 +52,16 @@ final class Config
         return $this;
     }
 
-    public function setTempDirPath(string $path)
+    public function setTempDirPath(string $path): static
     {
         $this->config['tempDirPath'] = $path;
 
         return $this;
     }
 
-    public function getTempDirPath()
+    public function getTempDirPath(): ?string
     {
-        return $this->config['tempDirPath'] ?? sys_get_temp_dir();
+        return $this->config['tempDirPath'] ?? null;
     }
 
     /**
@@ -71,8 +80,27 @@ final class Config
 
     public function connectConfig(): array
     {
-        return [
+        $config = [
             'credentials' => $this->config['credentials'],
         ];
+
+        if ($endPoint = $this->get('apiEndpoint')) {
+            $config['apiEndpoint'] = $endPoint;
+        }
+
+        if ($credentialsConfig = $this->get('credentialsConfig')) {
+            $config['credentialsConfig'] = $credentialsConfig;
+        }
+
+        if ($timeout = $this->get('requestTimeout')) {
+            $config['requestTimeout'] = $timeout;
+        }
+
+        return $config;
+    }
+
+    public function get($key)
+    {
+        return $this->config[$key] ?? null;
     }
 }

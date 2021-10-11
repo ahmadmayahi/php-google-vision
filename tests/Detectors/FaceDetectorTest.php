@@ -7,7 +7,6 @@ use AhmadMayahi\Vision\Data\VertexData;
 use AhmadMayahi\Vision\Detectors\Face;
 use AhmadMayahi\Vision\Support\Image;
 use AhmadMayahi\Vision\Tests\TestCase;
-use Generator;
 use Google\Cloud\Vision\V1\AnnotateImageResponse;
 use Google\Cloud\Vision\V1\BoundingPoly;
 use Google\Cloud\Vision\V1\FaceAnnotation;
@@ -37,7 +36,9 @@ final class FaceDetectorTest extends TestCase
             ->willReturn($annotatorImageResponse);
 
         $image = $this->createMock(Image::class);
+
         $face = new Face($imageAnnotatorClient, $this->getFile(), $image);
+
         $this->assertInstanceOf(RepeatedField::class, $face->getOriginalResponse());
     }
 
@@ -45,24 +46,19 @@ final class FaceDetectorTest extends TestCase
     public function it_should_get_face_data(): void
     {
         $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
-        $repeatedField = $this->createMock(RepeatedField::class);
         $faceAnnotation = $this->createMock(FaceAnnotation::class);
         $boundingPoly = $this->createMock(BoundingPoly::class);
 
-        $vertex = $this->createMock(Vertex::class);
-        $vertex
+        $vertex1 = $this->createMock(Vertex::class);
+        $vertex1
             ->expects($this->once())
             ->method('getX')
-            ->willReturn(89.99);
-        $vertex
+            ->willReturn(330);
+
+        $vertex1
             ->expects($this->once())
             ->method('getY')
-            ->willReturn(74.22);
-
-        $boundingPoly
-            ->expects($this->once())
-            ->method('getVertices')
-            ->willReturn([$vertex]);
+            ->willReturn(24);
 
         $faceAnnotation
             ->expects($this->once())
@@ -81,11 +77,42 @@ final class FaceDetectorTest extends TestCase
 
         $faceAnnotation
             ->expects($this->once())
+            ->method('getBlurredLikelihood')
+            ->willReturn(Likelihood::POSSIBLE);
+
+        $faceAnnotation
+            ->expects($this->once())
+            ->method('getHeadwearLikelihood')
+            ->willReturn(Likelihood::POSSIBLE);
+
+        $faceAnnotation
+            ->expects($this->once())
+            ->method('getUnderExposedLikelihood')
+            ->willReturn(Likelihood::POSSIBLE);
+
+        $faceAnnotation
+            ->expects($this->once())
+            ->method('getDetectionConfidence')
+            ->willReturn(Likelihood::POSSIBLE);
+
+        $faceAnnotation
+            ->expects($this->once())
+            ->method('getLandmarkingConfidence')
+            ->willReturn(Likelihood::POSSIBLE);
+
+        $boundingPoly
+            ->expects($this->once())
+            ->method('getVertices')
+            ->willReturn($this->createIterator([$vertex1]));
+
+        $faceAnnotation
+            ->expects($this->once())
             ->method('getBoundingPoly')
             ->willReturn($boundingPoly);
 
         $repeatedFieldIter = $this->createMock(RepeatedFieldIter::class);
 
+        $repeatedField = $this->createMock(RepeatedField::class);
         $repeatedField
             ->expects($this->once())
             ->method('getIterator')
@@ -102,23 +129,21 @@ final class FaceDetectorTest extends TestCase
             ->method('faceDetection')
             ->willReturn($annotatorImageResponse);
 
-        $imageAnnotatorClient->expects($this->once())->method('close');
+        $imageAnnotatorClient
+            ->expects($this->once())
+            ->method('close');
 
         $image = $this->createMock(Image::class);
 
         $face = new Face($imageAnnotatorClient, $this->getFile(), $image);
-        $face = $face->detect();
-
-        $this->assertInstanceOf(Generator::class, $face);
-
-        $faces = iterator_to_array($face);
+        $faces = $face->asArray();
 
         $this->assertCount(1, $faces);
         $this->assertInstanceOf(FaceData::class, $faces[0]);
-        $this->assertEquals('VERY_UNLIKELY', $faces[0]->getAnger());
-        $this->assertEquals('VERY_LIKELY', $faces[0]->getJoy());
-        $this->assertEquals('POSSIBLE', $faces[0]->getSurprise());
-        $this->assertEquals([new VertexData(89.99, 74.22)], $faces[0]->getBounds());
+        $this->assertEquals('VERY_UNLIKELY', $faces[0]->anger);
+        $this->assertEquals('VERY_LIKELY', $faces[0]->joy);
+        $this->assertEquals('POSSIBLE', $faces[0]->surprise);
+        $this->assertEquals([new VertexData(330, 24)], $faces[0]->bounds);
     }
 
     /** @test */
@@ -140,10 +165,12 @@ final class FaceDetectorTest extends TestCase
             ->method('getY')
             ->willReturnOnConsecutiveCalls(74, 68, 209, 110);
 
+        $iter = $this->mockIterator($this->createMock(RepeatedFieldIter::class), [$vertex, $vertex, $vertex, $vertex]);
+
         $boundingPoly
             ->expects($this->once())
             ->method('getVertices')
-            ->willReturn([$vertex, $vertex, $vertex, $vertex]);
+            ->willReturn($iter);
 
         $faceAnnotation
             ->expects($this->once())
@@ -158,6 +185,31 @@ final class FaceDetectorTest extends TestCase
         $faceAnnotation
             ->expects($this->once())
             ->method('getSurpriseLikelihood')
+            ->willReturn(Likelihood::POSSIBLE);
+
+        $faceAnnotation
+            ->expects($this->once())
+            ->method('getBlurredLikelihood')
+            ->willReturn(Likelihood::POSSIBLE);
+
+        $faceAnnotation
+            ->expects($this->once())
+            ->method('getHeadwearLikelihood')
+            ->willReturn(Likelihood::POSSIBLE);
+
+        $faceAnnotation
+            ->expects($this->once())
+            ->method('getUnderExposedLikelihood')
+            ->willReturn(Likelihood::POSSIBLE);
+
+        $faceAnnotation
+            ->expects($this->once())
+            ->method('getDetectionConfidence')
+            ->willReturn(Likelihood::POSSIBLE);
+
+        $faceAnnotation
+            ->expects($this->once())
+            ->method('getLandmarkingConfidence')
             ->willReturn(Likelihood::POSSIBLE);
 
         $faceAnnotation
