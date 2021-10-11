@@ -5,6 +5,8 @@ on: [ push, pull_request ]
 jobs:
   test:
     runs-on: ${{ matrix.os }}
+    env:
+      XDEBUG_MODE: coverage
     strategy:
       fail-fast: false
       matrix:
@@ -23,7 +25,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, bcmath, intl, gd, exif, iconv
-          coverage: none
+          coverage: xdebug
 
       - name: Configure for PHP 8.1
         run: composer config platform.php 8.0.99
@@ -43,13 +45,13 @@ jobs:
           key: dependencies-${{ matrix.dependency-version }}-laravel-${{ matrix.laravel }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
       - name: Execute tests
-        run: vendor/bin/phpunit --coverage-clover=build/logs/clover.xml
+        run: vendor/bin/phpunit --coverage-clover=build/clover.xml
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: build/logs/clover.xml
+          file: build/clover.xml
           flags: tests
           name: codecov-umbrella
           fail_ci_if_error: true
