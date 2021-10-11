@@ -13,6 +13,7 @@ For feedback, please [contact me](https://form.jotform.com/201892949858375).
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/ahmadmayahi/php-google-vision/Check%20&%20fix%20styling?label=code%20style)](https://github.com/ahmadmayahi/php-google-vision/actions?query=workflow%3A"Check+%26+fix+styling"+branch%main)
 [![Total Downloads](https://img.shields.io/packagist/dt/ahmadmayahi/php-google-vision.svg?style=flat-square)](https://packagist.org/packages/ahmadmayahi/php-google-vision)
 [![codecov](https://codecov.io/gh/ahmadmayahi/php-google-vision/branch/main/graph/badge.svg?token=hayMyn8tLI)](https://codecov.io/gh/ahmadmayahi/php-google-vision)
+[![Maintainability](https://api.codeclimate.com/v1/badges/6047dca33b17dd5eeffb/maintainability)](https://codeclimate.com/github/ahmadmayahi/php-google-vision/maintainability)
 
 This package provides an elegant wrapper around [Google Vision API](https://github.com/googleapis/google-cloud-php-vision) and more.
 
