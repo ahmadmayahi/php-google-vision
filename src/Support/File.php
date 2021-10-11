@@ -90,7 +90,6 @@ class File implements FileContract
 
     public function saveStream(string $tempFile)
     {
-
         if (false === file_put_contents($tempFile, stream_get_contents($this->file))) {
             throw new FileException('Could not write teo temp file: '.$tempFile);
         }

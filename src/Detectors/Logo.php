@@ -15,7 +15,8 @@ use Google\Protobuf\Internal\RepeatedField;
  */
 class Logo extends AbstractDetector
 {
-    use Arrayable, Jsonable;
+    use Arrayable;
+    use Jsonable;
 
     public function getOriginalResponse(): RepeatedField
     {

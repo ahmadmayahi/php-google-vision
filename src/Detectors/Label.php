@@ -17,7 +17,8 @@ use Google\Protobuf\Internal\RepeatedField;
  */
 class Label extends AbstractDetector
 {
-    use Arrayable, Jsonable;
+    use Arrayable;
+    use Jsonable;
 
     public function getOriginalResponse(): RepeatedField
     {

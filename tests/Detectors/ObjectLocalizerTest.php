@@ -6,12 +6,8 @@ use AhmadMayahi\Vision\Detectors\ObjectLocalizer;
 use AhmadMayahi\Vision\Support\Image;
 use AhmadMayahi\Vision\Tests\TestCase;
 use Google\Cloud\Vision\V1\AnnotateImageResponse;
-use Google\Cloud\Vision\V1\BoundingPoly;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
-use Google\Cloud\Vision\V1\LocalizedObjectAnnotation;
-use Google\Cloud\Vision\V1\NormalizedVertex;
 use Google\Protobuf\Internal\RepeatedField;
-use Google\Protobuf\Internal\RepeatedFieldIter;
 
 final class ObjectLocalizerTest extends TestCase
 {

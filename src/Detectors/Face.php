@@ -26,7 +26,8 @@ use Google\Protobuf\Internal\RepeatedField;
  */
 class Face extends AbstractDetector
 {
-    use Arrayable, Jsonable;
+    use Arrayable;
+    use Jsonable;
 
     public function __construct(protected ImageAnnotatorClient $imageAnnotatorClient, protected File $file, protected Image $image)
     {

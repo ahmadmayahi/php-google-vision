@@ -11,4 +11,3 @@ interface File
      */
     public function toVisionFile();
 }
-

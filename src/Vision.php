@@ -3,8 +3,8 @@
 namespace AhmadMayahi\Vision;
 
 use AhmadMayahi\Vision\Detectors\Face as FaceDetector;
-use AhmadMayahi\Vision\Detectors\ImageText as ImageTextDetector;
 use AhmadMayahi\Vision\Detectors\ImageProperties as ImagePropertiesDetector;
+use AhmadMayahi\Vision\Detectors\ImageText as ImageTextDetector;
 use AhmadMayahi\Vision\Detectors\Label as LabelDetector;
 use AhmadMayahi\Vision\Detectors\Landmark as LandmarkDetector;
 use AhmadMayahi\Vision\Detectors\Logo as LogoDetector;
