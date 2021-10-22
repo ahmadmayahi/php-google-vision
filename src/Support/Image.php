@@ -2,6 +2,8 @@
 
 namespace AhmadMayahi\Vision\Support;
 
+use AhmadMayahi\Vision\Exceptions\FileException;
+use Exception;
 use GdImage;
 
 class Image
@@ -10,7 +12,13 @@ class Image
 
     public function __construct(File $file)
     {
-        $this->gdImage = imagecreatefromstring($file->getContents());
+        $contents = $file->getContents();
+
+        if (!$contents) {
+            throw new FileException('Invalid file!');
+        }
+
+        $this->gdImage = imagecreatefromstring($contents);
 
         return $this;
     }
@@ -35,10 +43,24 @@ class Image
         imagerectangle($this->gdImage, $x1, $y1, $x2, $y2, $color);
     }
 
+    public function cropImage($x, $y, $width, $height)
+    {
+        $crop = imagecrop($this->gdImage, ['x' => $x, 'y' => $y, 'width' => $width, 'height' => $height]);
+
+        if (false === $crop) {
+            throw new Exception('Could not crop the image');
+        }
+
+        $this->gdImage = $crop;
+    }
+
+    public function drawPolygon(array $points, $numberOfPoints, $color)
+    {
+        imagepolygon($this->gdImage, $points, $numberOfPoints, $color);
+    }
+
     public function writeText(string $text, string $fontFile, int $color, int $fontSize, int $x, int $y)
     {
-        $fontFile = dirname(__DIR__, 2) . '/fonts/' . $fontFile;
-
         imagettftext(
             $this->gdImage,
             $fontSize,
@@ -46,7 +68,7 @@ class Image
             $x,
             $y,
             $color,
-            $fontFile,
+            $this->getFontPath($fontFile),
             $text,
         );
     }
@@ -69,5 +91,10 @@ class Image
     public function toBmp(string $outputFileName): bool
     {
         return imagebmp($this->gdImage, $outputFileName);
+    }
+
+    private function getFontPath(string $font): string
+    {
+        return dirname(__DIR__, 2) . '/fonts/' . $font;
     }
 }
