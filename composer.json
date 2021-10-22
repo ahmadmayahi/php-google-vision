@@ -1,9 +1,10 @@
 {
     "name": "ahmadmayahi/php-google-vision",
-    "description": "Fluent interfaces for Google Vision API",
+    "description": "An elegant wrapper around Google Vision",
     "keywords": [
         "google vision",
-        "ocr"
+        "ocr",
+        "ai"
     ],
     "homepage": "https://github.com/ahmadmayahi/php-google-vision",
     "license": "MIT",

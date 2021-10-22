@@ -2,7 +2,9 @@
 
 namespace AhmadMayahi\Vision\Data;
 
-class FaceData
+use AhmadMayahi\Vision\Support\DTO;
+
+class FaceData extends DTO
 {
     public function __construct(
         public string $anger,
