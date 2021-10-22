@@ -2,12 +2,9 @@
 
 namespace AhmadMayahi\Vision\Tests;
 
-use ArrayAccess;
-use Countable;
-use Google\Protobuf\Internal\RepeatedField;
-use Iterator;
+use Google\Protobuf\Internal\RepeatedField as GoogleRepeatedField;
 
-class Iter extends RepeatedField
+class RepeatedField extends GoogleRepeatedField
 {
     private int $position;
 
@@ -26,7 +23,7 @@ class Iter extends RepeatedField
         return $this->container[$this->position];
     }
 
-    public function key()
+    public function key(): int
     {
         return $this->position;
     }
@@ -36,7 +33,7 @@ class Iter extends RepeatedField
         ++$this->position;
     }
 
-    public function valid()
+    public function valid(): bool
     {
         return isset($this->container[$this->position]);
     }
