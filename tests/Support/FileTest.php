@@ -1,6 +1,6 @@
 <?php
 
-namespace AhmadMayahi\Vision\Tests\Utils;
+namespace AhmadMayahi\Vision\Tests\Support;
 
 use AhmadMayahi\Vision\Support\File;
 use AhmadMayahi\Vision\Tests\TestCase;
