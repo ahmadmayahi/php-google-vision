@@ -2,7 +2,7 @@
 
 namespace AhmadMayahi\Vision\Enums;
 
-class FontEnum
+class Font
 {
     public const OPEN_SANS_BOLD = 'OpenSans-Bold.ttf';
 
