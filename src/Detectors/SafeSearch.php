@@ -2,12 +2,13 @@
 
 namespace AhmadMayahi\Vision\Detectors;
 
-use AhmadMayahi\Vision\Data\SafeSearchData;
-use AhmadMayahi\Vision\Enums\LikelihoodEnum;
+use AhmadMayahi\Vision\Contracts\Detectable;
+use AhmadMayahi\Vision\Data\SafeSearch as SafeSearchData;
+use AhmadMayahi\Vision\Enums\Likelihood;
 use AhmadMayahi\Vision\Support\AbstractDetector;
 use Google\Cloud\Vision\V1\SafeSearchAnnotation;
 
-class SafeSearch extends AbstractDetector
+class SafeSearch extends AbstractDetector implements Detectable
 {
     public function getOriginalResponse(): ?SafeSearchAnnotation
     {
@@ -27,11 +28,11 @@ class SafeSearch extends AbstractDetector
         }
 
         return (new SafeSearchData(
-            adult: LikelihoodEnum::fromKey($response->getAdult()),
-            medical: LikelihoodEnum::fromKey($response->getMedical()),
-            spoof: LikelihoodEnum::fromKey($response->getSpoof()),
-            violence: LikelihoodEnum::fromKey($response->getViolence()),
-            racy: LikelihoodEnum::fromKey($response->getRacy()),
+            adult: Likelihood::fromKey($response->getAdult()),
+            medical: Likelihood::fromKey($response->getMedical()),
+            spoof: Likelihood::fromKey($response->getSpoof()),
+            violence: Likelihood::fromKey($response->getViolence()),
+            racy: Likelihood::fromKey($response->getRacy()),
         ));
     }
 }

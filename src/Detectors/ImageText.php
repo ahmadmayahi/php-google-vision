@@ -2,7 +2,7 @@
 
 namespace AhmadMayahi\Vision\Detectors;
 
-use AhmadMayahi\Vision\Data\ImageTextData;
+use AhmadMayahi\Vision\Data\ImageText as ImageTextData;
 use AhmadMayahi\Vision\Support\AbstractDetector;
 use Google\Cloud\Vision\V1\EntityAnnotation;
 use Google\Protobuf\Internal\RepeatedField;
@@ -14,14 +14,20 @@ use Google\Protobuf\Internal\RepeatedField;
  */
 class ImageText extends AbstractDetector
 {
+    public function getOriginalResponse(): ?RepeatedField
+    {
+        return $this->getDocumentTextAnnotations();
+    }
+
     public function plain(): ?ImageTextData
     {
-        $annotations = $this
+        $detection = $this
             ->imageAnnotatorClient
-            ->textDetection($this->file->toVisionFile())
-            ->getTextAnnotations();
+            ->textDetection($this->file->toVisionFile());
 
-        if (0 === $annotations->count()) {
+        $annotations = $detection->getTextAnnotations();
+
+        if (!$annotations->count()) {
             return null;
         }
 
@@ -34,30 +40,22 @@ class ImageText extends AbstractDetector
         );
     }
 
-    /**
-     * @return RepeatedField|null
-     */
-    public function getOriginalResponse(): ?RepeatedField
-    {
-        return $this->getTextAnnotations();
-    }
-
-    private function getTextAnnotations(): RepeatedField
-    {
-        return $this
-            ->imageAnnotatorClient
-            ->documentTextDetection($this->file->toVisionFile())
-            ->getTextAnnotations();
-    }
-
     public function document(): ImageTextData
     {
-        $text = $this->getTextAnnotations()->offsetGet(0);
+        $text = $this->getDocumentTextAnnotations()->offsetGet(0);
 
         return new ImageTextData(
             locale: $text->getLocale(),
             text: $text->getDescription(),
         );
+    }
+
+    private function getDocumentTextAnnotations(): RepeatedField
+    {
+        return $this
+            ->imageAnnotatorClient
+            ->documentTextDetection($this->file->toVisionFile())
+            ->getTextAnnotations();
     }
 
     public function __toString(): string

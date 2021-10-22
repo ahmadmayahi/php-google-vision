@@ -2,7 +2,8 @@
 
 namespace AhmadMayahi\Vision\Detectors;
 
-use AhmadMayahi\Vision\Data\ImagePropertiesData;
+use AhmadMayahi\Vision\Contracts\Detectable;
+use AhmadMayahi\Vision\Data\ImageProperties as ImagePropertiesData;
 use AhmadMayahi\Vision\Support\AbstractDetector;
 use AhmadMayahi\Vision\Traits\Arrayable;
 use AhmadMayahi\Vision\Traits\Jsonable;
@@ -11,10 +12,9 @@ use Google\Cloud\Vision\V1\ColorInfo;
 use Google\Cloud\Vision\V1\ImageProperties as GoogleVisionImageProperties;
 use Google\Type\Color;
 
-class ImageProperties extends AbstractDetector
+class ImageProperties extends AbstractDetector implements Detectable
 {
-    use Arrayable;
-    use Jsonable;
+    use Arrayable, Jsonable;
 
     public function getOriginalResponse(): ?GoogleVisionImageProperties
     {

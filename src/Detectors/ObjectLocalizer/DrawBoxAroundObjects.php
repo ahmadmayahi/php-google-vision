@@ -3,15 +3,15 @@
 namespace AhmadMayahi\Vision\Detectors\ObjectLocalizer;
 
 use AhmadMayahi\Vision\Contracts\Drawable;
-use AhmadMayahi\Vision\Data\LocalizedObjectData;
+use AhmadMayahi\Vision\Data\LocalizedObject as LocalizedObjectData;
 use AhmadMayahi\Vision\Detectors\ObjectLocalizer;
-use AhmadMayahi\Vision\Enums\ColorEnum;
+use AhmadMayahi\Vision\Enums\Color;
 use AhmadMayahi\Vision\Support\Image;
 use Closure;
 
 class DrawBoxAroundObjects implements Drawable
 {
-    private int $boxColor = ColorEnum::GREEN;
+    private int $boxColor = Color::GREEN;
 
     private ?Closure $callback = null;
 

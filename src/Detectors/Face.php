@@ -2,12 +2,13 @@
 
 namespace AhmadMayahi\Vision\Detectors;
 
+use AhmadMayahi\Vision\Contracts\Detectable;
 use AhmadMayahi\Vision\Contracts\File;
-use AhmadMayahi\Vision\Data\FaceData;
-use AhmadMayahi\Vision\Data\VertexData;
+use AhmadMayahi\Vision\Data\Face as FaceData;
+use AhmadMayahi\Vision\Data\Vertex as VertexData;
 use AhmadMayahi\Vision\Detectors\Face\DrawBoxAroundFaces;
-use AhmadMayahi\Vision\Enums\ColorEnum;
-use AhmadMayahi\Vision\Enums\LikelihoodEnum;
+use AhmadMayahi\Vision\Enums\Color;
+use AhmadMayahi\Vision\Enums\Likelihood;
 use AhmadMayahi\Vision\Support\AbstractDetector;
 use AhmadMayahi\Vision\Support\Image;
 use AhmadMayahi\Vision\Traits\Arrayable;
@@ -24,7 +25,7 @@ use Google\Protobuf\Internal\RepeatedField;
  *
  * @see https://cloud.google.com/vision/docs/detecting-faces
  */
-class Face extends AbstractDetector
+class Face extends AbstractDetector implements Detectable
 {
     use Arrayable;
     use Jsonable;
@@ -59,12 +60,12 @@ class Face extends AbstractDetector
             }, iterator_to_array($vertices));
 
             yield new FaceData(
-                anger: LikelihoodEnum::fromKey($face->getAngerLikelihood()),
-                joy: LikelihoodEnum::fromKey($face->getJoyLikelihood()),
-                surprise: LikelihoodEnum::fromKey($face->getSurpriseLikelihood()),
-                blurred: LikelihoodEnum::fromKey($face->getBlurredLikelihood()),
-                headwear: LikelihoodEnum::fromKey($face->getHeadwearLikelihood()),
-                underExposes: LikelihoodEnum::fromKey($face->getUnderExposedLikelihood()),
+                anger: Likelihood::fromKey($face->getAngerLikelihood()),
+                joy: Likelihood::fromKey($face->getJoyLikelihood()),
+                surprise: Likelihood::fromKey($face->getSurpriseLikelihood()),
+                blurred: Likelihood::fromKey($face->getBlurredLikelihood()),
+                headwear: Likelihood::fromKey($face->getHeadwearLikelihood()),
+                underExposes: Likelihood::fromKey($face->getUnderExposedLikelihood()),
                 bounds: $bounds,
                 detectionConfidence: $face->getDetectionConfidence(),
                 landmarking: $face->getLandmarkingConfidence(),
@@ -72,7 +73,7 @@ class Face extends AbstractDetector
         }
     }
 
-    public function drawBoxAroundFaces(int $borderColor = ColorEnum::GREEN): Image
+    public function drawBoxAroundFaces(int $borderColor = Color::GREEN): Image
     {
         return (new DrawBoxAroundFaces($this, $this->image))
             ->setBorderColor($borderColor)

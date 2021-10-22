@@ -2,7 +2,8 @@
 
 namespace AhmadMayahi\Vision\Detectors;
 
-use AhmadMayahi\Vision\Data\LabelData;
+use AhmadMayahi\Vision\Contracts\Detectable;
+use AhmadMayahi\Vision\Data\Label as LabelData;
 use AhmadMayahi\Vision\Support\AbstractDetector;
 use AhmadMayahi\Vision\Traits\Arrayable;
 use AhmadMayahi\Vision\Traits\Jsonable;
@@ -15,10 +16,9 @@ use Google\Protobuf\Internal\RepeatedField;
  *
  * @see https://cloud.google.com/vision/docs/labels
  */
-class Label extends AbstractDetector
+class Label extends AbstractDetector implements Detectable
 {
-    use Arrayable;
-    use Jsonable;
+    use Arrayable, Jsonable;
 
     public function getOriginalResponse(): RepeatedField
     {

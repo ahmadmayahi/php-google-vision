@@ -3,21 +3,21 @@
 namespace AhmadMayahi\Vision\Detectors\ObjectLocalizer;
 
 use AhmadMayahi\Vision\Contracts\Drawable;
-use AhmadMayahi\Vision\Data\LocalizedObjectData;
+use AhmadMayahi\Vision\Data\LocalizedObject as LocalizedObjectData;
 use AhmadMayahi\Vision\Detectors\ObjectLocalizer;
-use AhmadMayahi\Vision\Enums\ColorEnum;
-use AhmadMayahi\Vision\Enums\FontEnum;
+use AhmadMayahi\Vision\Enums\Color;
+use AhmadMayahi\Vision\Enums\Font;
 use AhmadMayahi\Vision\Support\Image;
 
 class DrawBoxAroundObjectsWithText implements Drawable
 {
-    private int $boxColor = ColorEnum::GREEN;
+    private int $boxColor = Color::GREEN;
 
-    private int $textColor = ColorEnum::RED;
+    private int $textColor = Color::RED;
 
     private int $fontSize = 15;
 
-    private string $font = FontEnum::OPEN_SANS_BOLD;
+    private string $font = Font::OPEN_SANS_BOLD;
 
     public function __construct(private ObjectLocalizer $objectLocalizer, private Image $image)
     {

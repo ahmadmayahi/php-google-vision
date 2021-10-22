@@ -2,7 +2,8 @@
 
 namespace AhmadMayahi\Vision\Detectors;
 
-use AhmadMayahi\Vision\Data\LogoData;
+use AhmadMayahi\Vision\Contracts\Detectable;
+use AhmadMayahi\Vision\Data\Logo as LogoData;
 use AhmadMayahi\Vision\Support\AbstractDetector;
 use AhmadMayahi\Vision\Traits\Arrayable;
 use AhmadMayahi\Vision\Traits\Jsonable;
@@ -13,10 +14,9 @@ use Google\Protobuf\Internal\RepeatedField;
 /**
  * @see https://cloud.google.com/vision/docs/detecting-logos
  */
-class Logo extends AbstractDetector
+class Logo extends AbstractDetector implements Detectable
 {
-    use Arrayable;
-    use Jsonable;
+    use Arrayable, Jsonable;
 
     public function getOriginalResponse(): RepeatedField
     {

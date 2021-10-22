@@ -2,8 +2,9 @@
 
 namespace AhmadMayahi\Vision\Detectors;
 
-use AhmadMayahi\Vision\Data\LandmarkData;
-use AhmadMayahi\Vision\Data\LocationData;
+use AhmadMayahi\Vision\Contracts\Detectable;
+use AhmadMayahi\Vision\Data\Landmark as LandmarkData;
+use AhmadMayahi\Vision\Data\Location as LocationData;
 use AhmadMayahi\Vision\Support\AbstractDetector;
 use AhmadMayahi\Vision\Traits\Arrayable;
 use AhmadMayahi\Vision\Traits\Jsonable;
@@ -15,10 +16,9 @@ use Google\Protobuf\Internal\RepeatedField;
 /**
  * @see https://cloud.google.com/vision/docs/detecting-landmarks
  */
-class Landmark extends AbstractDetector
+class Landmark extends AbstractDetector implements Detectable
 {
-    use Arrayable;
-    use Jsonable;
+    use Arrayable, Jsonable;
 
     public function getOriginalResponse(): RepeatedField
     {

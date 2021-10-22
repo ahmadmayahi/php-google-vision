@@ -3,14 +3,13 @@
 namespace AhmadMayahi\Vision\Detectors\Face;
 
 use AhmadMayahi\Vision\Contracts\Drawable;
-use AhmadMayahi\Vision\Data\FaceData;
 use AhmadMayahi\Vision\Detectors\Face;
-use AhmadMayahi\Vision\Enums\ColorEnum;
+use AhmadMayahi\Vision\Enums\Color;
 use AhmadMayahi\Vision\Support\Image;
 
 class DrawBoxAroundFaces implements Drawable
 {
-    private int $borderColor = ColorEnum::GREEN;
+    private int $borderColor = Color::GREEN;
 
     public function __construct(private Face $face, private Image $image)
     {
@@ -25,7 +24,7 @@ class DrawBoxAroundFaces implements Drawable
 
     public function draw(): Image
     {
-        /** @var FaceData $face */
+        /** @var \AhmadMayahi\Vision\Data\Face $face */
         foreach ($this->face->detect() as $face) {
             $vertices = $face->bounds;
 
