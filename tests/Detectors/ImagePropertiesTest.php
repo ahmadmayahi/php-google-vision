@@ -2,7 +2,7 @@
 
 namespace AhmadMayahi\Vision\Tests\Detectors;
 
-use AhmadMayahi\Vision\Data\ImagePropertiesData;
+use AhmadMayahi\Vision\Data\ImageProperties as ImagePropertiesData;
 use AhmadMayahi\Vision\Detectors\ImageProperties;
 use AhmadMayahi\Vision\Tests\TestCase;
 use Google\Cloud\Vision\V1\AnnotateImageResponse;
@@ -10,8 +10,6 @@ use Google\Cloud\Vision\V1\ColorInfo;
 use Google\Cloud\Vision\V1\DominantColorsAnnotation;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 use Google\Cloud\Vision\V1\ImageProperties as GoogleVisionImageProperties;
-use Google\Protobuf\Internal\RepeatedField;
-use Google\Protobuf\Internal\RepeatedFieldIter;
 use Google\Type\Color;
 
 final class ImagePropertiesTest extends TestCase
@@ -49,8 +47,6 @@ final class ImagePropertiesTest extends TestCase
         $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
         $imageProperties = $this->createMock(GoogleVisionImageProperties::class);
         $annotateImageResponse = $this->createMock(AnnotateImageResponse::class);
-        $repeatedFieldIter = $this->createMock(RepeatedFieldIter::class);
-        $repeatedField = $this->createMock(RepeatedField::class);
         $dominantColors = $this->createMock(DominantColorsAnnotation::class);
 
         $color = $this->createMock(Color::class);
@@ -69,15 +65,10 @@ final class ImagePropertiesTest extends TestCase
             ->method('getColor')
             ->willReturnOnConsecutiveCalls($color);
 
-        $repeatedField
-            ->expects($this->once())
-            ->method('getIterator')
-            ->willReturn($this->mockIterator($repeatedFieldIter, [$colorInfo]));
-
         $dominantColors
             ->expects($this->once())
             ->method('getColors')
-            ->willReturn($repeatedField);
+            ->willReturn($this->createRepeatedFieldIter([$colorInfo]));
 
         $imageProperties
             ->expects($this->once())

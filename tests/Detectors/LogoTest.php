@@ -2,14 +2,13 @@
 
 namespace AhmadMayahi\Vision\Tests\Detectors;
 
-use AhmadMayahi\Vision\Data\LogoData;
+use AhmadMayahi\Vision\Data\Logo as LogoData;
 use AhmadMayahi\Vision\Detectors\Logo;
 use AhmadMayahi\Vision\Tests\TestCase;
 use Google\Cloud\Vision\V1\AnnotateImageResponse;
 use Google\Cloud\Vision\V1\EntityAnnotation;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 use Google\Protobuf\Internal\RepeatedField;
-use Google\Protobuf\Internal\RepeatedFieldIter;
 
 final class LogoTest extends TestCase
 {
@@ -41,7 +40,6 @@ final class LogoTest extends TestCase
         $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
         $repeatedField = $this->createMock(RepeatedField::class);
         $annotateImageResponse = $this->createMock(AnnotateImageResponse::class);
-        $repeatedFieldIter = $this->createMock(RepeatedFieldIter::class);
 
         $entityAnnotation = $this->createMock(EntityAnnotation::class);
         $entityAnnotation
@@ -52,7 +50,7 @@ final class LogoTest extends TestCase
         $repeatedField
             ->expects($this->once())
             ->method('getIterator')
-            ->willReturn($this->mockIterator($repeatedFieldIter, [$entityAnnotation]));
+            ->willReturn($this->createRepeatedFieldIter([$entityAnnotation]));
 
 
         $annotateImageResponse

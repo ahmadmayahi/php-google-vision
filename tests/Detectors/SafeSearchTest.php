@@ -2,7 +2,7 @@
 
 namespace AhmadMayahi\Vision\Tests\Detectors;
 
-use AhmadMayahi\Vision\Data\SafeSearchData;
+use AhmadMayahi\Vision\Data\SafeSearch as SafeSearchData;
 use AhmadMayahi\Vision\Detectors\SafeSearch;
 use AhmadMayahi\Vision\Tests\TestCase;
 use Google\Cloud\Vision\V1\AnnotateImageResponse;

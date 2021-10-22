@@ -8,9 +8,8 @@ use Google\Cloud\Vision\V1\AnnotateImageResponse;
 use Google\Cloud\Vision\V1\EntityAnnotation;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 use Google\Protobuf\Internal\RepeatedField;
-use Google\Protobuf\Internal\RepeatedFieldIter;
 
-final class ImageDetectorTest extends TestCase
+final class ImageTextDetectorTest extends TestCase
 {
     /** @test */
     public function it_should_get_image_original_response(): void
@@ -54,7 +53,7 @@ final class ImageDetectorTest extends TestCase
         $annotateImageResponse
             ->expects($this->once())
             ->method('getTextAnnotations')
-            ->willReturn($this->createIterator([$entityAnnotation]));
+            ->willReturn($this->createRepeatedField([$entityAnnotation]));
 
         $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
         $imageAnnotatorClient
@@ -90,7 +89,7 @@ final class ImageDetectorTest extends TestCase
         $annotateImageResponse
             ->expects($this->once())
             ->method('getTextAnnotations')
-            ->willReturn($this->createIterator([$entityAnnotation]));
+            ->willReturn($this->createRepeatedField([$entityAnnotation]));
 
         $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
         $imageAnnotatorClient

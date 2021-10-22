@@ -8,7 +8,6 @@ use Google\Cloud\Vision\V1\AnnotateImageResponse;
 use Google\Cloud\Vision\V1\EntityAnnotation;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 use Google\Protobuf\Internal\RepeatedField;
-use Google\Protobuf\Internal\RepeatedFieldIter;
 
 final class LabelTest extends TestCase
 {
@@ -38,9 +37,7 @@ final class LabelTest extends TestCase
     public function it_should_get_label_data(): void
     {
         $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
-        $repeatedField = $this->createMock(RepeatedField::class);
         $annotateImageResponse = $this->createMock(AnnotateImageResponse::class);
-        $repeatedFieldIter = $this->createMock(RepeatedFieldIter::class);
 
         $entityAnnotation = $this->createMock(EntityAnnotation::class);
         $entityAnnotation
@@ -48,16 +45,10 @@ final class LabelTest extends TestCase
             ->method('getDescription')
             ->willReturn('Wall');
 
-        $repeatedField
-            ->expects($this->once())
-            ->method('getIterator')
-            ->willReturn($this->mockIterator($repeatedFieldIter, [$entityAnnotation]));
-
-
         $annotateImageResponse
             ->expects($this->once())
             ->method('getLabelAnnotations')
-            ->willReturn($repeatedField);
+            ->willReturn($this->createRepeatedFieldIter([$entityAnnotation]));
 
         $imageAnnotatorClient
             ->expects($this->once())

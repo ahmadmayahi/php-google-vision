@@ -9,7 +9,6 @@ use Google\Cloud\Vision\V1\EntityAnnotation;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 use Google\Cloud\Vision\V1\LocationInfo;
 use Google\Protobuf\Internal\RepeatedField;
-use Google\Protobuf\Internal\RepeatedFieldIter;
 use Google\Type\LatLng;
 
 final class LandmarkTest extends TestCase
@@ -41,7 +40,6 @@ final class LandmarkTest extends TestCase
     {
         $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
         $annotateImageResponse = $this->createMock(AnnotateImageResponse::class);
-        $repeatedFieldIter = $this->createMock(RepeatedFieldIter::class);
 
         $latLng = $this->createMock(LatLng::class);
         $latLng
@@ -66,19 +64,18 @@ final class LandmarkTest extends TestCase
         $locationsRepeatedField = $this->createMock(RepeatedField::class);
         $locationsRepeatedField
             ->method('getIterator')
-            ->willReturn($this->mockIterator($repeatedFieldIter, [$locationInfo]));
+            ->willReturn($this->createRepeatedFieldIter([$locationInfo]));
 
         $entityAnnotation
             ->expects($this->once())
             ->method('getLocations')
             ->willReturn($locationsRepeatedField);
 
-        $landmarkAnnotationsRepeatedFieldIter = $this->createMock(RepeatedFieldIter::class);
         $landmarkAnnotationsRepeatedField = $this->createMock(RepeatedField::class);
         $landmarkAnnotationsRepeatedField
             ->expects($this->once())
             ->method('getIterator')
-            ->willReturn($this->mockIterator($landmarkAnnotationsRepeatedFieldIter, [$entityAnnotation]));
+            ->willReturn($this->createRepeatedFieldIter([$entityAnnotation]));
 
         $annotateImageResponse
             ->expects($this->once())
