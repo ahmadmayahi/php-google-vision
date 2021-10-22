@@ -2,6 +2,7 @@
 
 namespace AhmadMayahi\Vision;
 
+use AhmadMayahi\Vision\Detectors\CropHints as CropHintsDetector;
 use AhmadMayahi\Vision\Detectors\Face as FaceDetector;
 use AhmadMayahi\Vision\Detectors\ImageProperties as ImagePropertiesDetector;
 use AhmadMayahi\Vision\Detectors\ImageText as ImageTextDetector;
@@ -31,7 +32,7 @@ class Vision
     public static function init(Config $config): static
     {
         if (is_null(self::$instance)) {
-            self::$instance = new self($config, new ImageAnnotatorClient($config->connectConfig()));
+            self::$instance = new self($config, new ImageAnnotatorClient($config->getConnectorConfig()));
         }
 
         return self::$instance;
@@ -48,6 +49,15 @@ class Vision
         $this->inputFile = $file;
 
         return $this;
+    }
+
+    public function cropHintsDetection(): CropHintsDetector
+    {
+        return new CropHintsDetector(
+            $this->annotatorClient,
+            $this->getFile(),
+            new Image($this->getFile()),
+        );
     }
 
     public function faceDetection(): FaceDetector
