@@ -4,6 +4,7 @@ namespace AhmadMayahi\Vision\Detectors;
 
 use AhmadMayahi\Vision\Contracts\Detectable;
 use AhmadMayahi\Vision\Contracts\File;
+use AhmadMayahi\Vision\Data\CropHints as CropHintsData;
 use AhmadMayahi\Vision\Data\Vertex as VertexData;
 use AhmadMayahi\Vision\Detectors\CropHints\Crop;
 use AhmadMayahi\Vision\Detectors\CropHints\DrawBoxAroundHints;
@@ -16,11 +17,11 @@ use Generator;
 use Google\Cloud\Vision\V1\CropHintsAnnotation;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 use Google\Cloud\Vision\V1\Vertex;
-use AhmadMayahi\Vision\Data\CropHints as CropHintsData;
 
 class CropHints extends AbstractDetector implements Detectable
 {
-    use Arrayable, Jsonable;
+    use Arrayable;
+    use Jsonable;
 
     public function __construct(protected ImageAnnotatorClient $imageAnnotatorClient, protected File $file, protected Image $image)
     {

@@ -4,9 +4,9 @@ namespace AhmadMayahi\Vision\Detectors;
 
 use AhmadMayahi\Vision\Contracts\Detectable;
 use AhmadMayahi\Vision\Data\Web as WebData;
+use AhmadMayahi\Vision\Data\WebEntity as WebEntityData;
 use AhmadMayahi\Vision\Data\WebImage as WebImageData;
 use AhmadMayahi\Vision\Data\WebPage as WebPageData;
-use AhmadMayahi\Vision\Data\WebEntity as WebEntityData;
 use AhmadMayahi\Vision\Support\AbstractDetector;
 use Google\Cloud\Vision\V1\WebDetection;
 use Google\Cloud\Vision\V1\WebDetection\WebEntity;

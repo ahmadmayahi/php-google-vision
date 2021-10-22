@@ -2,9 +2,9 @@
 
 namespace AhmadMayahi\Vision\Tests\Detectors;
 
+use AhmadMayahi\Vision\Data\CropHints as CropHintsData;
 use AhmadMayahi\Vision\Data\Vertex as VertexData;
 use AhmadMayahi\Vision\Detectors\CropHints;
-use AhmadMayahi\Vision\Data\CropHints as CropHintsData;
 use AhmadMayahi\Vision\Support\Image;
 use AhmadMayahi\Vision\Tests\TestCase;
 use Generator;

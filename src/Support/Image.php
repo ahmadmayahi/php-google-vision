@@ -14,7 +14,7 @@ class Image
     {
         $contents = $file->getContents();
 
-        if (!$contents) {
+        if (! $contents) {
             throw new FileException('Invalid file!');
         }
 

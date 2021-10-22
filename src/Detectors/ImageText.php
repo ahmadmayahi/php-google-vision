@@ -27,7 +27,7 @@ class ImageText extends AbstractDetector
 
         $annotations = $detection->getTextAnnotations();
 
-        if (!$annotations->count()) {
+        if (! $annotations->count()) {
             return null;
         }
 

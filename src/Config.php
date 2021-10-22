@@ -111,7 +111,7 @@ class Config
     public function getConnectorConfig(): array
     {
         $config = [
-            'credentials' => $this->getOrFail('credentials')
+            'credentials' => $this->getOrFail('credentials'),
         ];
 
         if ($endPoint = $this->get('apiEndpoint')) {

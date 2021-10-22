@@ -23,7 +23,8 @@ use Google\Protobuf\Internal\RepeatedField;
 
 class ObjectLocalizer extends AbstractDetector implements Detectable
 {
-    use Arrayable, Jsonable;
+    use Arrayable;
+    use Jsonable;
 
     public function __construct(
         protected ImageAnnotatorClient $imageAnnotatorClient,
