@@ -2,7 +2,7 @@
 
 namespace AhmadMayahi\Vision\Data;
 
-class ImageTextData
+class ImageText
 {
     public function __construct(public string $locale, public string $text)
     {

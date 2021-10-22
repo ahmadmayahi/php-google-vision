@@ -2,7 +2,7 @@
 
 namespace AhmadMayahi\Vision\Data;
 
-class LabelData
+class Label
 {
     public function __construct(public string $description)
     {

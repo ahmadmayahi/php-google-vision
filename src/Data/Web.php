@@ -2,7 +2,7 @@
 
 namespace AhmadMayahi\Vision\Data;
 
-class WebData
+class Web
 {
     public function __construct(
         public array $bestGuessLabels,

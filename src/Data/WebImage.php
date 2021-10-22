@@ -2,7 +2,7 @@
 
 namespace AhmadMayahi\Vision\Data;
 
-class WebImageData
+class WebImage
 {
     public function __construct(public string $url, public float $score)
     {

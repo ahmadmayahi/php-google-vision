@@ -7,7 +7,7 @@ namespace AhmadMayahi\Vision\Data;
  *
  * @see https://cloud.google.com/vision/docs/object-localizer
  */
-class LocalizedObjectData
+class LocalizedObject
 {
     public function __construct(
         public string $name,

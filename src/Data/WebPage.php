@@ -2,7 +2,7 @@
 
 namespace AhmadMayahi\Vision\Data;
 
-class WebPageData
+class WebPage
 {
     public function __construct(public string $url, public string $title, public float $score)
     {

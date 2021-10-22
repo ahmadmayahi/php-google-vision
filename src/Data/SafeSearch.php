@@ -5,7 +5,7 @@ namespace AhmadMayahi\Vision\Data;
 /**
  * @see https://cloud.google.com/vision/docs/reference/rpc/google.cloud.vision.v1#safesearchannotation
  */
-class SafeSearchData
+class SafeSearch
 {
     public function __construct(
         public string $adult,

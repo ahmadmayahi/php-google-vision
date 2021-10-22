@@ -2,7 +2,7 @@
 
 namespace AhmadMayahi\Vision\Data;
 
-class LogoData
+class Logo
 {
     public function __construct(public string $description)
     {

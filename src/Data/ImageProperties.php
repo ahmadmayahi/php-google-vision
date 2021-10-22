@@ -2,7 +2,7 @@
 
 namespace AhmadMayahi\Vision\Data;
 
-class ImagePropertiesData
+class ImageProperties
 {
     public function __construct(
         public float $pixelFraction,
