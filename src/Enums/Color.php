@@ -2,7 +2,7 @@
 
 namespace AhmadMayahi\Vision\Enums;
 
-class ColorEnum
+class Color
 {
     public const BLACK = 0x000000;
 
