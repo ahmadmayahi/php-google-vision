@@ -2,17 +2,17 @@
 
 namespace AhmadMayahi\Vision\Enums;
 
-use Google\Cloud\Vision\V1\Likelihood;
+use Google\Cloud\Vision\V1\Likelihood as GoogleLikelihood;
 
-final class LikelihoodEnum
+final class Likelihood
 {
     public static array $likelihood = [
-        Likelihood::UNKNOWN => 'UNKNOWN',
-        Likelihood::VERY_UNLIKELY => 'VERY_UNLIKELY',
-        Likelihood::UNLIKELY => 'UNLIKELY',
-        Likelihood::POSSIBLE => 'POSSIBLE',
-        Likelihood::LIKELY => 'LIKELY',
-        Likelihood::VERY_LIKELY => 'VERY_LIKELY',
+        GoogleLikelihood::UNKNOWN => 'UNKNOWN',
+        GoogleLikelihood::VERY_UNLIKELY => 'VERY_UNLIKELY',
+        GoogleLikelihood::UNLIKELY => 'UNLIKELY',
+        GoogleLikelihood::POSSIBLE => 'POSSIBLE',
+        GoogleLikelihood::LIKELY => 'LIKELY',
+        GoogleLikelihood::VERY_LIKELY => 'VERY_LIKELY',
     ];
 
     public static function fromKey(int $key): ?string
