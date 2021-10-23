@@ -67,9 +67,8 @@ $config = (new Config())
     ->setCredentials('path/to/google-service-account.json')
 
     // Optional: defaults to `sys_get_temp_dir()`
-		->setTempDirPath();
+    ->setTempDirPath();
 ```
-
 
 ## Original Responses
 
@@ -262,7 +261,7 @@ $response = Vision::init($config)
 
 Original Image:
 
-![Original Image](files/output/larry-and-sergey.jpg)
+![Original Image](files/input/larry-and-sergey.jpg)
 
 Cropped Image:
 
