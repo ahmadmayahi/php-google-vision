@@ -6,6 +6,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/ahmadmayahi/php-google-vision.svg)](https://packagist.org/packages/ahmadmayahi/php-google-vision)
 [![codecov](https://codecov.io/gh/ahmadmayahi/php-google-vision/branch/main/graph/badge.svg?token=hayMyn8tLI)](https://codecov.io/gh/ahmadmayahi/php-google-vision)
 [![Maintainability](https://api.codeclimate.com/v1/badges/6047dca33b17dd5eeffb/maintainability)](https://codeclimate.com/github/ahmadmayahi/php-google-vision/maintainability)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ahmadmayahi/php-google-vision/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/ahmadmayahi/php-google-vision/?branch=main)
 [![Tests](https://github.com/ahmadmayahi/php-google-vision/actions/workflows/run-tests.yml/badge.svg)](https://github.com/ahmadmayahi/php-google-vision/actions/workflows/run-tests.yml)
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/ahmadmayahi/php-google-vision/Check%20&%20fix%20styling?label=code%20style)](https://github.com/ahmadmayahi/php-google-vision/actions?query=workflow%3A"Check+%26+fix+styling"+branch%main)
 </div>
