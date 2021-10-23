@@ -86,5 +86,4 @@ final class FileTest extends TestCase
 
         $file->getLocalPathname();
     }
-
 }
