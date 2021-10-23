@@ -1,7 +1,7 @@
 
 <div align="center">
   <img style="width:500px" src="https://raw.githubusercontent.com/ahmadmayahi/php-google-vision/main/art/php-google-vision.png" alt="PHP Google Vision" />
-
+<br/>
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/ahmadmayahi/php-google-vision.svg)](https://packagist.org/packages/ahmadmayahi/php-google-vision)
 [![Total Downloads](https://img.shields.io/packagist/dt/ahmadmayahi/php-google-vision.svg)](https://packagist.org/packages/ahmadmayahi/php-google-vision)
 [![codecov](https://codecov.io/gh/ahmadmayahi/php-google-vision/branch/main/graph/badge.svg?token=hayMyn8tLI)](https://codecov.io/gh/ahmadmayahi/php-google-vision)
