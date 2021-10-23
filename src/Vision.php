@@ -118,7 +118,7 @@ class Vision
 
     protected function getFile(): File
     {
-        if (!$this->inputFile) {
+        if (! $this->inputFile) {
             throw new FileException('Please specify the file!');
         }
 
