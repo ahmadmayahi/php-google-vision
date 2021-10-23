@@ -18,8 +18,7 @@ use Google\Protobuf\Internal\RepeatedField;
  */
 class Landmark extends AbstractDetector implements Detectable
 {
-    use Arrayable;
-    use Jsonable;
+    use Arrayable, Jsonable;
 
     public function getOriginalResponse(): RepeatedField
     {
@@ -35,7 +34,7 @@ class Landmark extends AbstractDetector implements Detectable
         $response = $this->getOriginalResponse();
 
         if (0 === $response->count()) {
-            return 0;
+            return null;
         }
 
         /** @var EntityAnnotation $entity */
