@@ -2,7 +2,7 @@
 <div align="center">
   <img style="width:500px" src="https://raw.githubusercontent.com/ahmadmayahi/php-google-vision/main/art/php-google-vision.png" alt="PHP Google Vision" />
 
-<br/>
+<hr/>
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/ahmadmayahi/php-google-vision.svg)](https://packagist.org/packages/ahmadmayahi/php-google-vision)
 [![Total Downloads](https://img.shields.io/packagist/dt/ahmadmayahi/php-google-vision.svg)](https://packagist.org/packages/ahmadmayahi/php-google-vision)
@@ -10,6 +10,9 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ahmadmayahi/php-google-vision/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/ahmadmayahi/php-google-vision/?branch=main)
 [![Tests](https://github.com/ahmadmayahi/php-google-vision/actions/workflows/run-tests.yml/badge.svg)](https://github.com/ahmadmayahi/php-google-vision/actions/workflows/run-tests.yml)
 [![Check & fix styling](https://github.com/ahmadmayahi/php-google-vision/actions/workflows/php-cs-fixer.yml/badge.svg)](https://github.com/ahmadmayahi/php-google-vision/actions/workflows/php-cs-fixer.yml)
+
+<hr/>
+
 </div>
 
 ## STILL IN ACTIVE DEVELOPMENT - DO NOT USE IN PRODUCTION
