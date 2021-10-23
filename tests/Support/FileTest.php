@@ -54,11 +54,9 @@ final class FileTest extends TestCase
     {
         $resource = fopen($this->getFilePathname(), 'r');
 
-        $config = $this->getConfig()->setTempDirPath($this->getTempDir());
-
         $file = new File($resource, $this->getTempDir());
 
-        $this->assertFileExists($file->getLocalPathname());
+        $this->assertTrue($file->isResource());
 
         $this->assertIsResource($file->toVisionFile());
 
@@ -76,4 +74,17 @@ final class FileTest extends TestCase
 
         $this->assertEquals($storage, $file->toVisionFile());
     }
+
+    /** @test */
+    public function it_should_not_accept_google_storage_in_getLocalPath(): void
+    {
+        $this->expectExceptionMessage('Google Storage is not supported for this operation!');
+
+        $storage = 'gs://path/to/my/file.jpg';
+
+        $file = new File($storage, $this->getTempDir());
+
+        $file->getLocalPathname();
+    }
+
 }
