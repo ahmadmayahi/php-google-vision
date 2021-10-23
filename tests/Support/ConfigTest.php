@@ -34,6 +34,16 @@ final class ConfigTest extends TestCase
     }
 
     /** @test */
+    public function custom_temp_dir_path()
+    {
+        $config = (new Config())
+            ->setCredentials($this->googleServiceAccount())
+            ->setTempDirPath($this->getTempDir());
+
+        $this->assertTrue($config->getTempDirPath() === $this->getTempDir());
+    }
+
+    /** @test */
     public function it_should_fail_if_no_credentials_found()
     {
         $this->expectException(ConfigException::class);
