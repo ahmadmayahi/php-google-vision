@@ -33,6 +33,9 @@ It's an effort to make Google Vision API easy and fun to work with.
     - [Handwriting](#handwriting)
     - [PDF and Tiff](#pdf-and-tiff)
 - [Crop Hints Detection](#crop-hints-detection)
+  - [Detect Crop Hints](#detect-crop-hints) 
+  - [Draw box around hints](#draw-box-around-hints) 
+  - [Crop Image](#crop-image) 
 - [Face Detection](#face-detection)
     - [Draw box around faces](#draw-box-around-faces)
 - [Detect Image Properties](#image-properties-detection)
@@ -212,7 +215,7 @@ Coming soon.
 ## Crop Hints Detection
 [Crop Hints](https://cloud.google.com/vision/docs/detecting-crop-hints) suggests vertices for a crop region on an image.
 
-### Detect Vertices
+### Detect Crop Hints
 ```php
 use AhmadMayahi\Vision\Vision;
 
