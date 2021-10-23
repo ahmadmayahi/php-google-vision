@@ -12,4 +12,6 @@ trait Jsonable
 
         return json_encode([]);
     }
+
+    abstract public function detect(): mixed;
 }

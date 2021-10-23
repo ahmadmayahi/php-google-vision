@@ -12,4 +12,6 @@ trait Arrayable
 
         return [];
     }
+
+    abstract public function detect(): mixed;
 }
