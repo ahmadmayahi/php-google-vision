@@ -13,6 +13,7 @@ use AhmadMayahi\Vision\Detectors\Logo;
 use AhmadMayahi\Vision\Detectors\ObjectLocalizer;
 use AhmadMayahi\Vision\Detectors\SafeSearch;
 use AhmadMayahi\Vision\Detectors\Web;
+use AhmadMayahi\Vision\Exceptions\FileException;
 use AhmadMayahi\Vision\Vision;
 
 final class VisionTest extends TestCase
@@ -24,14 +25,6 @@ final class VisionTest extends TestCase
         $obj2 = Vision::init($this->getConfig(), $this->getImageAnnotateClient());
 
         $this->assertTrue(spl_object_hash($obj1) === spl_object_hash($obj2));
-    }
-
-    /** @test */
-    public function it_should_fail_if_no_input_file_was_given(): void
-    {
-        $this->expectExceptionMessage('Please specify the file!');
-
-        Vision::init(new Config(), $this->getImageAnnotateClient())->faceDetection();
     }
 
     /** @test */

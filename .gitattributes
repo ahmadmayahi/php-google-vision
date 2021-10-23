@@ -11,4 +11,4 @@
 /.github            export-ignore
 /psalm.xml          export-ignore
 /files              export-ignore
-
+/art                export-ignore
