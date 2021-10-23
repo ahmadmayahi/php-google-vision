@@ -124,17 +124,4 @@ class Vision
 
         return new File($this->inputFile, $this->config->getTempDirPath());
     }
-
-    public function __clone()
-    {
-    }
-
-    public function __wakeup()
-    {
-    }
-
-    public function __sleep(): array
-    {
-        return [];
-    }
 }
