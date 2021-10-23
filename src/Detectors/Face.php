@@ -46,7 +46,7 @@ class Face extends AbstractDetector implements Detectable
     public function detect(): ?Generator
     {
         $faces = $this->getOriginalResponse();
-        if (! $faces->count()) {
+        if (0 === $faces->count()) {
             return null;
         }
 
