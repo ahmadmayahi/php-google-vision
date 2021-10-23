@@ -7,7 +7,7 @@
 [![codecov](https://codecov.io/gh/ahmadmayahi/php-google-vision/branch/main/graph/badge.svg?token=hayMyn8tLI)](https://codecov.io/gh/ahmadmayahi/php-google-vision)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ahmadmayahi/php-google-vision/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/ahmadmayahi/php-google-vision/?branch=main)
 [![Tests](https://github.com/ahmadmayahi/php-google-vision/actions/workflows/run-tests.yml/badge.svg)](https://github.com/ahmadmayahi/php-google-vision/actions/workflows/run-tests.yml)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/ahmadmayahi/php-google-vision/Check%20&%20fix%20styling?label=code%20style)](https://github.com/ahmadmayahi/php-google-vision/actions?query=workflow%3A"Check+%26+fix+styling"+branch%main)
+[![Check & fix styling](https://github.com/ahmadmayahi/php-google-vision/actions/workflows/php-cs-fixer.yml/badge.svg)](https://github.com/ahmadmayahi/php-google-vision/actions/workflows/php-cs-fixer.yml)
 </div>
 
 ## STILL IN ACTIVE DEVELOPMENT - DO NOT USE IN PRODUCTION
