@@ -4,6 +4,7 @@ namespace AhmadMayahi\Vision\Tests;
 
 use AhmadMayahi\Vision\Config;
 use AhmadMayahi\Vision\Support\File;
+use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 use Google\Protobuf\Internal\RepeatedField as RepeatedFieldVision;
 use Google\Protobuf\Internal\RepeatedFieldIter;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -123,5 +124,10 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
             ->willReturn($this->mockIterator($repeatedFieldIter, $container));
 
         return $repeatedField;
+    }
+
+    protected function getImageAnnotateClient()
+    {
+        return $this->createMock(ImageAnnotatorClient::class);
     }
 }
