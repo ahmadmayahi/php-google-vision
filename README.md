@@ -1,13 +1,6 @@
 
-<p align="center">
+<div align="center">
   <img style="width:500px" src="https://raw.githubusercontent.com/ahmadmayahi/php-google-vision/main/art/php-google-vision.png" alt="PHP Google Vision" />
-</p>
-
-## STILL IN ACTIVE DEVELOPMENT - DO NOT USE IN PRODUCTION
-
-**Requires PHP 8.0+**
-
-For feedback, please [contact me](https://form.jotform.com/201892949858375).
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/ahmadmayahi/php-google-vision.svg)](https://packagist.org/packages/ahmadmayahi/php-google-vision)
 [![Total Downloads](https://img.shields.io/packagist/dt/ahmadmayahi/php-google-vision.svg)](https://packagist.org/packages/ahmadmayahi/php-google-vision)
@@ -15,6 +8,14 @@ For feedback, please [contact me](https://form.jotform.com/201892949858375).
 [![Maintainability](https://api.codeclimate.com/v1/badges/6047dca33b17dd5eeffb/maintainability)](https://codeclimate.com/github/ahmadmayahi/php-google-vision/maintainability)
 [![Tests](https://github.com/ahmadmayahi/php-google-vision/actions/workflows/run-tests.yml/badge.svg)](https://github.com/ahmadmayahi/php-google-vision/actions/workflows/run-tests.yml)
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/ahmadmayahi/php-google-vision/Check%20&%20fix%20styling?label=code%20style)](https://github.com/ahmadmayahi/php-google-vision/actions?query=workflow%3A"Check+%26+fix+styling"+branch%main)
+</div>
+
+## STILL IN ACTIVE DEVELOPMENT - DO NOT USE IN PRODUCTION
+
+**Requires PHP 8.0+**
+
+For feedback, please [contact me](https://form.jotform.com/201892949858375).
+
 
 This package provides an elegant wrapper around [Google Vision API](https://github.com/googleapis/google-cloud-php-vision) and more.
 
