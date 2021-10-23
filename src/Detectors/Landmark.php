@@ -18,7 +18,8 @@ use Google\Protobuf\Internal\RepeatedField;
  */
 class Landmark extends AbstractDetector implements Detectable
 {
-    use Arrayable, Jsonable;
+    use Arrayable;
+    use Jsonable;
 
     public function getOriginalResponse(): RepeatedField
     {
