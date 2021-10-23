@@ -77,18 +77,12 @@ class File implements FileContract
         return $tempFile;
     }
 
-    public function createTempFile(): string
+    private function createTempFile(): string
     {
-        $tempFile = tempnam($this->getTempDir(), sha1(uniqid()));
-
-        if (false === $tempFile) {
-            throw new FileException('Could not create temp file!');
-        }
-
-        return $tempFile;
+        return tempnam($this->getTempDir(), sha1(uniqid()));
     }
 
-    public function saveStream(string $tempFile)
+    private function saveStream(string $tempFile)
     {
         if (false === file_put_contents($tempFile, stream_get_contents($this->file))) {
             throw new FileException('Could not write teo temp file: '.$tempFile);
