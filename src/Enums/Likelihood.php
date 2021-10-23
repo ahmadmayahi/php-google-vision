@@ -23,7 +23,7 @@ final class Likelihood
     public static function fromVal(string $val): ?int
     {
         if ($res = array_search($val, self::$likelihood)) {
-            return $res;
+            return intval($res);
         }
 
         return null;

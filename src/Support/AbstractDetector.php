@@ -2,7 +2,7 @@
 
 namespace AhmadMayahi\Vision\Support;
 
-use AhmadMayahi\Vision\Contracts\File;
+use AhmadMayahi\Vision\Contracts\File as FileContract;
 use Exception;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 
@@ -11,7 +11,7 @@ abstract class AbstractDetector
     /**
      * @throws Exception
      */
-    public function __construct(protected ImageAnnotatorClient $imageAnnotatorClient, protected File $file)
+    public function __construct(protected ImageAnnotatorClient $imageAnnotatorClient, protected FileContract $file)
     {
     }
 

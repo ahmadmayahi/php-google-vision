@@ -28,7 +28,7 @@ class DrawBoxAroundFaces implements Drawable
         foreach ($this->face->detect() as $face) {
             $vertices = $face->bounds;
 
-            if ($vertices) {
+            if (0 !== count($vertices)) {
                 $x1 = $vertices[0]->x;
                 $y1 = $vertices[0]->y;
 

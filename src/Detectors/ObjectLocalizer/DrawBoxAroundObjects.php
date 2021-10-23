@@ -44,7 +44,7 @@ class DrawBoxAroundObjects implements Drawable
         foreach ($this->objectLocalizer->detect() as $obj) {
             $vertices = $obj->normalizedVertices;
 
-            if ($vertices) {
+            if (0 !== count($vertices)) {
                 $x1 = $vertices[0]['x'];
                 $y1 = $vertices[0]['y'];
 
