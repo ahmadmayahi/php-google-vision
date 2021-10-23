@@ -30,7 +30,7 @@ class Landmark extends AbstractDetector implements Detectable
         return $response->getLandmarkAnnotations();
     }
 
-    public function detect(): Generator
+    public function detect(): ?Generator
     {
         $response = $this->getOriginalResponse();
 
