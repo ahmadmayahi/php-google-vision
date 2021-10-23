@@ -2,7 +2,6 @@
 
 namespace AhmadMayahi\Vision\Tests;
 
-use AhmadMayahi\Vision\Config;
 use AhmadMayahi\Vision\Detectors\CropHints;
 use AhmadMayahi\Vision\Detectors\Face;
 use AhmadMayahi\Vision\Detectors\ImageProperties;
@@ -13,7 +12,6 @@ use AhmadMayahi\Vision\Detectors\Logo;
 use AhmadMayahi\Vision\Detectors\ObjectLocalizer;
 use AhmadMayahi\Vision\Detectors\SafeSearch;
 use AhmadMayahi\Vision\Detectors\Web;
-use AhmadMayahi\Vision\Exceptions\FileException;
 use AhmadMayahi\Vision\Vision;
 
 final class VisionTest extends TestCase
