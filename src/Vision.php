@@ -12,6 +12,7 @@ use AhmadMayahi\Vision\Detectors\Logo as LogoDetector;
 use AhmadMayahi\Vision\Detectors\ObjectLocalizer as ObjectLocalizerDetector;
 use AhmadMayahi\Vision\Detectors\SafeSearch as SafeSearchDetector;
 use AhmadMayahi\Vision\Detectors\Web as WebDetector;
+use AhmadMayahi\Vision\Exceptions\FileException;
 use AhmadMayahi\Vision\Support\File;
 use AhmadMayahi\Vision\Support\Image;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
@@ -21,7 +22,7 @@ class Vision
     /**
      * @var string|resource|\SplFileInfo|\SplFileObject
      */
-    protected $inputFile;
+    protected $inputFile = null;
 
     protected static ?self $instance = null;
 
@@ -29,10 +30,12 @@ class Vision
     {
     }
 
-    public static function init(Config $config): static
+    public static function init(Config $config, ImageAnnotatorClient $client = null): static
     {
+        $client = $client ?? new ImageAnnotatorClient($config->getConnectorConfig());
+
         if (is_null(self::$instance)) {
-            self::$instance = new self($config, new ImageAnnotatorClient($config->getConnectorConfig()));
+            self::$instance = new self($config, $client);
         }
 
         return self::$instance;
@@ -115,6 +118,10 @@ class Vision
 
     protected function getFile(): File
     {
+        if (!$this->inputFile) {
+            throw new FileException('Please specify the file!');
+        }
+
         return new File($this->inputFile, $this->config->getTempDirPath());
     }
 
