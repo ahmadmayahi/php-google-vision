@@ -8,6 +8,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/ahmadmayahi/php-google-vision.svg)](https://packagist.org/packages/ahmadmayahi/php-google-vision)
 [![codecov](https://codecov.io/gh/ahmadmayahi/php-google-vision/branch/main/graph/badge.svg?token=hayMyn8tLI)](https://codecov.io/gh/ahmadmayahi/php-google-vision)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ahmadmayahi/php-google-vision/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/ahmadmayahi/php-google-vision/?branch=main)
+[![Code Intelligence Status](https://scrutinizer-ci.com/g/ahmadmayahi/php-google-vision/badges/code-intelligence.svg?b=main)](https://scrutinizer-ci.com/code-intelligence)
 [![Tests](https://github.com/ahmadmayahi/php-google-vision/actions/workflows/run-tests.yml/badge.svg)](https://github.com/ahmadmayahi/php-google-vision/actions/workflows/run-tests.yml)
 [![Check & fix styling](https://github.com/ahmadmayahi/php-google-vision/actions/workflows/php-cs-fixer.yml/badge.svg)](https://github.com/ahmadmayahi/php-google-vision/actions/workflows/php-cs-fixer.yml)
 
