@@ -183,7 +183,7 @@ final class CropHintsTest extends TestCase
                     ],
                 'confidence' => 0.5,
                 'importanceFraction' => 0.79706966876984,
-            ]
+            ],
         ];
     }
 

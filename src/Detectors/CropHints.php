@@ -20,7 +20,8 @@ use Google\Cloud\Vision\V1\Vertex;
 
 class CropHints extends AbstractDetector implements Detectable
 {
-    use Arrayable, Jsonable;
+    use Arrayable;
+    use Jsonable;
 
     public function __construct(protected ImageAnnotatorClient $imageAnnotatorClient, protected File $file, protected Image $image)
     {
