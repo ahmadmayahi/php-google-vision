@@ -26,7 +26,7 @@ class Vision
 
     protected static ?self $instance = null;
 
-    protected function __construct(protected Config $config, protected ImageAnnotatorClient $annotatorClient)
+    public function __construct(protected Config $config, protected ImageAnnotatorClient $annotatorClient)
     {
     }
 
