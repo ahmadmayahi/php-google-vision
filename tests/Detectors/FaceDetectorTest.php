@@ -46,20 +46,7 @@ final class FaceDetectorTest extends TestCase
     {
         [$face1, $face2] = $this->faces();
 
-        $annotatorImageResponse = $this->createMock(AnnotateImageResponse::class);
-        $annotatorImageResponse
-            ->expects($this->once())
-            ->method('getFaceAnnotations')
-            ->willReturn($this->createRepeatedFieldIter([$this->createFaceAnnotation($face1), $this->createFaceAnnotation($face2)]));
-
-        $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
-        $imageAnnotatorClient
-            ->expects($this->once())
-            ->method('faceDetection')
-            ->willReturn($annotatorImageResponse);
-        $imageAnnotatorClient
-            ->expects($this->once())
-            ->method('close');
+        $imageAnnotatorClient = $this->getMockedData();
 
         $image = $this->createMock(Image::class);
 
@@ -103,7 +90,7 @@ final class FaceDetectorTest extends TestCase
         $face->drawBoxAroundFaces()->toJpeg('out.jpg');
     }
 
-    protected function createFaceAnnotation(FaceData $faceData)
+    private function createFaceAnnotation(FaceData $faceData)
     {
         $faceAnnotation = $this->createMock(FaceAnnotation::class);
         $boundingPoly = $this->createMock(BoundingPoly::class);
@@ -179,7 +166,7 @@ final class FaceDetectorTest extends TestCase
         return $faceAnnotation;
     }
 
-    protected function faces(): array
+    private function faces(): array
     {
         $face1 = new FaceData(
             anger: 'VERY_UNLIKELY',
@@ -216,5 +203,27 @@ final class FaceDetectorTest extends TestCase
         );
 
         return [$face1, $face2];
+    }
+
+    public function getMockedData()
+    {
+        [$face1, $face2] = $this->faces();
+
+        $annotatorImageResponse = $this->createMock(AnnotateImageResponse::class);
+        $annotatorImageResponse
+            ->expects($this->once())
+            ->method('getFaceAnnotations')
+            ->willReturn($this->createRepeatedFieldIter([$this->createFaceAnnotation($face1), $this->createFaceAnnotation($face2)]));
+
+        $imageAnnotatorClient = $this->createMock(ImageAnnotatorClient::class);
+        $imageAnnotatorClient
+            ->expects($this->once())
+            ->method('faceDetection')
+            ->willReturn($annotatorImageResponse);
+        $imageAnnotatorClient
+            ->expects($this->once())
+            ->method('close');
+
+        return $imageAnnotatorClient;
     }
 }
