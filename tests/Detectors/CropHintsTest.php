@@ -40,12 +40,13 @@ final class CropHintsTest extends TestCase
 
         $image = $this->createMock(Image::class);
 
-        (new CropHints($imageAnnotatorClient, $this->getFile(), $image))
-            ->getOriginalResponse();
+        $ch = new CropHints($imageAnnotatorClient, $this->getFile(), $image);
+
+        $ch->getOriginalResponse();
     }
 
     /** @test */
-    public function it_should_detect_crop_hints(): void
+    public function it_should_detect_crop_hints_and_return_array(): void
     {
         $imageAnnotatorClient = $this->getImageAnnotate();
 
@@ -64,6 +65,19 @@ final class CropHintsTest extends TestCase
         $this->assertEquals($bounds, $cropHintData->bounds);
         $this->assertEquals(0.5, $cropHintData->confidence);
         $this->assertEquals(0.79706966876984, $cropHintData->importanceFraction);
+    }
+
+    /** @test */
+    public function it_should_detect_crop_hints_and_return_json()
+    {
+        $imageAnnotatorClient = $this->getImageAnnotate();
+
+        $image = $this->createMock(Image::class);
+
+        $result = (new CropHints($imageAnnotatorClient, $this->getFile(), $image))
+            ->asJson();
+
+        $this->assertEquals(json_encode($this->getData()), $result);
     }
 
     /** @test */
@@ -124,6 +138,55 @@ final class CropHintsTest extends TestCase
             ->toJpeg('out.png');
     }
 
+    private function getBoundValues(): array
+    {
+        return [
+            ['x' => 130, 'y' => 0],
+            ['x' => 470, 'y' => 0],
+            ['x' => 470, 'y' => 339],
+            ['x' => 130, 'y' => 339],
+        ];
+    }
+
+    private function getVertices(): Generator
+    {
+        foreach ($this->getBoundValues() as ['x' => $x, 'y' => $y]) {
+            yield new VertexData(
+                x: $x,
+                y: $y
+            );
+        }
+    }
+
+    private function getData(): array
+    {
+        return [
+            [
+                'bounds' =>
+                    [
+                        [
+                            'x' => 130,
+                            'y' => 0,
+                        ],
+                        [
+                            'x' => 470,
+                            'y' => 0,
+                        ],
+                        [
+                            'x' => 470,
+                            'y' => 339,
+                        ],
+                        [
+                            'x' => 130,
+                            'y' => 339,
+                        ],
+                    ],
+                'confidence' => 0.5,
+                'importanceFraction' => 0.79706966876984,
+            ]
+        ];
+    }
+
     private function getImageAnnotate()
     {
         $cropHintsAnnotation = $this->createMock(CropHintsAnnotation::class);
@@ -149,26 +212,6 @@ final class CropHintsTest extends TestCase
             ->method('close');
 
         return $imageAnnotatorClient;
-    }
-
-    private function getBoundValues(): array
-    {
-        return [
-            ['x' => 130, 'y' => 0],
-            ['x' => 470, 'y' => 0],
-            ['x' => 470, 'y' => 339],
-            ['x' => 130, 'y' => 339],
-        ];
-    }
-
-    private function getVertices(): Generator
-    {
-        foreach ($this->getBoundValues() as ['x' => $x, 'y' => $y]) {
-            yield new VertexData(
-                x: $x,
-                y: $y
-            );
-        }
     }
 
     private function cropHint(): CropHint
