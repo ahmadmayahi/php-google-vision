@@ -103,19 +103,19 @@ final class ObjectLocalizerTest extends TestCase
                     intval($annotationsArr[0]['normalizedVertices'][0]['x'] * 650),
                     intval($annotationsArr[0]['normalizedVertices'][0]['y'] * 340),
                     intval($annotationsArr[0]['normalizedVertices'][2]['x'] * 650),
-                    intval($annotationsArr[0]['normalizedVertices'][2]['y'] * 340)
+                    intval($annotationsArr[0]['normalizedVertices'][2]['y'] * 340),
                 ],
                 [
                     intval($annotationsArr[1]['normalizedVertices'][0]['x'] * 650),
                     intval($annotationsArr[1]['normalizedVertices'][0]['y'] * 340),
                     intval($annotationsArr[1]['normalizedVertices'][2]['x'] * 650),
-                    intval($annotationsArr[1]['normalizedVertices'][2]['y'] * 340)
+                    intval($annotationsArr[1]['normalizedVertices'][2]['y'] * 340),
                 ],
                 [
                     intval($annotationsArr[2]['normalizedVertices'][0]['x'] * 650),
                     intval($annotationsArr[2]['normalizedVertices'][0]['y'] * 340),
                     intval($annotationsArr[2]['normalizedVertices'][2]['x'] * 650),
-                    intval($annotationsArr[2]['normalizedVertices'][2]['y'] * 340)
+                    intval($annotationsArr[2]['normalizedVertices'][2]['y'] * 340),
                 ],
             );
 

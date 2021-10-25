@@ -7,6 +7,7 @@ namespace AhmadMayahi\Vision\Detectors;
 use AhmadMayahi\Vision\Contracts\Detectable;
 use AhmadMayahi\Vision\Contracts\File;
 use AhmadMayahi\Vision\Data\LocalizedObject as LocalizedObjectData;
+use AhmadMayahi\Vision\Data\NormalizedVertex as NormalizedVertexData;
 use AhmadMayahi\Vision\Detectors\ObjectLocalizer\DrawBoxAroundObjects;
 use AhmadMayahi\Vision\Detectors\ObjectLocalizer\DrawBoxAroundObjectsWithText;
 use AhmadMayahi\Vision\Support\AbstractDetector;
@@ -18,7 +19,6 @@ use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 use Google\Cloud\Vision\V1\LocalizedObjectAnnotation;
 use Google\Cloud\Vision\V1\NormalizedVertex;
 use Google\Protobuf\Internal\RepeatedField;
-use AhmadMayahi\Vision\Data\NormalizedVertex as NormalizedVertexData;
 
 class ObjectLocalizer extends AbstractDetector implements Detectable
 {
