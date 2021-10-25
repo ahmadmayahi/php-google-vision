@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AhmadMayahi\Vision\Detectors;
 
 use AhmadMayahi\Vision\Contracts\Detectable;
@@ -46,7 +48,7 @@ class Landmark extends AbstractDetector implements Detectable
                     $info = $location->getLatLng();
 
                     if (is_null($info)) {
-                        return null;
+                        return [];
                     }
 
                     return new LocationData($info->getLatitude(), $info->getLongitude());

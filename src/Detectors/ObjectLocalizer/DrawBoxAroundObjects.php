@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AhmadMayahi\Vision\Detectors\ObjectLocalizer;
 
 use AhmadMayahi\Vision\Contracts\Drawable;
@@ -13,7 +15,7 @@ class DrawBoxAroundObjects implements Drawable
 {
     private int $boxColor = Color::GREEN;
 
-    private ?Closure $callback = null;
+    private ?Closure $closure = null;
 
     public function __construct(
         private ObjectLocalizer $objectLocalizer,
@@ -21,16 +23,16 @@ class DrawBoxAroundObjects implements Drawable
     ) {
     }
 
-    public function setBoxColor(int $color): static
+    public function boxColor(int $color): static
     {
         $this->boxColor = $color;
 
         return $this;
     }
 
-    public function setCallback(?Closure $closure): static
+    public function callback(Closure $closure): static
     {
-        $this->callback = $closure;
+        $this->closure = $closure;
 
         return $this;
     }
@@ -45,21 +47,21 @@ class DrawBoxAroundObjects implements Drawable
             $vertices = $obj->normalizedVertices;
 
             if (0 !== count($vertices)) {
-                $x1 = $vertices[0]['x'];
-                $y1 = $vertices[0]['y'];
+                $x1 = $vertices[0]->x;
+                $y1 = $vertices[0]->y;
 
-                $x2 = $vertices[2]['x'];
-                $y2 = $vertices[2]['y'];
+                $x2 = $vertices[2]->x;
+                $y2 = $vertices[2]->y;
 
                 $this->image->drawRectangle(
-                    x1: ($x1 * $width),
-                    y1: ($y1 * $height),
-                    x2: ($x2 * $width),
-                    y2: ($y2 * $height),
+                    x1: intval($x1 * $width),
+                    y1: intval($y1 * $height),
+                    x2: intval($x2 * $width),
+                    y2: intval($y2 * $height),
                     color: $this->boxColor,
                 );
 
-                if ($callback = $this->callback) {
+                if ($callback = $this->closure) {
                     $callback($this->image, $obj);
                 }
             }

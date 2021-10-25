@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AhmadMayahi\Vision\Detectors\CropHints;
 
 use AhmadMayahi\Vision\Detectors\CropHints;

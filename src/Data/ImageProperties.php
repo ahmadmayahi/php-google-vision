@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AhmadMayahi\Vision\Data;
 
-class ImageProperties
+final class ImageProperties
 {
     public function __construct(
         public float $pixelFraction,

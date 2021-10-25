@@ -1,10 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AhmadMayahi\Vision\Data;
 
-class Landmark
+final class Landmark
 {
-    public function __construct(public string $name, public ?array $locations)
+    /**
+     * @param string $name The landmark's name, for example: Taj mahal
+     * @param Location[] $locations
+     */
+    public function __construct(public string $name, public array $locations)
     {
     }
 }

@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AhmadMayahi\Vision\Data;
 
-class WebImage
+final class WebImage
 {
     public function __construct(public string $url, public float $score)
     {

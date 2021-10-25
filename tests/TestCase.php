@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AhmadMayahi\Vision\Tests;
 
 use AhmadMayahi\Vision\Config;
@@ -8,9 +10,10 @@ use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 use Google\Protobuf\Internal\RepeatedField as RepeatedFieldVision;
 use Google\Protobuf\Internal\RepeatedFieldIter;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase as BaseTestCase;
 use stdClass;
 
-abstract class TestCase extends \PHPUnit\Framework\TestCase
+abstract class TestCase extends BaseTestCase
 {
     /** @after */
     public function tempCleanUp(): void

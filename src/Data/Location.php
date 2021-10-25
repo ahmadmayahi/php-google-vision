@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AhmadMayahi\Vision\Data;
 
-class Location
+final class Location
 {
     public function __construct(public float $latitude, public float $longitude)
     {

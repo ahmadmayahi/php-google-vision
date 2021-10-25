@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AhmadMayahi\Vision\Detectors\Face;
 
 use AhmadMayahi\Vision\Contracts\Drawable;
@@ -15,7 +17,7 @@ class DrawBoxAroundFaces implements Drawable
     {
     }
 
-    public function setBorderColor(int $color): static
+    public function borderColor(int $color): static
     {
         $this->borderColor = $color;
 

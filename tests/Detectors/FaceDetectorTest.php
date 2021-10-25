@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AhmadMayahi\Vision\Tests\Detectors;
 
 use AhmadMayahi\Vision\Data\Face as FaceData;
@@ -123,7 +125,7 @@ final class FaceDetectorTest extends TestCase
         $faceAnnotation
             ->expects($this->once())
             ->method('getUnderExposedLikelihood')
-            ->willReturn(Likelihood::fromVal($faceData->underExposes));
+            ->willReturn(Likelihood::fromVal($faceData->underExposed));
 
         $faceAnnotation
             ->expects($this->once())
@@ -174,7 +176,7 @@ final class FaceDetectorTest extends TestCase
             surprise: 'VERY_UNLIKELY',
             blurred: 'VERY_UNLIKELY',
             headwear: 'VERY_UNLIKELY',
-            underExposes: 'VERY_UNLIKELY',
+            underExposed: 'VERY_UNLIKELY',
             bounds: [
                 new VertexData(330, 24),
                 new VertexData(546, 26),
@@ -191,7 +193,7 @@ final class FaceDetectorTest extends TestCase
             surprise: 'VERY_UNLIKELY',
             blurred: 'VERY_UNLIKELY',
             headwear: 'VERY_UNLIKELY',
-            underExposes: 'VERY_UNLIKELY',
+            underExposed: 'VERY_UNLIKELY',
             bounds: [
                 new VertexData(77, 23),
                 new VertexData(273, 23),

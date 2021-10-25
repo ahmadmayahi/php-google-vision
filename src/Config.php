@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AhmadMayahi\Vision;
 
 use AhmadMayahi\Vision\Exceptions\ConfigException;

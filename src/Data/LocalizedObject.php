@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AhmadMayahi\Vision\Data;
 
 /**
@@ -7,8 +9,11 @@ namespace AhmadMayahi\Vision\Data;
  *
  * @see https://cloud.google.com/vision/docs/object-localizer
  */
-class LocalizedObject
+final class LocalizedObject
 {
+    /**
+     * @param NormalizedVertex[] $normalizedVertices
+     */
     public function __construct(
         public string $name,
         public string $mid,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AhmadMayahi\Vision\Detectors;
 
 use AhmadMayahi\Vision\Contracts\Detectable;
@@ -43,9 +45,13 @@ class Face extends AbstractDetector implements Detectable
         return $response->getFaceAnnotations();
     }
 
+    /**
+     * @return Generator|null
+     */
     public function detect(): ?Generator
     {
         $faces = $this->getOriginalResponse();
+
         if (0 === $faces->count()) {
             return null;
         }
@@ -64,7 +70,7 @@ class Face extends AbstractDetector implements Detectable
                 surprise: Likelihood::fromKey($face->getSurpriseLikelihood()),
                 blurred: Likelihood::fromKey($face->getBlurredLikelihood()),
                 headwear: Likelihood::fromKey($face->getHeadwearLikelihood()),
-                underExposes: Likelihood::fromKey($face->getUnderExposedLikelihood()),
+                underExposed: Likelihood::fromKey($face->getUnderExposedLikelihood()),
                 bounds: $bounds,
                 detectionConfidence: $face->getDetectionConfidence(),
                 landmarking: $face->getLandmarkingConfidence(),
@@ -75,7 +81,7 @@ class Face extends AbstractDetector implements Detectable
     public function drawBoxAroundFaces(int $borderColor = Color::GREEN): Image
     {
         return (new DrawBoxAroundFaces($this, $this->image))
-            ->setBorderColor($borderColor)
+            ->borderColor($borderColor)
             ->draw();
     }
 }

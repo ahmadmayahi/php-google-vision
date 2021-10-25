@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AhmadMayahi\Vision\Tests\Detectors;
 
 use AhmadMayahi\Vision\Data\CropHints as CropHintsData;

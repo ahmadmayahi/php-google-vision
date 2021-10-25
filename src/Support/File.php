@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AhmadMayahi\Vision\Support;
 
 use AhmadMayahi\Vision\Contracts\File as FileContract;

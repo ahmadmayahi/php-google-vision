@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AhmadMayahi\Vision\Detectors\ObjectLocalizer;
 
 use AhmadMayahi\Vision\Contracts\Drawable;
@@ -26,9 +28,9 @@ class DrawBoxAroundObjectsWithText implements Drawable
     public function draw(): Image
     {
         $draw = new DrawBoxAroundObjects($this->objectLocalizer, $this->image);
-        $draw->setBoxColor($this->boxColor);
+        $draw->boxColor($this->boxColor);
 
-        $draw->setCallback(function (Image $image, LocalizedObjectData $obj) {
+        $draw->callback(function (Image $image, LocalizedObjectData $obj) {
             $width = $image->getWidth();
             $height = $image->getHeight();
 
@@ -40,36 +42,36 @@ class DrawBoxAroundObjectsWithText implements Drawable
                 fontFile: $this->font,
                 color: $this->textColor,
                 fontSize: $this->fontSize,
-                x: ($x1 * $width) + 5,
-                y: ($y2 * $height) - 5
+                x: intval($x1 * $width) + 5,
+                y: intval($y2 * $height) - 5
             );
         });
 
         return $draw->draw();
     }
 
-    public function setBoxColor(int $boxColor): static
+    public function boxColor(int $boxColor): static
     {
         $this->boxColor = $boxColor;
 
         return $this;
     }
 
-    public function setTextColor(int $textColor): static
+    public function textColor(int $textColor): static
     {
         $this->textColor = $textColor;
 
         return $this;
     }
 
-    public function setFontSize(int $fontSize): static
+    public function fontSize(int $fontSize): static
     {
         $this->fontSize = $fontSize;
 
         return $this;
     }
 
-    public function setFont(string $font): static
+    public function font(string $font): static
     {
         $this->font = $font;
 

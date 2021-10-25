@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AhmadMayahi\Vision\Data;
 
-class ImageText
+final class ImageText
 {
     public function __construct(public string $locale, public string $text)
     {

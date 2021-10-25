@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AhmadMayahi\Vision\Data;
 
-class Label
+final class Label
 {
     public function __construct(public string $description)
     {

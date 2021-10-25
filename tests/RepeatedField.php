@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AhmadMayahi\Vision\Tests;
 
 use Google\Protobuf\Internal\RepeatedField as GoogleRepeatedField;

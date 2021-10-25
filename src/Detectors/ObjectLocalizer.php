@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AhmadMayahi\Vision\Detectors;
 
 use AhmadMayahi\Vision\Contracts\Detectable;
@@ -7,19 +9,16 @@ use AhmadMayahi\Vision\Contracts\File;
 use AhmadMayahi\Vision\Data\LocalizedObject as LocalizedObjectData;
 use AhmadMayahi\Vision\Detectors\ObjectLocalizer\DrawBoxAroundObjects;
 use AhmadMayahi\Vision\Detectors\ObjectLocalizer\DrawBoxAroundObjectsWithText;
-use AhmadMayahi\Vision\Enums\Color;
-use AhmadMayahi\Vision\Enums\Font;
 use AhmadMayahi\Vision\Support\AbstractDetector;
 use AhmadMayahi\Vision\Support\Image;
 use AhmadMayahi\Vision\Traits\Arrayable;
 use AhmadMayahi\Vision\Traits\Jsonable;
-use Closure;
-use Exception;
 use Generator;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 use Google\Cloud\Vision\V1\LocalizedObjectAnnotation;
 use Google\Cloud\Vision\V1\NormalizedVertex;
 use Google\Protobuf\Internal\RepeatedField;
+use AhmadMayahi\Vision\Data\NormalizedVertex as NormalizedVertexData;
 
 class ObjectLocalizer extends AbstractDetector implements Detectable
 {
@@ -59,34 +58,23 @@ class ObjectLocalizer extends AbstractDetector implements Detectable
                 mid: $obj->getMid(),
                 languageCode: $obj->getLanguageCode(),
                 score: $obj->getScore(),
-                normalizedVertices: array_map(function (NormalizedVertex $item) {
-                    return [
-                        'x' => $item->getX(),
-                        'y' => $item->getY(),
-                    ];
+                normalizedVertices: array_map(function (NormalizedVertex $vertex) {
+                    return new NormalizedVertexData(
+                        x: $vertex->getX(),
+                        y: $vertex->getY()
+                    );
                 }, iterator_to_array($vertices)),
             );
         }
     }
 
-    public function drawBoxAroundObjects($color = Color::GREEN, ?Closure $callback = null): Image
+    public function drawBoxAroundObjects(): DrawBoxAroundObjects
     {
-        return (new DrawBoxAroundObjects($this, $this->image))
-            ->setBoxColor($color)
-            ->setCallback($callback)
-            ->draw();
+        return new DrawBoxAroundObjects($this, $this->image);
     }
 
-    /**
-     * @throws Exception
-     */
-    public function drawBoxAroundObjectsWithText(int $boxColor = Color::GREEN, $textColor = Color::RED, int $fontSize = 15, string $font = Font::OPEN_SANS_BOLD): Image
+    public function drawBoxAroundObjectsWithText(): DrawBoxAroundObjectsWithText
     {
-        return (new DrawBoxAroundObjectsWithText($this, $this->image))
-            ->setBoxColor($boxColor)
-            ->setTextColor($textColor)
-            ->setFontSize($fontSize)
-            ->setFont($font)
-            ->draw();
+        return (new DrawBoxAroundObjectsWithText($this, $this->image));
     }
 }

@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AhmadMayahi\Vision\Data;
 
-class CropHints
+final class CropHints
 {
     /**
      * @param Vertex[] $bounds

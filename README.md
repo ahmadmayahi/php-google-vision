@@ -190,6 +190,8 @@ $response->locale; // locale, for example "en"
 $response->text;   // Image text
 ```
 
+Both `plain()` and `document()` methods return `null` if no text will be detected.
+
 You may also get the plain text using `__toString()` magic method:
 
 ```php
@@ -310,7 +312,7 @@ foreach ($faces as $faceData) {
 
     $faceData->landmarking;
 
-    $faceData->underExposes;
+    $faceData->underExposed;
     
     $faceData->detectionConfidence;
     
@@ -500,7 +502,8 @@ use AhmadMayahi\Vision\Enums\Color;
 $objects = Vision::init($config)
     ->file('/path/to/input/image.jpg')
     ->objectLocalizer()
-    ->drawBoxAroundObjects(Color::GREEN)
+    ->drawBoxAroundObjects()
+    ->boxColor(Color::GREEN)
     ->toJpeg('out.jpg');
 ```
 
@@ -517,13 +520,16 @@ use AhmadMayahi\Vision\Data\LocalizedObject;
 $objects = Vision::init($config)
     ->file('/path/to/input/image.jpg')
     ->objectLocalizer()
-    ->drawBoxAroundObjects(Color::GREEN, function(Image $outputImage, LocalizedObject $object) {
+    ->drawBoxAroundObjects()
+    ->boxColor(Color::RED)
+    ->callback(function(Image $outputImage, LocalizedObject $object) {
         // Get GD Image
         $outputImage->getImage();
         
         // Get object info
         $object->getName();
-    });
+    })
+    ->draw();
 ```
 
 > This feature doesn't support Google Storage yet.
@@ -542,12 +548,12 @@ use AhmadMayahi\Vision\Data\LocalizedObject;
 $objects = Vision::init($config)
     ->file('/path/to/input/image.jpg')
     ->objectLocalizer()
-    ->drawBoxAroundObjectsWithText(
-        boxColor: Color::GREEN,
-        textColor: Color::RED,
-        fontSize: 15,
-        font: Font::OPEN_SANS_BOLD_ITALIC,
-    )
+    ->drawBoxAroundObjectsWithText()
+    ->boxColor(Color::GREEN)
+    ->textColor(Color::RED)
+    ->font(Font::OPEN_SANS_BOLD_ITALIC)
+    ->fontSize(12)
+    ->draw()
     ->toJpeg('output.jpg');
 ```
 
@@ -573,9 +579,9 @@ $response = Vision::init($config)
 
 $response->fullMatchingImages;
 
-$response->bestGuessLabels;;
+$response->partialMatchingImages;
 
-$response->pagesWithMatchingImages;
+$response->bestGuessLabels;;
 
 $response->pagesWithMatchingImages;
 

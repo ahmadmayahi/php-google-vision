@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AhmadMayahi\Vision\Data;
 
-class Web
+final class Web
 {
     public function __construct(
         public array $bestGuessLabels,
