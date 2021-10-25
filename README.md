@@ -301,22 +301,29 @@ echo count($faces). ' faces found';
 /** @var \AhmadMayahi\Vision\Data\Face $faceData */
 foreach ($faces as $faceData) {
     $faceData->anger;
+    $faceData->isAngry(); // boolean
     
     $faceData->surprise;
+    $faceData->isSurprised();
     
     $faceData->joy;
+    $faceData->isJoyful();
 
     $faceData->blurred;
+    $faceData->isBlurred();
     
     $faceData->headwear;
+    $faceData->isHeadwear();
 
     $faceData->landmarking;
-
+    
     $faceData->underExposed;
     
     $faceData->detectionConfidence;
     
     $faceData->bounds;
+    
+    
 }
 ```
 
@@ -421,14 +428,19 @@ $result = Vision::init($config)
     ->detect();
 
 $result->adult;
+$result->isAdult(); // boolean
 
 $result->medical;
+$result->isMedical(); // boolean
 
 $result->violence;
+$result->isViolence(); // boolean
 
 $result->racy;
+$result->isRacy(); // boolean
 
 $result->spoof;
+$result->isSpoof(); // boolean
 ```
 
 ## Label Detection
