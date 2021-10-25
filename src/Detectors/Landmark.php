@@ -48,7 +48,7 @@ class Landmark extends AbstractDetector implements Detectable
                     $info = $location->getLatLng();
 
                     if (is_null($info)) {
-                        return [];
+                        return null;
                     }
 
                     return new LocationData($info->getLatitude(), $info->getLongitude());

@@ -8,7 +8,7 @@ final class Landmark
 {
     /**
      * @param string $name The landmark's name, for example: Taj mahal
-     * @param Location[] $locations
+     * @param array<Location|null> $locations
      */
     public function __construct(public string $name, public array $locations)
     {
