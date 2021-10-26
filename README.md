@@ -78,14 +78,13 @@ $config = (new Config())
     ->setCredentials('path/to/google-service-account.json')
 
     // Optional: defaults to `sys_get_temp_dir()`
-    ->setTempDirPath();
+    ->setTempDirPath('/my/tmp');
 ```
 
 ## Original Responses
 
-All the features come with `getOriginalResponse()` method which returns the original response that's returned by [PHP Google Vision Package](https://github.com/googleapis/google-cloud-php-vision).
+All the features come with `getOriginalResponse()` method which returns the original response that's returned by [PHP Google Vision Package](https://github.com/googleapis/google-cloud-php-vision):
 
-You may get the original response for any feature as follows:
 
 ```php
 use AhmadMayahi\Vision\Vision;
@@ -96,18 +95,6 @@ $response = Vision::init($config)
     ->getOriginalResponse();
 ```
 
-Depending on the feature, the response type might vary, here is a list of all the response types:
-
-|Feature|Response Type|
-|---|---|
-|`faceDetection`|`Google\Protobuf\Internal\RepeatedField` contains `Google\Cloud\Vision\V1\FaceAnnotation`|
-|`imageTextDetection`|`Google\Protobuf\Internal\RepeatedField` contains `Google\Cloud\Vision\V1\EntityAnnotation `|
-|`imagePropertiesDetection`|`Google\Cloud\Vision\V1\ImageProperties`|
-|`labelDetection`|`Google\Protobuf\Internal\RepeatedField` contains `Google\Cloud\Vision\V1\AnnotateImageResponse`|
-|`landmarkDetection`|`Google\Protobuf\Internal\RepeatedField` contains `Google\Cloud\Vision\V1\AnnotateImageResponse`|
-|`logoDetection`|`Google\Protobuf\Internal\RepeatedField` contains `Google\Cloud\Vision\V1\AnnotateImageResponse`|
-|`objectLocalizer`|`Google\Protobuf\Internal\RepeatedField` contains `Google\Cloud\Vision\V1\AnnotateImageResponse`|
-|`safeSearchDetection`|`Google\Cloud\Vision\V1\SafeSearchAnnotation`contains `Google\Cloud\Vision\V1\AnnotateImageResponse`|
 
 The `file()` method accepts the following types:
 
@@ -186,8 +173,10 @@ $response = Vision::init($config)
     ->imageTextDetection()
     ->plain();
 
-$response->locale; // locale, for example "en"
-$response->text;   // Image text
+if ($response) {
+    $response->locale; // locale, for example "en"
+    $response->text;   // Image text
+}
 ```
 
 Both `plain()` and `document()` methods return `null` if no text will be detected.
@@ -209,9 +198,11 @@ $response = Vision::init($config)
     ->file('/path/to/input/image.jpg')
     ->imageTextDetection()
     ->document();
- 
-$response->locale; // locale, for example "en" for English
-$response->text;   // Image text
+
+if ($response) {
+    $response->locale; // locale, for example "en" for English
+    $response->text;   // Image text
+}
 ```
 
 > The difference between `plain()` and `docuemnt()` is that the first one only retrieves the plain text (no bullets, signs, etc...), whereas the latter one tries to retrieve the entire document (including bullets, symbols, etc...).
@@ -246,6 +237,7 @@ foreach ($response as $item) {
 
 ### Draw box around hints
 You may use the `drawBoxAroundHints` method as follows:
+
 ```php
 use AhmadMayahi\Vision\Vision;
 use AhmadMayahi\Vision\Enums\Color;
@@ -300,7 +292,7 @@ echo count($faces). ' faces found';
 
 /** @var \AhmadMayahi\Vision\Data\Face $faceData */
 foreach ($faces as $faceData) {
-    $faceData->anger;
+    $faceData->anger; // for example: POSSIBLE
     $faceData->isAngry(); // boolean
     
     $faceData->surprise;
@@ -322,15 +314,22 @@ foreach ($faces as $faceData) {
     $faceData->detectionConfidence;
     
     $faceData->bounds;
-    
-    
 }
 ```
 
-> `anger`, `surprise` and `joy` etc... return Likelihoods ratings which are expressed as six different values: `UNKNOWN`, `VERY_UNLIKELY`, `UNLIKELY`, `POSSIBLE`, `LIKELY`, or `VERY_LIKELY`.
+The `anger`, `surprise` and `joy` etc... return likelihoods ratings which are expressed as six different values: 
+
+* `UNKNOWN`.
+* `VERY_UNLIKELY`.
+* `UNLIKELY`.
+* `POSSIBLE`.
+* `LIKELY`.
+* `VERY_LIKELY`.
+
 > See [Likelihood](https://cloud.google.com/vision/docs/reference/rpc/google.cloud.vision.v1#likelihood).
 
-Get the `detect` method as array:
+You may get the results as array:
+
 ```php
 $faces = $vision
     ->file('/path/to/image.jpg')
@@ -338,13 +337,16 @@ $faces = $vision
     ->asArray();
 ```
 
-Get the `detect` method as JSON:
+Or as JSON:
+
 ```php
 $faces = $vision
     ->file('/path/to/image.jpg')
     ->faceDetection()
     ->asJson();
 ```
+
+> `asArray` and `asJson` is supported in all the features that return `Generator`.
 
 ### Draw box around faces
 
@@ -356,11 +358,11 @@ $analyzer = Vision::init($config)
     ->file('/path/to/input/image.jpg')
     ->faceDetection()
     ->drawBoxAroundFaces(Color::MAGENTA)
+    // Alternatively, you may use `toPng`, `toGif`, `toBmp` methods.
     ->toJpeg('faces.jpg');
 ```
 
-> Alternatively, you may use `toPng`, `toGif`, `toBmp` methods.
-> All the drawing methods return an object of type `AhmadMayahi\Vision\Utils\Image`.
+> All the drawing methods return an object of type `AhmadMayahi\Vision\Support\Image`.
 
 ![Larry Page and Sergey Brin Faces](files/output/larry-and-sergey.jpg)
 
@@ -370,7 +372,7 @@ $analyzer = Vision::init($config)
 
 The [Image Properties](https://cloud.google.com/vision/docs/detecting-properties) feature detects general attributes of the image, such as dominant color.
 
-The `detect` method returns a `Generator` of `AhmadMayahi\Vision\Data\ImagePropertiesData`:
+The `detect` method returns a `Generator` of `AhmadMayahi\Vision\Data\ImageProperties`:
 
 ```php
 use AhmadMayahi\Vision\Vision;
