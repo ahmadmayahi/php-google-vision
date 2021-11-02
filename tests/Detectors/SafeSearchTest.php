@@ -80,6 +80,12 @@ final class SafeSearchTest extends TestCase
 
         $response = (new SafeSearch($imageAnnotatorClient, $this->getFile()))->detect();
 
+        $this->assertFalse($response->isAdult());
+        $this->assertFalse($response->isMedical());
+        $this->assertFalse($response->isSpoof());
+        $this->assertFalse($response->isViolence());
+        $this->assertTrue($response->isRacy());
+
         $this->assertInstanceOf(SafeSearchData::class, $response);
     }
 }

@@ -35,6 +35,7 @@ final class Face extends AbstractConditionalLikelihood
         return [
             'angry' => 'anger',
             'joyful' => 'joy',
+            'surprised' => 'surprise',
         ];
     }
 }

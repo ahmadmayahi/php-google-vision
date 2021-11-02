@@ -35,7 +35,7 @@ It's an effort to make Google Vision API easy and fun to work with.
 - [Configuration](#configuration)
 - [Original Responses](#original-responses)
 - [Integration with Laravel](#integration-with-laravel)
-- [Image Text Detection](#image-text-detection)
+- [Image Text Detection (OCR)](#image-text-detection-ocr)
     - [Get Plain Text](#get-plain-text)
     - [Get Document](#get-document)
     - [Handwriting](#handwriting)

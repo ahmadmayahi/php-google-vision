@@ -55,6 +55,17 @@ final class FaceDetectorTest extends TestCase
         $faceDetection = new Face($imageAnnotatorClient, $this->getFile(), $image);
         $faceDetectionResult = $faceDetection->asArray();
 
+        $this->assertFalse($face1->isAngry());
+        $this->assertFalse($face2->isAngry());
+        $this->assertTrue($face1->isJoyful());
+        $this->assertTrue($face2->isJoyful());
+        $this->assertFalse($face1->isBlurred());
+        $this->assertFalse($face2->isBlurred());
+        $this->assertFalse($face1->isHeadwear());
+        $this->assertFalse($face2->isHeadwear());
+        $this->assertFalse($face1->isSurprised());
+        $this->assertFalse($face2->isSurprised());
+
         $this->assertCount(2, $faceDetectionResult);
         $this->assertEquals([$face1, $face2], $faceDetectionResult);
     }
