@@ -12,7 +12,7 @@ abstract class AbstractConditionalLikelihood
     public function __call(string $name, array $arguments)
     {
         if (false === str_starts_with($name, 'is')) {
-            return ;
+            throw new Exception('Conditional methods must start with "is"!');
         }
 
         $property = lcfirst(substr($name, 2));

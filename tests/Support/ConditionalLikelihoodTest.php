@@ -26,6 +26,15 @@ final class ConditionalLikelihoodTest extends TestCase
     }
 
     /** @test */
+    public function it_should_fail_if_method_does_not_start_with_is(): void
+    {
+        $person = new Person('VERY_LIKELY', 'POSSIBLE');
+
+        $this->expectExceptionMessage('Conditional methods must start with "is"!');
+        $this->assertEmpty($person->angry());
+    }
+
+    /** @test */
     public function it_should_fail_if_method_not_found(): void
     {
         $person = new Person('VERY_LIKELY', 'POSSIBLE');
