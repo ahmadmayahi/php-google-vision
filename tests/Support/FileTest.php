@@ -88,4 +88,35 @@ final class FileTest extends TestCase
 
         $file->getLocalPathname();
     }
+
+    /** @test */
+    public function it_should_fail_if_file_not_compatible_with_google_vision(): void
+    {
+        $this->expectExceptionMessage('File not found or not compatible');
+
+        $file = new File('myfile', $this->getTempDir());
+
+        $file->toVisionFile();
+    }
+
+    /** @test */
+    public function it_should_fail_if_cant_get_local_file_path(): void
+    {
+        $this->expectExceptionMessage('Cannot get the local file path');
+
+        $file = new File('myfile', $this->getTempDir());
+
+        $file->getLocalPathname();
+    }
+
+    /** @test */
+    public function it_should_stream_contents(): void
+    {
+        /** @var resource $stream */
+        $stream = fopen($this->getFilePathname(), 'r');
+
+        $file = new File($stream, $this->getTempDir());
+
+        $this->assertFileExists($file->getStreamFilePath());
+    }
 }

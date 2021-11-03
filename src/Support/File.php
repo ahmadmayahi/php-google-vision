@@ -29,14 +29,6 @@ class File implements FileContract
      */
     public function toVisionFile()
     {
-        if ($this->isGoogleStoragePath()) {
-            return (string) $this->file;
-        }
-
-        if (is_string($this->file)) {
-            return (string) file_get_contents($this->file);
-        }
-
         if (is_resource($this->file)) {
             return $this->file;
         }
@@ -47,7 +39,15 @@ class File implements FileContract
             return (string) $fileObj->fread($this->file->getSize());
         }
 
-        throw new FileException('File not found!');
+        if ($this->isGoogleStoragePath()) {
+            return (string) $this->file;
+        }
+
+        if (file_exists($this->file)) {
+            return (string) file_get_contents($this->file);
+        }
+
+        throw new FileException('File not found or not compatible!');
     }
 
     public function getLocalPathname(): string
@@ -56,23 +56,27 @@ class File implements FileContract
             throw new Exception('Google Storage is not supported for this operation!');
         }
 
-        if (is_string($this->file)) {
-            return $this->file;
-        }
-
         if (is_resource($this->file)) {
-            return $this->getStreamContents();
+            return $this->getStreamFilePath();
         }
 
         if ($this->file instanceof SplFileInfo) {
             return $this->file->getPathname();
         }
 
+        if (file_exists($this->file)) {
+            return $this->file;
+        }
+
         throw new FileException('Cannot get the local file path');
     }
 
-    public function getStreamContents(): string
+    public function getStreamFilePath(): string
     {
+        if (false === $this->isResource()) {
+            throw new FileException('File is not resource!');
+        }
+
         $tempFile = $this->createTempFile();
         $this->saveStream($tempFile);
 
