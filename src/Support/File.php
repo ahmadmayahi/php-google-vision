@@ -43,7 +43,7 @@ class File implements FileContract
             return (string) $this->file;
         }
 
-        if (file_exists($this->file)) {
+        if ($this->isLocalFile()) {
             return (string) file_get_contents($this->file);
         }
 
@@ -64,7 +64,7 @@ class File implements FileContract
             return $this->file->getPathname();
         }
 
-        if (file_exists($this->file)) {
+        if ($this->isLocalFile()) {
             return $this->file;
         }
 

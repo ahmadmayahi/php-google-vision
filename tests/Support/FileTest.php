@@ -110,7 +110,7 @@ final class FileTest extends TestCase
     }
 
     /** @test */
-    public function it_should_stream_contents(): void
+    public function it_should_return_file_path_from_resource(): void
     {
         /** @var resource $stream */
         $stream = fopen($this->getFilePathname(), 'r');
@@ -118,5 +118,15 @@ final class FileTest extends TestCase
         $file = new File($stream, $this->getTempDir());
 
         $this->assertFileExists($file->getStreamFilePath());
+    }
+
+    /** @test */
+    public function it_should_fail_if_the_given_file_is_not_resource(): void
+    {
+        $this->expectExceptionMessage('File is not resource');
+
+        $file = new File('xx', $this->getTempDir());
+
+        $file->getStreamFilePath();
     }
 }
