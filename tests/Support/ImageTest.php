@@ -17,7 +17,7 @@ final class ImageTest extends TestCase
     }
 
     /** @test */
-    public function it_should_get_image_dimensions()
+    public function it_should_get_image_dimensions(): void
     {
         $image = new Image($this->getFile());
 
