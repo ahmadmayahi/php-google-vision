@@ -90,6 +90,18 @@ final class FileTest extends TestCase
     }
 
     /** @test */
+    public function it_should_not_accept_google_storage_in_getContents(): void
+    {
+        $this->expectExceptionMessage('Google Storage is not supported');
+
+        $storage = 'gs://path/to/my/file.jpg';
+
+        $file = new File($storage, $this->getTempDir());
+
+        $file->getContents();
+    }
+
+    /** @test */
     public function it_should_fail_if_file_not_compatible_with_google_vision(): void
     {
         $this->expectExceptionMessage('File not found or not compatible');
@@ -118,6 +130,8 @@ final class FileTest extends TestCase
         $file = new File($stream, $this->getTempDir());
 
         $this->assertFileExists($file->getStreamFilePath());
+
+        $this->assertFileExists($file->getLocalPathname());
     }
 
     /** @test */
@@ -129,4 +143,27 @@ final class FileTest extends TestCase
 
         $file->getStreamFilePath();
     }
+
+    /** @test */
+    public function it_should_return_resource_contents(): void
+    {
+        /** @var resource $stream */
+        $stream = fopen($this->getFilePathname(), 'r');
+
+        $file = new File($stream, $this->getTempDir());
+
+        $this->assertSame(file_get_contents($this->getFilePathname()), $file->getContents());
+    }
+
+    /** @test */
+    public function it_should_return_spl_file_info_contents(): void
+    {
+        /** @var resource $stream */
+        $stream = new SplFileInfo($this->getFilePathname());
+
+        $file = new File($stream, $this->getTempDir());
+
+        $this->assertSame(file_get_contents($this->getFilePathname()), $file->getContents());
+    }
+
 }

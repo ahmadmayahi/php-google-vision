@@ -65,7 +65,7 @@ class File implements FileContract
         }
 
         if ($this->isLocalFile()) {
-            return $this->file;
+            return (string) $this->file;
         }
 
         throw new FileException('Cannot get the local file path');
@@ -88,11 +88,9 @@ class File implements FileContract
         return tempnam($this->getTempDir(), sha1(uniqid()));
     }
 
-    private function saveStream(string $tempFile)
+    private function saveStream(string $tempFile): void
     {
-        if (false === file_put_contents($tempFile, stream_get_contents($this->file))) {
-            throw new FileException('Could not write teo temp file: '.$tempFile);
-        }
+        file_put_contents($tempFile, stream_get_contents($this->file));
     }
 
     public function getContents()
