@@ -165,5 +165,4 @@ final class FileTest extends TestCase
 
         $this->assertSame(file_get_contents($this->getFilePathname()), $file->getContents());
     }
-
 }
