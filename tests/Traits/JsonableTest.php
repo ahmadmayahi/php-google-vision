@@ -21,7 +21,6 @@ class JsonableTest extends TestCase
     {
         $this->assertJson(json_encode([]), (new JsonData([]))->asJson());
     }
-
 }
 
 class JsonData
