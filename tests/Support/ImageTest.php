@@ -145,6 +145,5 @@ final class ImageTest extends TestCase
         $image->toGif($imgPath);
 
         $this->assertEquals('image/git', mime_content_type($imgPath));
-
     }
 }
