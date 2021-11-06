@@ -6,7 +6,7 @@ use AhmadMayahi\Vision\Tests\TestCase;
 use AhmadMayahi\Vision\Traits\Jsonable;
 use Generator;
 
-class JsonableTest extends TestCase
+final class JsonableTest extends TestCase
 {
     /** @test */
     public function it_should_return_json_from_iterator(): void

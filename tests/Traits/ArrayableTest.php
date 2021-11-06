@@ -6,7 +6,7 @@ use AhmadMayahi\Vision\Tests\TestCase;
 use AhmadMayahi\Vision\Traits\Arrayable;
 use Generator;
 
-class ArrayableTest extends TestCase
+final class ArrayableTest extends TestCase
 {
     /** @test */
     public function it_should_return_array_from_iterator(): void

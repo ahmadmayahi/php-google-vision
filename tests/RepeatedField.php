@@ -6,7 +6,7 @@ namespace AhmadMayahi\Vision\Tests;
 
 use Google\Protobuf\Internal\RepeatedField as GoogleRepeatedField;
 
-class RepeatedField extends GoogleRepeatedField
+final class RepeatedField extends GoogleRepeatedField
 {
     private int $position;
 
