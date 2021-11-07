@@ -37,10 +37,16 @@ class CropHints extends AbstractDetector implements Detectable
             ->getCropHintsAnnotation();
     }
 
-    public function detect(): Generator
+    public function detect(): ?Generator
     {
+        $cropHints = $this->getOriginalResponse()->getCropHints();
+
+        if (0 === $cropHints->count()) {
+            return null;
+        }
+
         /** @var \Google\Cloud\Vision\V1\CropHint $item */
-        foreach ($this->getOriginalResponse()->getCropHints() as $item) {
+        foreach ($cropHints as $item) {
             $bounds = array_map(function (Vertex $vertex) {
                 return new VertexData($vertex->getX(), $vertex->getY());
             }, iterator_to_array($item->getBoundingPoly()->getVertices()));

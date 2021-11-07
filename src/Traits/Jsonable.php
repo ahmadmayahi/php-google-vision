@@ -8,7 +8,9 @@ trait Jsonable
 {
     public function asJson(): string
     {
-        if ($res = $this->detect()) {
+        $res = $this->detect();
+
+        if (is_iterable($res)) {
             return json_encode(iterator_to_array($res));
         }
 

@@ -8,8 +8,10 @@ trait Arrayable
 {
     public function asArray(): array
     {
-        if ($detect = $this->detect()) {
-            return iterator_to_array($detect);
+        $res = $this->detect();
+
+        if (is_iterable($res)) {
+            return iterator_to_array($res);
         }
 
         return [];
