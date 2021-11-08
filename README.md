@@ -1,4 +1,3 @@
-
 <div align="center">
   <img style="width:500px" src="https://raw.githubusercontent.com/ahmadmayahi/php-google-vision/main/art/php-google-vision.png" alt="PHP Google Vision" />
 
@@ -16,8 +15,6 @@
 <hr/>
 
 </div>
-
-## STILL IN ACTIVE DEVELOPMENT - DO NOT USE IN PRODUCTION
 
 **Requires PHP 8.0+**
 
